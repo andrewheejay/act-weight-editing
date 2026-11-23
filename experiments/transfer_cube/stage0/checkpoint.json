@@ -1,0 +1,10 @@
+{
+ "dir": "checkpoints/transfer_cube",
+ "model_file": "model.safetensors",
+ "model_sha256": "6fe4fbeb8d5f9c5bf4a865c2d2385f67364816b197683757e580bc66a52aa7a2",
+ "source": "lerobot/act_aloha_sim_transfer_cube_human",
+ "hub_revision": "ba73b2766f1371cdc133ca4efb97eb090d744625",
+ "how": "python -m lerobot.processor.migrate_policy_normalization --pretrained-path lerobot/act_aloha_sim_transfer_cube_human --output-dir checkpoints/transfer_cube (LeRobot 0.7.0). The script moved the normalisation statistics out of the state dict into the processor files.",
+ "n_tensors": 234,
+ "note": "checkpoints/ is gitignored, this hash pins it"
+}

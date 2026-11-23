@@ -1,0 +1,43 @@
+{
+ "chosen": "egl_mesa",
+ "why": "Software rendering (Mesa llvmpipe through EGL, forced with the glvnd vendor file). GPU rendering (NVIDIA EGL) is not repeatable: identical runs of the 500 reproduction seeds differ, so the repeat-run gate cannot hold. SPEC.md Risks table: 'GPU rendering is not repeatable -> switch to software rendering'.",
+ "renderers": {
+  "egl_nvidia": {
+   "vendor_file": "10_nvidia.json",
+   "ms_per_render": 3.7,
+   "repeatable": false
+  },
+  "egl_mesa": {
+   "vendor_file": "50_mesa.json",
+   "llvmpipe": "Mesa 23.2.1 LLVM 15.0.7",
+   "ms_per_render": 82,
+   "repeatable": true
+  }
+ },
+ "comparison_on_reproduction_seeds": {
+  "published_success": 0.83,
+  "egl_nvidia": {
+   "success": 0.832,
+   "success_agreement_with_published": 0.95,
+   "max_reward_agreement_with_published": 0.902,
+   "second_run_success_agreement_with_published": 0.946
+  },
+  "egl_mesa": {
+   "success": 0.828,
+   "success_agreement_with_published": 0.938,
+   "max_reward_agreement_with_published": 0.892
+  },
+  "note": "GPU agrees with the published per-seed file on 95.0% and 94.6% of seeds in two runs, Mesa on 93.8%. So GPU is closer by about 1 point, and SPEC step 8 alone would keep it. It is not chosen because identical GPU runs give different trajectories (137 of 500 identical) and Gate 0 needs identical repeats. The Risks table in SPEC.md names this case and its fallback, which is software rendering. Logged in DEVIATIONS.md."
+ },
+ "gpu_repeat": {
+  "files": [
+   "renderer_compare/gpu.jsonl",
+   "renderer_compare/gpu_run2.jsonl"
+  ],
+  "seeds": 500,
+  "identical_trajectories": 137,
+  "benchmark_outcomes_that_flip": 2,
+  "strict_outcomes_that_flip": 7
+ },
+ "render_repeat": "50 renders of one state: NVIDIA gave 4 distinct images (2 pixels differing, 1 intensity level), Mesa gave 1"
+}

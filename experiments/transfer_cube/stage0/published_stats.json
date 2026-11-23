@@ -1,0 +1,18 @@
+{
+ "n": 500,
+ "success": 0.83,
+ "failures": 85,
+ "max_reward_counts": {
+  "0": 8,
+  "1": 41,
+  "2": 36,
+  "4": 415
+ },
+ "nearest_seed_also_fails_given_fail": 0.5882352941176471,
+ "low_y_strip_below_0.44": {
+  "n": 102,
+  "fail": 38,
+  "n_rest": 398,
+  "fail_rest": 47
+ }
+}
