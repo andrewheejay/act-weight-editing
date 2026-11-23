@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "campaign": [
+    "transfer_cube",
+    "insertion"
+  ],
+  "tasks": {
+    "transfer_cube": {
+      "env_task": "AlohaTransferCube-v0",
+      "hub_repo": "lerobot/act_aloha_sim_transfer_cube_human",
+      "published_success": 0.83,
+      "reproduction_window": [
+        0.78,
+        0.88
+      ]
+    },
+    "insertion": {
+      "env_task": "AlohaInsertion-v0",
+      "hub_repo": "lerobot/act_aloha_sim_insertion_human",
+      "published_success": 0.206,
+      "reproduction_window": [
+        0.156,
+        0.256
+      ]
+    }
+  },
+  "seed_sets": {
+    "reproduction": [
+      1000,
+      1499
+    ],
+    "design": [
+      20000,
+      20999
+    ],
+    "sweep_half": [
+      20000,
+      20499
+    ],
+    "check_half": [
+      20500,
+      20999
+    ],
+    "validation": [
+      30000,
+      30499
+    ]
+  },
+  "test_seeds": {
+    "base": 1000000000,
+    "span": 1000000000,
+    "count": 1000,
+    "domain": "awe-test-seeds-v1"
+  },
+  "budgets": {
+    "agent": 100000,
+    "baselines": 50000,
+    "autogreedy": 10000
+  },
+  "uncapped_budgets": [
+    "setup",
+    "stress"
+  ],
+  "validation_checks": {
+    "agent": 10,
+    "baselines": 5
+  },
+  "gates": {
+    "harness_agreement_min": 0.98,
+    "repeat_seeds": 100,
+    "swap_gap_points": 10.0,
+    "operating_point_margin_points": 3.0,
+    "min_failure_rate": 0.05,
+    "audit_seeds": 20,
+    "smoke_seeds": 3,
+    "sweep_arms": 96,
+    "sweep_seeds": 500,
+    "split_half_min": 10,
+    "ensembling_min_seeds": 200
+  },
+  "verdict": {
+    "alpha": 0.05,
+    "large_share": 0.25,
+    "guard_drop_points": 2.0,
+    "random_luck_rate": 0.05,
+    "random_target": 40,
+    "bootstrap": 10000,
+    "stock_agreement_min": 0.98
+  },
+  "edit_limits": {
+    "max_heads": 6,
+    "scale_values": [
+      0,
+      0.5,
+      1.5,
+      2,
+      3,
+      4
+    ],
+    "sharpen_values": [
+      0.5,
+      2,
+      4
+    ],
+    "max_free_numbers": 3,
+    "forbidden_prefixes": [
+      "model.backbone."
+    ],
+    "output_level_prefixes": [
+      "model.action_head.",
+      "model.decoder_pos_embed."
+    ],
+    "unused_prefixes": [
+      "model.vae_encoder"
+    ]
+  },
+  "baseline_families": [
+    "constant_offset",
+    "deviation_gain",
+    "shorter_chunk",
+    "simplest_fix"
+  ],
+  "beacon": {
+    "name": "drand quicknet (League of Entropy)",
+    "chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+    "public_key": "83cf0f2896adee7eb8b5f01fcad3912212c437e0073e911fb90022d3e760183c8c4b450b6a0a6c3ac6a5776a2d1064510d1fec758c921cc22b0e17e63aaf4bcb5ed66304de9cf809bd274ca73bab4af5a6e9c76a4bc09e76eae8991ef5ece45a",
+    "period": 3,
+    "genesis_time": 1692803367,
+    "scheme": "bls-unchained-g1-rfc9380",
+    "relays": [
+      "https://api.drand.sh",
+      "https://drand.cloudflare.com",
+      "https://api2.drand.sh",
+      "https://api3.drand.sh"
+    ],
+    "delay_seconds": 600
+  },
+  "review": {
+    "max_rounds": 2
+  },
+  "freeze": {
+    "max_rejections": 5
+  },
+  "protected": {
+    "files": [
+      "SPEC.md",
+      "PLAN.json",
+      "CLAUDE.md",
+      "README.md"
+    ],
+    "dirs": [
+      "referee/",
+      "run/",
+      ".claude/",
+      "tests_referee/",
+      "starter/",
+      ".git/"
+    ],
+    "globs": [
+      "experiments/*/test/**",
+      "experiments/*/freeze/ACCEPTED.json",
+      "experiments/*/freeze/REJECTED-*.md",
+      "reviews/*.json",
+      "PAUSE",
+      "logs/agent/**",
+      "logs/sessions.tsv",
+      "logs/loop.log",
+      "logs/referee.log",
+      "logs/notify.log"
+    ]
+  }
+}

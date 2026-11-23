@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(__ROOT__/SPEC.md)",
+      "Edit(__ROOT__/PLAN.json)",
+      "Edit(__ROOT__/CLAUDE.md)",
+      "Edit(__ROOT__/README.md)",
+      "Edit(__ROOT__/referee/**)",
+      "Edit(__ROOT__/run/**)",
+      "Edit(__ROOT__/.claude/**)",
+      "Edit(__ROOT__/tests_referee/**)",
+      "Edit(__ROOT__/starter/**)",
+      "Edit(__ROOT__/experiments/*/test/**)",
+      "Edit(__ROOT__/reviews/*.json)",
+      "Edit(__ROOT__/experiments/*/freeze/ACCEPTED.json)",
+      "Edit(__ROOT__/experiments/*/freeze/REJECTED-*.md)",
+      "Edit(__ROOT__/logs/agent/**)",
+      "Edit(__ROOT__/logs/sessions.tsv)",
+      "Edit(__ROOT__/logs/loop.log)",
+      "Edit(__ROOT__/logs/referee.log)",
+      "Edit(__ROOT__/logs/notify.log)",
+      "Edit(__ROOT__/PAUSE)",
+      "Edit(__STATE__/**)",
+      "Bash(git push *)",
+      "Bash(git tag *)",
+      "Bash(gh *)",
+      "Bash(claude -p *)",
+      "Bash(claude --print *)"
+    ]
+  },
+  "autoMode": {
+    "environment": [
+      "$defaults",
+      "Primary use of Claude Code: an unattended, pre-registered machine learning experiment that runs robot simulations on this machine. Long local simulation jobs started with run/jobs.py are routine.",
+      "Host containment: a dedicated cloud VM used only for this experiment. It needs outbound access to huggingface.co and its CDN for read-only downloads of public LeRobot checkpoints and datasets, to PyPI for the pinned Python packages, and to github.com for this repository.",
+      "Setup work: installing system packages with apt, and Python packages into the project's .venv with uv or pip, is routine on this VM when a simulation or rendering library is missing.",
+      "Source control: the agent commits locally and never pushes, tags or creates releases. A separate script outside the session does that."
+    ]
+  }
+}

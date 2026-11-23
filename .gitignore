@@ -1,0 +1,20 @@
+# environments and weights
+.venv/
+checkpoints/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# run state that lives only on the box
+.awe/
+jobs/
+PAUSE
+logs/agent/
+logs/loop.log
+logs/referee.log
+logs/notify.log
+outputs/
+
+# bulky caches the agent may create
+experiments/*/cache/
+*.tmp

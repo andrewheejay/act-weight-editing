@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "about": "The task graph for the autonomous run. Protected. A task is done when its referee checks pass, never because someone says so. File layouts are in referee/CONTRACT.md. {T} is the task folder, experiments/<task>.",
+  "per_task": [
+    {"id": "s0.env", "stage": 0, "title": "Build the environment and record it", "detail": "Install per SPEC.md Setup. Write {T}/stage0/env.json with versions, renderer, timings and the stock evaluator command template."},
+    {"id": "s0.checkpoint", "stage": 0, "title": "Convert the checkpoint", "detail": "Run LeRobot's migration script into checkpoints/<task>. Write {T}/stage0/checkpoint.json with its SHA-256."},
+    {"id": "s0.tests", "stage": 0, "title": "Write the five harness tests", "detail": "tests/ must define test_fast_harness_matches_stock, test_head_scaling_exact, test_sham_edit_identical, test_repeat_run_identical and test_seed_lock, and they must pass."},
+    {"id": "s0.stock", "stage": 0, "title": "Reproduce the published evaluation", "detail": "Run lerobot-eval on seeds 1000 to 1499 into {T}/stage0/stock_eval/. Success must land in the reproduction window."},
+    {"id": "s0.published", "stage": 0, "title": "Compare with the published per-seed file", "detail": "Download the hub's eval_info.json to {T}/stage0/published_eval_info.json and redraw the failure map from it."},
+    {"id": "s0.harness", "stage": 0, "title": "Build the fast harness and match the stock run", "detail": "awe/ implements the contract in referee/CONTRACT.md. Run seeds 1000 to 1499 into {T}/stage0/harness_repro.jsonl. At least 98% must agree with lerobot-eval, and every mismatch is explained in {T}/stage0/mismatches.md."},
+    {"id": "s0.repeat", "stage": 0, "title": "Prove repeat runs and the sham edit are identical", "detail": "100 seeds twice into repeat_a.jsonl and repeat_b.jsonl, and once with every head scaled by 1 into sham.jsonl. All three must match exactly, traj_hash included."},
+    {"id": "s0.renderer", "stage": 0, "title": "Choose one renderer", "detail": "Compare GPU and software rendering on the reproduction seeds where both exist. Write the choice to {T}/stage0/renderer.json and never switch after this."},
+
+    {"id": "s1.design_runs", "stage": 1, "title": "Run the design seeds at four settings", "detail": "Seeds 20000 to 20999 at 100-step chunks (design_default.jsonl), 50 (design_chunk50.jsonl) and 25 (design_chunk25.jsonl). Temporal ensembling at 0.01 on at least 200 of them (design_ens.jsonl). All under {T}/stage1/."},
+    {"id": "s1.figures", "stage": 1, "title": "Draw the failure map and the reach-error plot", "detail": "{T}/stage1/failure_map.png and reach_error.png, plus frame strips of 30 failures and 10 successes in {T}/stage1/strips/. Include the 41 by 41 grid and the training-demo overlay from SPEC.md Stage 1."},
+    {"id": "s1.decisions", "stage": 1, "title": "Apply the Gate 1 rules", "detail": "Write {T}/stage1/decisions.json with primary_metric, operating_point.n_action_steps, proceed, target_failure_class and tracking_number. The referee recomputes the first three from the design runs, so apply the rules in referee/RULES.md exactly."},
+    {"id": "s1.diagnosis", "stage": 1, "title": "Write the diagnosis", "detail": "{T}/diagnosis.md with sections named Target failure, Tracking number, Near-miss evidence, Primary metric and Operating point. A fresh reviewer will try to refute it."},
+
+    {"id": "s2.atlas", "stage": 2, "title": "Build the open-loop head atlas", "detail": "No rollouts. Per SPEC.md Stage 2, for all 48 heads. Write {T}/stage2/atlas/heads.json and the figures beside it."},
+    {"id": "s2.sweep", "stage": 2, "title": "Run the closed-loop sweep", "detail": "All 96 single-head edits (each head at x0 and x2) on seeds 20000 to 20499, paired with the original, into {T}/stage2/sweep.jsonl. Start it with run/jobs.py and end the session while it runs."},
+    {"id": "s2.split_half", "stage": 2, "title": "Run the split-half check", "detail": "Re-run the best 10 by success gain and the best 5 by overlap on seeds 20500 to 20999. Write {T}/stage2/split_half.json with rechecked and kept."},
+
+    {"id": "s3.hypotheses", "stage": 3, "title": "Write a hypothesis before each candidate", "detail": "One line in {T}/hypotheses.md per candidate, naming its id, before it is evaluated. Every candidate checked on validation seeds must appear there."},
+    {"id": "s3.dose", "stage": 3, "title": "Check dose response", "detail": "Candidate heads at x0.5, x1.5, x2, x3 and x4 on design seeds. Write {T}/stage3/dose_response.json. The tracking number should move in step."},
+    {"id": "s3.baselines", "stage": 3, "title": "Tune and freeze the simple baselines", "detail": "Constant offset, deviation gain, shorter chunk and your own simplest fix, tuned on the same design seeds with real effort. Write {T}/freeze/baselines.json. Each family gets one validation check."},
+    {"id": "s3.validation", "stage": 3, "title": "Check candidates on the validation seeds", "detail": "At most 10 candidates, ever, on seeds 30000 to 30499. The original goes in {T}/stage3/validation/original.jsonl and each candidate in <candidate>.jsonl. Never adjust a candidate after seeing its validation result."},
+    {"id": "s3.edit", "stage": 3, "title": "Choose the edit", "detail": "Write {T}/freeze/edit.json for one candidate, with its ops, hypothesis and the SHA-256 of the exported checkpoint. If nothing passed validation, the stop rule says freeze the best one anyway and say so."},
+
+    {"id": "s4.package", "stage": 4, "title": "Assemble the freeze package", "detail": "{T}/freeze/ holds autogreedy.json (built by a script, name it in built_by), random_family.json, test_manifest.json listing every arm in SPEC.md Stage 5, and analysis.py already run on validation data."},
+    {"id": "s4.ledger", "stage": 4, "title": "Keep the ledger inside the rules", "detail": "Every rollout is in ledger/. Only reproduction, design and validation seeds, or explicit poses. Budgets and the validation cap hold. python -m referee.recompute ledger shows the counts."},
+    {"id": "s4.integrity", "stage": 4, "title": "Keep the record clean", "detail": "No protected file changed. PROGRESS.md and DEVIATIONS.md only ever grew. No gradient or optimiser code anywhere. decisions.json unchanged since Gate 1."},
+    {"id": "s4.request", "stage": 4, "title": "Request the freeze", "detail": "When everything above passes and the tree is committed, write {T}/freeze/REQUEST.json and commit it. A reviewer reads the package, then the referee checks it, tags it and runs the test. You do not run the test."},
+
+    {"id": "s5.report", "stage": 5, "title": "Write the report from the referee's results", "detail": "{T}/report/report.md with the referee's verdict block from {T}/test/VERDICT.md copied in unchanged, the before and after maps, the fixed and broken table by failure class, the random-edit histogram, the dose-response curve and the baselines side by side. At least 3 figures. The verdict is final, whatever it says."},
+    {"id": "s6.stress", "stage": 6, "title": "Run the stress checks", "detail": "Main task only. The frozen edit and the original on cube positions in a 3 cm band outside the square, and on cubes rotated by 15 and 30 degrees. Write {T}/stage6/stress.json with band_3cm, rotation_15 and rotation_30. Reported, not judged."}
+  ],
+  "global": [
+    {"id": "s7.post", "stage": 7, "title": "Draft the post", "detail": "publish/post.md, built around the referee's headline tables for every task, the maps, and the limits from SPEC.md. State every ending plainly, including a null."},
+    {"id": "s7.atlas", "stage": 7, "title": "Build the browsable head atlas", "detail": "publish/atlas/index.html, one self-contained page."},
+    {"id": "s7.checklist", "stage": 7, "title": "Write the publishing checklist for Andrew", "detail": "publish/CHECKLIST.md. What a person must do by hand, such as uploading the edited checkpoint to the hub, attaching the session logs, and running python -m referee.verify_draw on each test folder."}
+  ]
+}
