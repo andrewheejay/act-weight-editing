@@ -46,3 +46,5 @@ The spec, the plan, the rules and the referee were fixed before this line. No ro
 **Jobs running.** `stock_b1`, the official stock run: `lerobot-eval`, Mesa, batch 1, TF32 off, LP_NUM_THREADS=8, 500 seeds, seed 1000, about 5 hours (35 s per episode). One call, so it cannot resume after a restart.
 
 **Next step.** When `stock_b1` is done: `python -m awe.stage0_finish --rps 7.5`, which copies eval_info.json, prints the mismatches and writes env.json. Write `stage0/mismatches.md` with one line per remaining mismatched seed (expect few), then run the status. If agreement is still below 98%, do not change settings again without writing down why. Report the number as it is and consider WAITING_FOR_ANDREW.md.
+
+**Correction (same session).** The 17 mismatched seeds of the first run (TF32 on, stock batch 8) are 1054, 1064, 1123, 1147, 1168, 1213, 1267, 1334, 1340, 1344, 1357, 1365, 1370, 1389, 1419, 1471, 1491. The entry above said they were listed and they were not. "Ruled out: renderer difference" holds at reset only (seeds 1000 to 1007, byte-identical images and states). See the correction in DEVIATIONS.md for the wording fixed there.

@@ -25,3 +25,9 @@ Changes, applied to the harness and to the stock command alike:
 - The stock command uses `--eval.batch_size=1` (was 8, which was itself a logged change from 50), so the inference batch shape equals the harness's.
 - The stock command sets LP_NUM_THREADS=8 (the harness uses 1 per process). Image and state hashes over 120 stock steps on seeds 1000, 1005 and 1010 are identical for 1, 4 and 8 threads (scratch/diag_lp_threads.py), so the pixels do not change.
 The earlier stock run and the harness results with TF32 on stay in the repo under stage0/numerics/ (files named tf32on). Nothing about the seeds, the checkpoint, the gates or the success rule changed. All harness files in stage0 were re-made with TF32 off.
+
+### 2026-11-24, correction to the entry above
+
+- "5 configurations" is wrong. There are 4 harness configurations: TF32 on batch 1, TF32 off batch 1, TF32 off with 8 copies and cudnn.benchmark, TF32 on with 8 copies and cudnn.benchmark. Pairwise disagreement among them is 1.2% to 3.8% (agreement 96.2% to 98.8%).
+- Images were compared at reset only, on seeds 1000 to 1007. Mid-episode images were not compared between stock and harness with policy actions. That the gap is inference rests on those reset images, the physics test (20 seeds) and the chunk differences. The closed-loop support is indirect: the harness emulation of the stock settings (on8) agrees with the stock run on 98.6% of seeds, against 96.6% for the batch-1 harness.
+- The settings were changed after the 96.6% result was seen. The tf32-on versus tf32-off choice was made on the arithmetic evidence (1e-3 against 1e-6), but the agreement figures above were also visible when I chose it.
