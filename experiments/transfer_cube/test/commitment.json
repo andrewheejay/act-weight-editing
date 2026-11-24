@@ -1,0 +1,37 @@
+{
+  "body": {
+    "beacon": {
+      "chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+      "delay_seconds": 600,
+      "name": "drand quicknet (League of Entropy)"
+    },
+    "edit_sha256": "73bb2e38ebc00942c814a63af4244a5bd01a66812f81656194f45ff3eff766be",
+    "edited_checkpoint_sha256": "29e3749264d2ac227b8d65cb81729d6e1f19d3c1a7aceb053f660036afc3e6be",
+    "freeze_commit": "dd626ffe5163f3953a79e33de74854a6d3626b98",
+    "freeze_tag": "freeze-transfer_cube-1",
+    "genesis": "genesis-1",
+    "manifest_sha256": "55f26a15fcd841f39ff91b38f92b0b2ab6f599cb685ba2aa2a9ff0d36b7e8a0d",
+    "rule": "The test seeds come from the first beacon round emitted at least delay_seconds after this commitment was published. start = base + int(sha256(domain|task|freeze_commit|randomness)[:8]) mod span, and the seeds are start to start + count - 1.",
+    "scheme": "awe-commit-v1",
+    "task": "transfer_cube",
+    "test_seeds": {
+      "base": 1000000000,
+      "count": 1000,
+      "domain": "awe-test-seeds-v1",
+      "span": 1000000000
+    },
+    "tree": "b4b8e65b6f413baf64f070a39380a600a5617d75"
+  },
+  "dry_run": false,
+  "target_round": 34241540,
+  "witness": {
+    "kind": "github-release",
+    "public": true,
+    "published_at": 1795527384.0,
+    "published_at_iso": "2026-11-24T13:36:24Z",
+    "release_tag": "freeze-transfer_cube-1",
+    "repo": "andrewheejay/act-weight-editing",
+    "url": "https://github.com/andrewheejay/act-weight-editing/releases/tag/freeze-transfer_cube-1",
+    "wayback": "requested 2026-11-24T13:36:44Z"
+  }
+}
