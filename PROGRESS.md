@@ -240,3 +240,28 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Next step.** When `dose` is done: `python -m awe.dose report` (writes `stage3/dose_response.json`), gzip `stage3/dose.jsonl`, commit. Then add the combination hypotheses to `hypotheses.md` before running them (ideas: the five strongest of cross.h1.x0, enc3.h4.x2, enc0.h1.x0, enc0.h6.x0, cross.h3.x2, enc1.h7.x0 in pairs and triples, with dose-informed scales, up to 6 heads), run on the 1,000 design seeds, and write the baselines (constant offset, deviation gain, chunk 50/25, own simplest fix) in `awe/baselines.py` plus the `post` hook in `awe/arms.py`, with tests. The target is a net removal of at least 35% of failures (64 of 184 on the design seeds), with the strict gain not below -2 points.
 
 **Trap.** `dose.jsonl` and ledger file `transfer_cube-agent-20261124T094919Z-73756.jsonl` are committed as snapshots of a running job. Commit the final versions when it ends. Do not edit `awe/` modules the job imports while it runs.
+
+## 2026-11-24, session 10 (Stage 3: dose response done, combinations running, baselines queued)
+
+**Done.** Job `dose` had ended cleanly (9,600 rollouts, 1,075 s, 8.9/s). Ran `python -m awe.dose report` (stage3/dose_response.json), checked the gzipped file identical, removed the plain one, committed. Wrote `awe/combo.py` (19 arms: s1, s2 and c01 to c17) and their hypotheses in `hypotheses.md`, committed before the run, with a corrections block. Started job `combo_a` (10:14 UTC, 9,500 rollouts, seeds 20500 to 20999, budget agent, writes `stage3/combo.jsonl`). Wrote the output-level baselines, with tests (`awe/post.py`, `awe/baselines.py`, `tests/test_post.py`), and started job `baselines` (it waits for `combo_a`, then `screen` and `full`, about 43,200 rollouts in the baselines budget, roughly 80 min). DEVIATIONS.md has a note on how the gain family is read. Full test suite 11 passed (139 s).
+
+**Dose table (300 design seeds 20000 to 20299, original 239 of 300, 61 failures, 41 grasp failures; gain in points, fixed/broken, grasp failures).** The x0.5, x1.5, x3, x4 rows are new. x0 and x2 rows come from the sweep.
+- enc3.h4: x1.5 +1.3 (13/9, 38), x2 +6.0 (26/8, 28), x3 +13.0 (44/5, 9), x4 +9.3 (46/18, 13). x0 −5.0, x0.5 −4.3.
+- cross.h1: x0 +12.0 (53/17, 10), x0.5 +10.3 (38/7, 21), x1.5 −5.0, x2 −13.3, x3 −27.7, x4 −56.0.
+- enc0.h6: x0 +9.3 (39/11, 19), x0.5 +2.3, x1.5 −4.7, x2 −4.7, x3 −5.0, x4 −6.0.
+- enc0.h1: x0 +8.3 (33/8, 19), x0.5 +2.3 (34 grasp failures), x1.5 −5.3, x2 −6.3, x3 −5.7, x4 −6.3.
+- cross.h3: x1.5 +5.0, x2 +8.7 (37/11, 16), x3 +2.3 (47/40), x4 −23, x0 −77.
+- enc1.h7: x0 +5.0 (23/8, 29), x0.5 +2.3, x1.5 −3.0, x2 −5.7, x3 −9.0, x4 −9.0.
+- enc2.h3: x0 +2.0, x0.5 +3.3, others negative. cross.h6: x0 +7.7 (44/21, 22), x0.5 +6.7 (29/9, 24), x1.5 −4.3, x2 −6.0, x3 −30.3, x4 −58.3.
+- Tracking number (median reach error, 1 = monotone x0 to x4 / x0.5 to x4): monotone over the whole range for enc0.h1 and enc1.h7 (and cmd_lat8 for cross.h1 and enc1.h7). For cross.h1 and cross.h6 only from x0.5 up: at x0 reach error is higher than at x0.5 (1.41 and 1.49 cm against 1.29 and 1.20) although the gain is best there. For enc0.h6, enc3.h4, cross.h3 and enc2.h3 it is not monotone. So the dial test passes for enc0.h1 and enc1.h7 only, and as I wrote in hypotheses.md before the run, the gain of the best heads does not follow reach error. Grasp failures are monotone for cross.h1, cross.h6 and enc2.h3 only.
+- These 300 seeds are inside the half that selected the heads, so all x0 and x2 values are optimistic. The x3, x1.5, x0.5, x4 values were not used to choose anything before the combination lines were written.
+
+**Read with care.** The fourfold difference between halves in the sweep (half 1 gains larger) tells me to expect the combinations to shrink on group A. Nothing in the combinations has been seen yet.
+
+**Not done.** Stage B runs, the refinement round, the candidate list, the validation scripts and any validation rollout. The baseline screening has not started. No edit has been chosen. The auto-greedy script does not exist. I deliberately do not write it before the candidates are fixed.
+
+**Next step (session 11).** When `combo_a` is done: `python -m awe.combo report`, gzip `combo.jsonl` (`gzip -n`, keep the ledger), commit. Then pick up to 6 combinations for group B (the 6 largest benchmark gains on A, ties by strict gain, skip any that lowered strict success by more than 2 points), run `python -m awe.combo run B <ids>`, and only then design up to 6 more combinations (write their hypotheses lines first). Then `awe/validate.py` (new) for the validation seeds: original first, then at most 10 candidates, each once. When `baselines` is done: `python -m awe.baselines report`, gzip, commit, choose the best setting of each family, one validation check per family. Then the freeze package.
+
+**Trap.** `combo.jsonl` and the ledger files for the running jobs are committed as snapshots. Do not edit `awe/` modules those jobs import until both are done (the new files `awe/post.py`, `awe/baselines.py` and the hook in rollout.py, arms.py are used by `baselines`). `baselines` is chained on `combo_a.exit`, so if the box restarts before combo_a finishes, restart `baselines` after it.
+
+**Budget.** Agent 71,851 before this session, +9,500 from combo_a, so about 81,351, leaving about 18,600 for group B, refinement and 5,500 of validation. Baselines 0, then 43,200 of 50,000 planned, plus 2,000 for validation. Validation checks used 0 of 10.
