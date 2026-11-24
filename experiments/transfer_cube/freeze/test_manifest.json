@@ -1,0 +1,936 @@
+{
+ "task": "transfer_cube",
+ "primary_metric": "benchmark",
+ "operating_point": {
+  "n_action_steps": 100
+ },
+ "original_checkpoint_sha256": "6fe4fbeb8d5f9c5bf4a865c2d2385f67364816b197683757e580bc66a52aa7a2",
+ "built_by": "python -m awe.freeze build",
+ "arms": [
+  {
+   "id": "original",
+   "role": "original"
+  },
+  {
+   "id": "agent_edit",
+   "role": "agent_edit",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0.5
+    }
+   ],
+   "candidate": "r4"
+  },
+  {
+   "id": "autogreedy",
+   "role": "autogreedy",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ],
+   "edits": [
+    "enc0.h1.x0",
+    "enc3.h4.x2"
+   ]
+  },
+  {
+   "id": "random_00",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 1,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_01",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_02",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 0,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_03",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_04",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_05",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 1,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_06",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_07",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_08",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_09",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 1,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_10",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 0,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_11",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 3,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_12",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_13",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_14",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_15",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_16",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_17",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 1,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_18",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_19",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 0,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_20",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_21",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_22",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 3,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_23",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 3,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_24",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 3,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_25",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_26",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_27",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_28",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_29",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_30",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_31",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_32",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_33",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_34",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 1,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 0,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_35",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 3,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_36",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 3,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_37",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 0,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_38",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "random_39",
+   "role": "random",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0.5
+    }
+   ]
+  },
+  {
+   "id": "base_constant_offset",
+   "role": "baseline",
+   "family": "constant_offset",
+   "setting": "off_j9_m0.01",
+   "post": {
+    "kind": "offset",
+    "joint": 9,
+    "delta": -0.01
+   }
+  },
+  {
+   "id": "base_deviation_gain",
+   "role": "baseline",
+   "family": "deviation_gain",
+   "setting": "gain_both_nogrip_0.9",
+   "post": {
+    "kind": "gain",
+    "g": 0.9,
+    "joints": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ]
+   }
+  },
+  {
+   "id": "base_shorter_chunk",
+   "role": "baseline",
+   "family": "shorter_chunk",
+   "setting": "chunk50",
+   "n_action_steps": 50
+  },
+  {
+   "id": "base_simplest_fix",
+   "role": "baseline",
+   "family": "simplest_fix",
+   "setting": "app_j8_m0.04",
+   "post": {
+    "kind": "approach_offset",
+    "joint": 8,
+    "delta": -0.04
+   }
+  },
+  {
+   "id": "dose_k0.5",
+   "role": "dose",
+   "k": 0.5,
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 1.5
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0.75
+    }
+   ],
+   "note": "the edit's heads at strength k, scale = max(0, 1 + k (s - 1))"
+  },
+  {
+   "id": "dose_k1.5",
+   "role": "dose",
+   "k": 1.5,
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 2.5
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0.25
+    }
+   ],
+   "note": "the edit's heads at strength k, scale = max(0, 1 + k (s - 1))"
+  },
+  {
+   "id": "dose_k2",
+   "role": "dose",
+   "k": 2,
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 3
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    }
+   ],
+   "note": "the edit's heads at strength k, scale = max(0, 1 + k (s - 1))"
+  },
+  {
+   "id": "dose_k3",
+   "role": "dose",
+   "k": 3,
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 4
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    }
+   ],
+   "note": "the edit's heads at strength k, scale = max(0, 1 + k (s - 1))"
+  },
+  {
+   "id": "original_ens",
+   "role": "ensembling_original",
+   "ops": [],
+   "temporal_ensemble_coeff": 0.01,
+   "n_action_steps": 100
+  },
+  {
+   "id": "agent_edit_ens",
+   "role": "ensembling_edit",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 2
+    },
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0.5
+    }
+   ],
+   "temporal_ensemble_coeff": 0.01,
+   "n_action_steps": 100
+  }
+ ]
+}

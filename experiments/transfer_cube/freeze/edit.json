@@ -1,0 +1,160 @@
+{
+ "task": "transfer_cube",
+ "candidate": "r4",
+ "family": "head_scaling",
+ "ops": [
+  {
+   "op": "scale_head",
+   "block": "model.encoder.layers.3.self_attn",
+   "head": 4,
+   "scale": 2
+  },
+  {
+   "op": "scale_head",
+   "block": "model.decoder.layers.0.multihead_attn",
+   "head": 1,
+   "scale": 0.5
+  }
+ ],
+ "free_numbers": 0,
+ "heads": 2,
+ "hypothesis": "r4 (enc3.h4.x2 + cross.h1.x0.5): the best design gain (+10.6, 145 fixed, 39 broken) among the two-head arms. Hypothesis: the encoder head enc3.h4 carries the cube-position signal too weakly at \u00d71 and the arm stops short of the cube or overshoots it, so a milder amplification at \u00d72 plus a half-strength cross.h1 makes the first reach land better; r4's 53 against 30 paired lead over the deviation-gain rival on design seeds is screening, not proof. Expected validation gain 5 to 9 points.",
+ "hypothesis_source": "hypotheses.md, validation section of 2026-11-24, copied word for word. Written before any validation rollout and after the design results.",
+ "evidence_on_the_hypothesis": {
+  "summary": "On the validation seeds the edit passes the validation rule, but the files do not support the written mechanism (a better first reach): the median reach error went up, the gain is as large on the other failures as on the target failures (fixed_by_kind), and the edit breaks successes in the low corner of the square (zones).",
+  "reach_error_median_cm_validation": {
+   "original": 1.198,
+   "agent_edit": 1.282
+  },
+  "original_failures_fixed_by_kind": {
+   "grasp_fail": {
+    "original_failures": 51,
+    "fixed": 39
+   },
+   "other_fail": {
+    "original_failures": 38,
+    "fixed": 28
+   }
+  },
+  "failure_class_counts_validation": {
+   "original": {
+    "0": 6,
+    "1": 33,
+    "2": 50,
+    "4a": 20,
+    "4b": 391
+   },
+   "agent_edit": {
+    "0": 14,
+    "1": 6,
+    "2": 23,
+    "4a": 19,
+    "4b": 438
+   }
+  },
+  "failure_classes_that_grew_validation": {
+   "0": [
+    6,
+    14
+   ]
+  },
+  "zones_validation": {
+   "hot block x 0.08-0.16, y 0.40-0.48, inside": {
+    "n": 83,
+    "original": 0.5421686746987951,
+    "agent_edit": 0.8795180722891566,
+    "fixed": 31,
+    "broke": 3
+   },
+   "hot block x 0.08-0.16, y 0.40-0.48, outside": {
+    "n": 417,
+    "original": 0.8776978417266187,
+    "agent_edit": 0.920863309352518,
+    "fixed": 36,
+    "broke": 18
+   },
+   "low strip y < 0.44, inside": {
+    "n": 92,
+    "original": 0.5652173913043478,
+    "agent_edit": 0.782608695652174,
+    "fixed": 27,
+    "broke": 7
+   },
+   "low strip y < 0.44, outside": {
+    "n": 408,
+    "original": 0.8799019607843137,
+    "agent_edit": 0.9436274509803921,
+    "fixed": 40,
+    "broke": 14
+   },
+   "low corner x < 0.06, y < 0.47 (post hoc), inside": {
+    "n": 50,
+    "original": 0.86,
+    "agent_edit": 0.64,
+    "fixed": 0,
+    "broke": 11
+   },
+   "low corner x < 0.06, y < 0.47 (post hoc), outside": {
+    "n": 450,
+    "original": 0.8177777777777778,
+    "agent_edit": 0.9444444444444444,
+    "fixed": 67,
+    "broke": 10
+   }
+  },
+  "dial_test_single_heads": {
+   "enc3.h4": {
+    "reach_err_median_cm": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    },
+    "cmd_lat8_dev_median_cm_clean": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    },
+    "grasp_fail": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    }
+   },
+   "cross.h1": {
+    "reach_err_median_cm": {
+     "x0.5_to_x4": true,
+     "x0_to_x4": false
+    },
+    "cmd_lat8_dev_median_cm_clean": {
+     "x0.5_to_x4": true,
+     "x0_to_x4": true
+    },
+    "grasp_fail": {
+     "x0.5_to_x4": true,
+     "x0_to_x4": true
+    }
+   }
+  },
+  "dial_test_note": "design seeds 20000 to 20299, one head at a time, rule in awe/dose.py. The pair itself has no dose response before the test."
+ },
+ "chosen_by": "stage3/choice.json, the rule of awe/candidates.py, fixed before any validation rollout",
+ "stop_rule_used": false,
+ "passes_validation_rule": true,
+ "validation": {
+  "n": 500,
+  "gain": 0.092,
+  "strict_gain": 0.094,
+  "fixed": 67,
+  "broken": 21,
+  "share_of_failures_removed": 0.5169,
+  "p": 9.203075999074401e-07,
+  "passes": true
+ },
+ "design": {
+  "fixed": 145,
+  "broken": 39,
+  "pooled_net": 152,
+  "note": "1,000 design seeds, used for choosing"
+ },
+ "edited_checkpoint": "outputs/edit_ckpt_transfer_cube (gitignored, rebuilt by awe.export_checkpoint)",
+ "edited_checkpoint_sha256": "29e3749264d2ac227b8d65cb81729d6e1f19d3c1a7aceb053f660036afc3e6be",
+ "original_checkpoint_sha256": "6fe4fbeb8d5f9c5bf4a865c2d2385f67364816b197683757e580bc66a52aa7a2",
+ "limits": "Chosen among 8 validation-checked candidates (pooled design and validation net gain). Validation gains of the 8 were 7.6 to 10.4 points, not distinguishable from each other. r6 (three heads) had the largest validation gain (+10.4, the edit +9.2) and r4 the largest pooled net (152 against 150). s1 (one head) was excluded from the choice because only 7 matched random edits exist for it."
+}
