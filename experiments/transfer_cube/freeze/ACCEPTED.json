@@ -1,0 +1,35 @@
+{
+  "checks_passed": 12,
+  "commit": "dd626ffe5163f3953a79e33de74854a6d3626b98",
+  "edit": {
+    "changed_keys": {
+      "model.decoder.layers.0.multihead_attn.out_proj.weight": 32768,
+      "model.encoder.layers.3.self_attn.out_proj.weight": 32768
+    },
+    "edited_checkpoint_sha256": "29e3749264d2ac227b8d65cb81729d6e1f19d3c1a7aceb053f660036afc3e6be",
+    "inference_weights": 34251342,
+    "share_of_inference_weights": 0.0019133848828463422,
+    "weights_changed": 65536
+  },
+  "genesis": "genesis-1",
+  "tag": "freeze-transfer_cube-1",
+  "task": "transfer_cube",
+  "time": "2026-11-24T13:36:20Z",
+  "tree": "b4b8e65b6f413baf64f070a39380a600a5617d75",
+  "validation": {
+    "candidate": "r4",
+    "guard_drop_points": -9.4,
+    "passes_validation_rule": true,
+    "primary": {
+      "broke": 21,
+      "fixed": 67,
+      "gain_points": 9.2,
+      "n": 500,
+      "new_success": 0.914,
+      "orig_failures": 89,
+      "orig_success": 0.822,
+      "p_mcnemar": 9.203075999074401e-07,
+      "share_removed": 0.5168539325842697
+    }
+  }
+}
