@@ -406,3 +406,21 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Corrections.** The smoke seed choice (20500 to 20502) and the clean copy choice (20000 to 20002) are ad hoc, chosen so that earlier rows existed. The clean-copy ledger files keep their original names (they carry the pid and time of the copy's runs).
 
 **Session 14, after the notes above.** `freeze/REQUEST.json` is committed (it is the request the "Not done" line above referred to). Status at the end of the session: JUDGE_TURN, confirm_g0 (the Gate 0 replay, because awe/freeze.py changed), and after that the freeze review and the freeze step. The agent has nothing left to do until a referee or review result asks for it.
+
+## 2026-11-24, session 15 (freeze review g2.1 round 1 answered: the auto-greedy edit is candidate r2)
+
+**Done.** The reviewer's one blocking issue was right, and I recomputed it from the files before answering. Response in reviews/transfer_cube-g2.1-r1-response.md. New `python -m awe.freeze disclose` (run inside `build`) adds `relation_to_agent_candidates` to freeze/autogreedy.json. New entry in DEVIATIONS.md. REQUEST.json and edit.json say it too.
+
+**Numbers.**
+- Auto-greedy ops (enc0.h1 x0, enc3.h4 x2) equal r2, and r2 is the only candidate that does. The trajectory hashes match on 450 of 450 search seeds. r2 is 121/22 (+9.9) on 1,000 design seeds, 48/8 on the 450 and 61/23 (+7.6) on 500 validation seeds (strict 67/24, +8.6).
+- Agent arms built only from pool edits: r2 and c07 (cross.h3 x2 + enc0.h1 x0, 127/53, +7.4 on 1,000 design seeds). The review did not name c07.
+- The unused first version of the script (da0c746) needs cross.h1.x0 in the set. On the 450 seeds its best addition ties the single edit (net +20). Its own 500 seeds were not all run.
+- 11 tests passed in 70.8 s. `build` left random_family.json, baselines.json, test_manifest.json and mean_action.json byte-identical, and the edit SHA is still 29e3749264d2.
+
+**Ruled out.** Replacing the auto-greedy arm. Any new rule would be written after the results too, so disclosure is the fix. awe/autogreedy.py and its `rule` text are unchanged (that is the code that ran), so its "What the author had seen" paragraph stays incomplete. The new block corrects it. `python -m awe.autogreedy report` drops that block, and `awe.freeze build` puts it back.
+
+**For the report.** Do not call the auto-greedy arm an independent no-LLM result or an edit the agent never saw. Also: the constant-offset winner is at the smallest step of its grid, dose_k2 and dose_k3 both have cross.h1 at x0, the atlas existed when the r4 hypothesis line was written, and r4 is not distinguishable from r6 or s1 on validation.
+
+**Wall time and rollouts.** A few minutes, 33 setup rollouts by the test suite. Budgets unchanged: agent 95,057, baselines 46,800, auto-greedy 8,550, validation checks 8 of 10.
+
+**Next step.** Status is JUDGE_TURN confirm_g0 (awe/freeze.py changed), then the second round of the freeze review, then the freeze. Nothing for the agent until then. If round 2 raises issues, write reviews/transfer_cube-g2.1-r2-response.md.

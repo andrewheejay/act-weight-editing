@@ -175,6 +175,7 @@
   "pooled_net": 152,
   "note": "1,000 design seeds, used for choosing"
  },
+ "autogreedy_arm": "identical to agent candidate r2, see relation_to_agent_candidates in freeze/autogreedy.json. Not an independent no-LLM result.",
  "edited_checkpoint": "outputs/edit_ckpt_transfer_cube (gitignored, rebuilt by awe.export_checkpoint)",
  "edited_checkpoint_sha256": "29e3749264d2ac227b8d65cb81729d6e1f19d3c1a7aceb053f660036afc3e6be",
  "original_checkpoint_sha256": "6fe4fbeb8d5f9c5bf4a865c2d2385f67364816b197683757e580bc66a52aa7a2",

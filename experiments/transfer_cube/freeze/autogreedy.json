@@ -322,5 +322,148 @@
    "current_net_before": 40,
    "accepted": false
   }
- ]
+ ],
+ "relation_to_agent_candidates": {
+  "identical_to_agent_candidate": [
+   "r2"
+  ],
+  "agent_arms_built_only_from_pool_edits": {
+   "c07": {
+    "ops": [
+     [
+      "model.decoder.layers.0.multihead_attn",
+      3,
+      2.0
+     ],
+     [
+      "model.encoder.layers.0.self_attn",
+      1,
+      0.0
+     ]
+    ],
+    "design": {
+     "n": 1000,
+     "fixed": 127,
+     "broken": 53,
+     "gain_points": 7.4
+    }
+   },
+   "r2": {
+    "ops": [
+     [
+      "model.encoder.layers.0.self_attn",
+      1,
+      0.0
+     ],
+     [
+      "model.encoder.layers.3.self_attn",
+      4,
+      2.0
+     ]
+    ],
+    "design": {
+     "n": 1000,
+     "fixed": 121,
+     "broken": 22,
+     "gain_points": 9.9
+    }
+   }
+  },
+  "r2": {
+   "design_1000": {
+    "n": 1000,
+    "fixed": 121,
+    "broken": 22,
+    "gain_points": 9.9
+   },
+   "search_seeds_450": {
+    "n": 450,
+    "fixed": 48,
+    "broken": 8,
+    "gain_points": 8.9
+   },
+   "validation_500": {
+    "n": 500,
+    "fixed": 61,
+    "broken": 23,
+    "gain_points": 7.6
+   },
+   "validation_500_strict": {
+    "n": 500,
+    "fixed": 67,
+    "broken": 24,
+    "gain_points": 8.6
+   },
+   "same_traj_hash_as_autogreedy_rows": [
+    450,
+    450
+   ]
+  },
+  "sets_with_cross_h1_x0_on_the_450_seeds": [
+   {
+    "edits": [
+     "cross.h1.x0"
+    ],
+    "fixed": 64,
+    "broken": 44,
+    "net": 20
+   },
+   {
+    "edits": [
+     "cross.h1.x0",
+     "enc3.h4.x2"
+    ],
+    "fixed": 66,
+    "broken": 46,
+    "net": 20
+   },
+   {
+    "edits": [
+     "cross.h1.x0",
+     "enc0.h1.x0"
+    ],
+    "fixed": 64,
+    "broken": 45,
+    "net": 19
+   },
+   {
+    "edits": [
+     "cross.h1.x0",
+     "enc1.h7.x0"
+    ],
+    "fixed": 66,
+    "broken": 56,
+    "net": 10
+   },
+   {
+    "edits": [
+     "cross.h1.x0",
+     "cross.h3.x2"
+    ],
+    "fixed": 60,
+    "broken": 76,
+    "net": -16
+   },
+   {
+    "edits": [
+     "cross.h1.x0",
+     "enc0.h6.x0"
+    ],
+    "fixed": 58,
+    "broken": 86,
+    "net": -28
+   },
+   {
+    "edits": [
+     "cross.h1.x0",
+     "enc0.h1.x0",
+     "enc3.h4.x2"
+    ],
+    "fixed": 60,
+    "broken": 63,
+    "net": -3
+   }
+  ],
+  "statement": "The auto-greedy edit equals agent candidate r2 op for op. The agent wrote that pair by hand in the refinement round and ran it on all 1,000 design seeds (which include the 450 search seeds) and on the 500 validation seeds. The design numbers were known before either version of awe/autogreedy.py was written. The validation numbers were known before the version that ran was committed (a58d08c, 12:44:18, after 65513aa, 12:42:00). The first version (da0c746, never run) had to contain cross.h1.x0 and could not have returned this pair. The need for a search over all six starts, with all 15 pairs as the example, was written down in 26b2ef9 (12:28:55, validation running, its results not read according to the notebook), after r2's design numbers were known. The search code reads no candidate and no validation file, so the result follows from the sweep and the rule, but the author of the rule knew the result of the pair it returned. This arm is therefore not an edit the agent never saw, and it is not an independent no-LLM result. The report must not describe it as either."
+ }
 }

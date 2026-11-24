@@ -2,6 +2,7 @@
 
 python -m awe.freeze build     random_family.json, baselines.json, test_manifest.json, the exported checkpoint, edit.json, in that order.
                                Needs stage3/choice.json and freeze/autogreedy.json (from `python -m awe.autogreedy run`). Safe to rerun.
+python -m awe.freeze disclose  adds `relation_to_agent_candidates` to freeze/autogreedy.json (run by `build` too, idempotent, no rollouts)
 python -m awe.freeze check     prints the arm list and the invariants (arm counts, unique ids, ops legal, random edits distinct, shas)
 
 The agent's edit is the candidate named in stage3/choice.json, with the ops in stage3/candidates.json. The rules for the other arms:
@@ -209,6 +210,71 @@ def evidence(task):
     }
 
 
+def _ops_key(ops):
+    return tuple(sorted((o["block"], o["head"], float(o["scale"])) for o in ops))
+
+
+def _paired(base, rows, seeds, key="benchmark_success"):
+    f = sum(bool(rows[s][key]) and not base[s][key] for s in seeds)
+    b = sum(bool(base[s][key]) and not rows[s][key] for s in seeds)
+    return {"n": len(seeds), "fixed": f, "broken": b, "gain_points": round(100 * (f - b) / len(seeds), 1)}
+
+
+def autogreedy_relation(task):
+    """How the auto-greedy edit relates to what the agent had already run (freeze review g2.1 round 1). Every number comes from files already run."""
+    from . import autogreedy as A
+    from .combo import ALL, spec
+    from .sweep_report import find, rows_of
+
+    d = exp(task)
+    ag = j(fd(task) / "autogreedy.json")
+    base = {r["seed"]: r for r in rows_of(find(d / "stage1", "design_default.jsonl"))}
+    combo = {}
+    for r in rows_of(find(d / "stage3", "combo.jsonl")):
+        combo.setdefault(r["arm"], {})[r["seed"]] = r
+    runs = {}
+    for r in rows_of(find(d / "stage3", "autogreedy.jsonl")):
+        runs.setdefault(r["arm"], {})[r["seed"]] = r
+    val0 = {r["seed"]: r for r in rows_of(d / "stage3" / "validation" / "original.jsonl")}
+    cand = j(d / "stage3" / "candidates.json")
+    same = [c for c, v in cand.items() if _ops_key(v["ops"]) == _ops_key(ag["ops"])]
+    pool_ops = {_ops_key([A.parse(e)])[0] for e in ag["pool"]}
+    rows_by_agent = {}
+    for cid in ALL:
+        k = _ops_key(spec(cid)["ops"])
+        if set(k) <= pool_ops and cid in combo:
+            rows_by_agent[cid] = {"ops": [list(x) for x in k], "design": _paired(base, combo[cid], sorted(combo[cid]))}
+    out = {"identical_to_agent_candidate": same, "agent_arms_built_only_from_pool_edits": rows_by_agent}
+    for cid in same:
+        g = runs[A.combo_id(A.canon(ag["edits"], ag["pool"]))]
+        v = {r["seed"]: r for r in rows_of(d / "stage3" / "validation" / f"{cid}.jsonl")}
+        out[cid] = {
+            "design_1000": _paired(base, combo[cid], sorted(combo[cid])),
+            "search_seeds_450": _paired(base, combo[cid], list(A.SEEDS)),
+            "validation_500": _paired(val0, v, sorted(val0)),
+            "validation_500_strict": _paired(val0, v, sorted(val0), "strict_success"),
+            "same_traj_hash_as_autogreedy_rows": [sum(combo[cid][s]["traj_hash"] == g[s]["traj_hash"] for s in A.SEEDS), len(A.SEEDS)]}
+    opts = [o for st in ag["search_log"] for o in st.get("options", []) if "cross.h1.x0" in o["edits"]]
+    out["sets_with_cross_h1_x0_on_the_450_seeds"] = [{k: o[k] for k in ("edits", "fixed", "broken", "net")} for o in opts]
+    out["statement"] = (
+        "The auto-greedy edit equals agent candidate " + ", ".join(same) + " op for op. The agent wrote that pair by hand in the refinement round and ran it on all 1,000 "
+        "design seeds (which include the 450 search seeds) and on the 500 validation seeds. The design numbers were known before either version of "
+        "awe/autogreedy.py was written. The validation numbers were known before the version that ran was committed (a58d08c, 12:44:18, after 65513aa, 12:42:00). "
+        "The first version (da0c746, never run) had to contain cross.h1.x0 and could not have returned this pair. The need for a search over all six starts, "
+        "with all 15 pairs as the example, was written down in 26b2ef9 (12:28:55, validation running, its results not read according to the notebook), after r2's design numbers "
+        "were known. The search code reads no candidate and no validation file, so the result follows from the sweep and the rule, but the author of the rule knew the result "
+        "of the pair it returned. This arm is therefore not an edit the agent never saw, and it is not an independent no-LLM result. The report must not describe it as either.")
+    return out
+
+
+def disclose(task):
+    p = fd(task) / "autogreedy.json"
+    ag = j(p)
+    ag["relation_to_agent_candidates"] = autogreedy_relation(task)
+    dump(p, ag)
+    print("autogreedy.json: identical to", ag["relation_to_agent_candidates"]["identical_to_agent_candidate"])
+
+
 def build_edit(task, out_dir=None):
     from .export_checkpoint import export
 
@@ -228,6 +294,7 @@ def build_edit(task, out_dir=None):
         "stop_rule_used": choice["stop_rule_used"], "passes_validation_rule": choice["chosen_passes_validation"],
         "validation": {k: val[k] for k in ("n", "gain", "strict_gain", "fixed", "broken", "share_of_failures_removed", "p", "passes")},
         "design": {"fixed": t["design_fixed"], "broken": t["design_broken"], "pooled_net": t["pooled_net"], "note": "1,000 design seeds, used for choosing"},
+        "autogreedy_arm": "identical to agent candidate r2, see relation_to_agent_candidates in freeze/autogreedy.json. Not an independent no-LLM result.",
         "edited_checkpoint": f"outputs/edit_ckpt_{task} (gitignored, rebuilt by awe.export_checkpoint)",
         "edited_checkpoint_sha256": sha, "original_checkpoint_sha256": j(exp(task) / "stage0" / "checkpoint.json")["model_sha256"],
         "limits": "Chosen among 8 validation-checked candidates (pooled design and validation net gain). Validation gains of the 8 were 7.6 to 10.4 points, "
@@ -239,6 +306,7 @@ def build_edit(task, out_dir=None):
 
 def build(task):
     chosen(task)
+    disclose(task)
     build_random(task)
     build_baselines(task)
     build_manifest(task)
@@ -264,13 +332,15 @@ def check(task):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["build", "check", "random", "baselines"])
+    ap.add_argument("cmd", choices=["build", "check", "random", "baselines", "disclose"])
     ap.add_argument("--task", default="transfer_cube")
     a = ap.parse_args()
     if a.cmd == "build":
         build(a.task)
     elif a.cmd == "random":
         build_random(a.task)
+    elif a.cmd == "disclose":
+        disclose(a.task)
     elif a.cmd == "baselines":
         build_baselines(a.task)
     else:
