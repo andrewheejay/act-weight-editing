@@ -14,6 +14,7 @@ import numpy as np
 from gym_aloha.tasks import sim as aloha_sim
 from gym_aloha.utils import sample_box_pose, sample_insertion_pose
 
+from .geom import ArmFK
 from .paths import TASKS
 
 
@@ -46,6 +47,7 @@ class FastAloha:
             for s in ("left", "right")
         }
         self.box_body = self.bid["box"] if task == "transfer_cube" else None
+        self.arm_fk = ArmFK(self) if task == "transfer_cube" else None
         self._stock_reward = self.tk.get_reward
         self.last_reward = 0
         self.tk.get_observation = types.MethodType(_lazy_get_observation, self.tk)

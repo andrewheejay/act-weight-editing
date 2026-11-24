@@ -1,7 +1,7 @@
 """One episode. Runs all 400 steps, never stops early, and returns the per-step arrays and the per-seed record."""
 import numpy as np
 
-from . import measure
+from . import geom, measure
 
 EPISODE_STEPS = 400
 
@@ -58,6 +58,7 @@ def run_episode(env, policy, seed=None, pose=None, n_frames=0):
     arr["n_decisions"] = n_dec
     if tc:
         arr["cube0"] = cube0
+        arr["fk"] = env.arm_fk
     if frames:
         arr["frames"] = np.stack(frames)
     return arr
@@ -79,4 +80,5 @@ def summarize(arr, arm_id, seed=None, pose=None) -> dict:
     out["n_decisions"] = int(arr["n_decisions"])
     if tc:
         out.update(measure.transfer_cube(arr))
+        out.update(geom.transfer_cube(arr, out, arr["fk"]))
     return out
