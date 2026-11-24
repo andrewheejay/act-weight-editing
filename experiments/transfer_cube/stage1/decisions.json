@@ -1,0 +1,17 @@
+{
+ "primary_metric": "benchmark",
+ "operating_point": {
+  "n_action_steps": 100
+ },
+ "proceed": true,
+ "target_failure_class": "grasp_fail (benchmark failure and the cube centre never above 0.06 m after step 20. Contains max-reward class 0 (the stock touch flag, which watches one finger geom, never fired), class 1 and the class 2 episodes with no real lift)",
+ "tracking_number": "reach_error (3D, gripper centre minus cube centre at the first close of the right gripper, minus the mean of that vector over the 816 successful design episodes at the default setting)",
+ "evidence": {
+  "benchmark_success": 0.816,
+  "strict_success": 0.784,
+  "chunk_gains_points": {
+   "50": -2.6999999999999913,
+   "25": -8.699999999999996
+  }
+ }
+}

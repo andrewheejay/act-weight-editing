@@ -127,6 +127,8 @@ def stats(task):
     st["first_contact_in_gripper_frame"] = {
         nm: {"n": int((sel & ~np.isnan(tl)).sum()), "lat_median_m": float(np.nanmedian(tl[sel])), "abs_lat_median_m": float(np.nanmedian(np.abs(tl[sel]))), "lat_positive_share": float(np.nanmean((tl[sel] > 0))), "fwd_median_m": float(np.nanmedian(tf[sel])), "height_above_cube_median_m": float(np.nanmedian(th[sel]))}
         for nm, sel in (("success", ok), ("grasp_fail", gf), ("lift_fail", lf))}
+    shift = np.array([r.get("pre_touch_cube_shift_m", np.nan) for r in F], float)
+    st["pre_touch_cube_shift_mm"] = {nm: {"median": float(1000 * np.nanmedian(shift[sel])), "p95": float(1000 * np.nanpercentile(shift[sel], 95)), "max": float(1000 * np.nanmax(shift[sel]))} for nm, sel in (("success", ok), ("grasp_fail", gf), ("lift_fail", lf))}
     st["first_contact_in_gripper_frame"]["auc_abs_lat_grasp_fail_vs_success"] = auc(np.abs(tl)[gf | ok], gf[gf | ok])
     st["first_contact_in_gripper_frame"]["auc_height_grasp_fail_vs_success"] = auc(th[gf | ok], gf[gf | ok])
     # neighbour agreement: does the nearest design seed (cube position) fail too
@@ -145,6 +147,53 @@ def stats(task):
     st["lift_fail_meet"] = {"n": len(meet), "left_close_started": int(sum((r["t_lclose"] or -1) >= 0 for r in meet)), "meet_rel_reference_median_success": [float(v) for v in mm],
                             "meet_error_median_success_m": float(np.median(np.linalg.norm(mr - mm, axis=1))) if len(mr) else None,
                             "meet_error_median_lift_fail_m": float(np.median(np.linalg.norm(mf - mm, axis=1))) if len(mf) else None, "n_lift_fail_with_meet": len(mf)}
+    # robustness of the reach error as a tracking number (the reference vector was built from the same successes it is tested on)
+    def gf_vs_ok(FF, use_mu, sel_rows=None):
+        XY, OK, GF, LF = arrays(FF)
+        rr = np.array([r.get("reach_rel", [np.nan] * 3) for r in FF], float)
+        e = np.linalg.norm(rr - use_mu, axis=1)
+        m = (GF | OK) if sel_rows is None else (GF | OK) & sel_rows
+        return auc(e[m], GF[m])
+    odd = np.array([r["seed"] % 2 == 1 for r in F])
+    rob = {"reference_from": "even-seed successes, tested on odd seeds, and the reverse"}
+    for nm, half in (("ref_even_test_odd", odd), ("ref_odd_test_even", ~odd)):
+        mu_h = np.nanmean(rel[ok & ~half], axis=0)
+        rob[nm] = gf_vs_ok(F, mu_h, half)
+    if (exp(task) / "stage1" / "features_grid.jsonl.gz").exists():
+        FG = load_features(task, "grid")
+        rob["grid_auc_reach_error_design_reference"] = gf_vs_ok(FG, mu)
+        _, OKG, GFG, _ = arrays(FG)
+        tlg, thg = (np.array([r.get(k, np.nan) for r in FG], float) for k in ("touch_lat", "touch_height"))
+        rob["grid_auc_abs_lat_first_contact"] = auc(np.abs(tlg)[GFG | OKG], GFG[GFG | OKG])
+        rob["grid_auc_height_first_contact"] = auc(thg[GFG | OKG], GFG[GFG | OKG])
+        rob["grid_counts"] = {"n": len(FG), "success": int(OKG.sum()), "grasp_fail": int(GFG.sum())}
+    rob["seed_position_is_independent_for_grid"] = "the grid is a separate set of poses, the policy is deterministic given the state"
+    st["tracking_robustness"] = rob
+    # SPEC.md "the one diagnostic": is the error tied to distance from the centre (gain) or to zones. Failure against position, on the grid and the design seeds
+    def pattern(FF):
+        XY, OK, GF, LF = arrays(FF)
+        fl = ~OK
+        rc = np.hypot(XY[:, 0] - 0.1, XY[:, 1] - 0.5)
+        q = np.percentile(rc, [25, 50, 75])
+        edges = [-1, *q, 9]
+        def fr(sel):
+            return float(fl[sel].mean())
+        xb = XY[:, 0]; yb = XY[:, 1]
+        cx = np.abs(xb - 0.1)
+        return {"fail_rate_by_centre_distance_quartile": [fr((rc >= a) & (rc < b)) for a, b in zip(edges[:-1], edges[1:])],
+                "auc_fail_by_centre_distance": auc(rc, fl),
+                "fail_rate_y_below_0.44": fr(yb < LOW_Y), "fail_rate_y_above_0.44": fr(yb >= LOW_Y),
+                "auc_fail_by_minus_y": auc(-yb, fl), "auc_fail_by_abs_x_minus_0.1": auc(cx, fl),
+                "fail_rate_grid": float(fl.mean()), "n": len(FF)}
+    st["pattern"] = {"design_seeds": pattern(F)}
+    if (exp(task) / "stage1" / "features_grid.jsonl.gz").exists():
+        st["pattern"]["grid"] = pattern(FG)
+    rcok = np.hypot(xy[:, 0] - 0.1, xy[:, 1] - 0.5)
+    st["pattern"]["success_reach_error_vs_centre_distance_spearman"] = float(np.corrcoef(np.argsort(np.argsort(rcok[ok])), np.argsort(np.argsort(err[ok])))[0, 1])
+    st["pattern"]["success_reach_error_vs_y_spearman"] = float(np.corrcoef(np.argsort(np.argsort(xy[ok, 1])), np.argsort(np.argsort(err[ok])))[0, 1])
+    # max-reward class 0 means the stock touch flag never fired. The flag looks at one finger geom (10_right_gripper_finger).
+    R0 = [r for r in F if r["failure_class"] == "0"]
+    st["class0_contact_by_any_right_finger"] = {"n": len(R0), "with_t_touch": int(sum((r["t_touch"] or -1) >= 0 for r in R0))}
     rg = records(task, "grid")
     if rg:
         st["grid_rate"] = {"n": len(rg), "benchmark": float(np.mean([r["benchmark_success"] for r in rg])), "strict": float(np.mean([r["strict_success"] for r in rg])), "low_y_strip_success": float(np.mean([r["benchmark_success"] for r in rg if r["cube_y0"] < LOW_Y])) if any(r["cube_y0"] < LOW_Y for r in rg) else None}
@@ -162,7 +211,7 @@ def cmd_decisions(task):
     gains = {c: (rate(R[f"chunk{c}"], key) - base) * 100 for c in (50, 25)}
     best = max(gains, key=lambda c: gains[c])
     n_steps = best if gains[best] >= 3 else 100
-    d = {"primary_metric": primary, "operating_point": {"n_action_steps": n_steps}, "proceed": bool(1 - base >= 0.05), "target_failure_class": "grasp_fail (benchmark failure and the cube centre never above 0.06 m after step 20. Contains max-reward classes 0, 1 and the class 2 episodes with no real lift)",
+    d = {"primary_metric": primary, "operating_point": {"n_action_steps": n_steps}, "proceed": bool(1 - base >= 0.05), "target_failure_class": "grasp_fail (benchmark failure and the cube centre never above 0.06 m after step 20. Contains max-reward class 0 (the stock touch flag, which watches one finger geom, never fired), class 1 and the class 2 episodes with no real lift)",
          "tracking_number": "reach_error (3D, gripper centre minus cube centre at the first close of the right gripper, minus the mean of that vector over the 816 successful design episodes at the default setting)",
          "evidence": {"benchmark_success": bench, "strict_success": strict, "chunk_gains_points": gains}}
     (exp(task) / "stage1" / "decisions.json").write_text(json.dumps(d, indent=1))

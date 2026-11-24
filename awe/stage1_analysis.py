@@ -97,6 +97,8 @@ def feature_row(rec, z, frame_at):
         d["touch_lat"] = float(off @ ax)
         d["touch_fwd"] = float((R.T @ off)[0])
         d["touch_height"] = float(tr[k][2] - cube[k][2])
+        b0 = cube[min(SETTLE, k)]  # the cube has settled from the reset drop by then
+        d["pre_touch_cube_shift_m"] = float(np.linalg.norm(cube[k][:2] - b0[:2]))
     if "meet_rel" in rec:
         d["meet_rel"] = rec["meet_rel"]
     return d

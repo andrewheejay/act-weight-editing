@@ -34,20 +34,37 @@
   }
  },
  "rate_chunk25": {
-  "n": 760,
-  "benchmark": 0.7263157894736842,
-  "strict": 0.5460526315789473,
+  "n": 1000,
+  "benchmark": 0.729,
+  "strict": 0.542,
   "benchmark_ci95": [
-   0.6935385398721186,
-   0.7568166122955562
+   0.7006135281867544,
+   0.7556337522606787
   ],
   "classes": {
-   "0": 32,
-   "1": 20,
-   "2": 156,
+   "0": 38,
+   "1": 23,
+   "2": 210,
    "3": 0,
-   "4a": 137,
-   "4b": 415
+   "4a": 187,
+   "4b": 542
+  }
+ },
+ "rate_ens": {
+  "n": 1000,
+  "benchmark": 0.707,
+  "strict": 0.625,
+  "benchmark_ci95": [
+   0.6780409471946616,
+   0.7343747167905728
+  ],
+  "classes": {
+   "0": 99,
+   "1": 83,
+   "2": 111,
+   "3": 0,
+   "4a": 82,
+   "4b": 625
   }
  },
  "paired_vs_default_benchmark": {
@@ -58,10 +75,16 @@
    "net_points": -2.7
   },
   "chunk25": {
-   "n": 760,
-   "fixed": 69,
-   "broken": 135,
-   "net_points": -8.68
+   "n": 1000,
+   "fixed": 91,
+   "broken": 178,
+   "net_points": -8.7
+  },
+  "ens": {
+   "n": 1000,
+   "fixed": 95,
+   "broken": 204,
+   "net_points": -10.9
   }
  },
  "default_taxonomy": {
@@ -261,6 +284,23 @@
   "auc_abs_lat_grasp_fail_vs_success": 0.8608096016184251,
   "auc_height_grasp_fail_vs_success": 0.8976326641767818
  },
+ "pre_touch_cube_shift_mm": {
+  "success": {
+   "median": 0.0,
+   "p95": 1.0658315441105515,
+   "max": 5.896041169762611
+  },
+  "grasp_fail": {
+   "median": 0.0,
+   "p95": 0.07219923645607196,
+   "max": 2.2287212777882814
+  },
+  "lift_fail": {
+   "median": 0.0,
+   "p95": 0.9806094574742019,
+   "max": 1.9049501279368997
+  }
+ },
  "neighbours": {
   "nearest_seed_fails_given_fail": 0.657608695652174,
   "base_rate_fail": 0.184,
@@ -288,5 +328,63 @@
   "meet_error_median_success_m": 0.007533134909900895,
   "meet_error_median_lift_fail_m": 0.26391650722135296,
   "n_lift_fail_with_meet": 34
+ },
+ "tracking_robustness": {
+  "reference_from": "even-seed successes, tested on odd seeds, and the reverse",
+  "ref_even_test_odd": 0.9302976238747871,
+  "ref_odd_test_even": 0.9565364134103352,
+  "grid_auc_reach_error_design_reference": 0.955173738457301,
+  "grid_auc_abs_lat_first_contact": 0.883232100662482,
+  "grid_auc_height_first_contact": 0.8895090094661003,
+  "grid_counts": {
+   "n": 1681,
+   "success": 1366,
+   "grasp_fail": 202
+  },
+  "seed_position_is_independent_for_grid": "the grid is a separate set of poses, the policy is deterministic given the state"
+ },
+ "pattern": {
+  "design_seeds": {
+   "fail_rate_by_centre_distance_quartile": [
+    0.208,
+    0.204,
+    0.24,
+    0.084
+   ],
+   "auc_fail_by_centre_distance": 0.43033354646206307,
+   "fail_rate_y_below_0.44": 0.3786407766990291,
+   "fail_rate_y_above_0.44": 0.13350125944584382,
+   "auc_fail_by_minus_y": 0.6748255008525149,
+   "auc_fail_by_abs_x_minus_0.1": 0.35396685848252346,
+   "fail_rate_grid": 0.184,
+   "n": 1000
+  },
+  "grid": {
+   "fail_rate_by_centre_distance_quartile": [
+    0.1766109785202864,
+    0.20902612826603326,
+    0.22302158273381295,
+    0.14150943396226415
+   ],
+   "auc_fail_by_centre_distance": 0.48732482744195776,
+   "fail_rate_y_below_0.44": 0.375,
+   "fail_rate_y_above_0.44": 0.1419068736141907,
+   "auc_fail_by_minus_y": 0.6394966185595761,
+   "auc_fail_by_abs_x_minus_0.1": 0.40671640056705943,
+   "fail_rate_grid": 0.18738845925044617,
+   "n": 1681
+  },
+  "success_reach_error_vs_centre_distance_spearman": 0.272358471438977,
+  "success_reach_error_vs_y_spearman": -0.1663440901061749
+ },
+ "class0_contact_by_any_right_finger": {
+  "n": 23,
+  "with_t_touch": 23
+ },
+ "grid_rate": {
+  "n": 1681,
+  "benchmark": 0.8126115407495539,
+  "strict": 0.7709696609161214,
+  "low_y_strip_success": 0.625
  }
 }
