@@ -8,12 +8,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from .paths import exp
-from .stage1_analysis import auc, load_features
+from .stage1_analysis import CMD_HEIGHTS, auc, load_features
 
 BLUE, ORANGE, AQUA, INK, MUTED, SURF = "#2a78d6", "#eb6834", "#1baf7a", "#0b0b0b", "#8a8985", "#fcfcfb"
 GRAY = "#c9c8c3"
 KINDS = (("grasp, never lifted", "grasp_fail", BLUE, "s"), ("lifted, no handover", "lift_fail", ORANGE, "D"))
 LOW_Y = 0.44
+CMD_HEIGHTS_STR = [f"{h:.2f}" for h in CMD_HEIGHTS]
 
 
 def records(task, name):
@@ -51,6 +52,68 @@ def reach_error(F, ok):
     rel = np.array([r.get("reach_rel", [np.nan] * 3) for r in F], float)
     mu = np.nanmean(rel[ok], axis=0)
     return np.linalg.norm(rel - mu, axis=1), rel, mu
+
+
+def contact_free(FF, ref):
+    """Contact-free geometry on one set of features. ref holds the reference vectors/scalars (means over clean successes of the
+    design seeds). Thresholds (p90, p95 of the success deviations) come from the clean successes of the same set."""
+    R = [r for r in FF if r.get("cmd_clean") and (r["benchmark_success"] or r["grasp_fail"])]
+    ok = np.array([r["benchmark_success"] for r in R])
+    gf = np.array([r["grasp_fail"] for r in R])
+
+    def block(e, o, g):
+        p90, p95 = np.percentile(e[o], [90, 95])
+        return {"n_gf": int(g.sum()), "n_ok": int(o.sum()), "auc_gf_vs_ok": auc(e, g), "median_ok_cm": float(100 * np.median(e[o])),
+                "median_gf_cm": float(100 * np.median(e[g])), "p90_ok_cm": float(100 * p90), "p95_ok_cm": float(100 * p95),
+                "gf_above_p90": int((e[g] > p90).sum()), "gf_above_p95": int((e[g] > p95).sum()), "gf_above_p90_if_like_success": float(0.1 * g.sum())}
+
+    aim = np.array([r["aim_rel"] for r in R])
+    cmd = np.array([r["cmd_rel"] for r in R])
+    df = np.array([r["defl"] for r in R])
+    out = {"n_success_clean": int(ok.sum()), "n_grasp_fail_clean": int(gf.sum())}
+    out["aim_measured_at_close"] = block(np.linalg.norm(aim - ref["aim"], axis=1), ok, gf)
+    out["cmd_at_close"] = block(np.linalg.norm(cmd - ref["cmd"], axis=1), ok, gf)
+    out["deflection_at_close"] = {"median_norm_ok_cm": float(100 * np.median(np.linalg.norm(df[ok], axis=1))), "median_norm_gf_cm": float(100 * np.median(np.linalg.norm(df[gf], axis=1))),
+                                  "median_z_ok_cm": float(100 * np.median(df[ok, 2])), "median_z_gf_cm": float(100 * np.median(df[gf, 2]))}
+    pre = np.array([r["defl_pre"] if r["defl_pre"] is not None else [np.nan] * 3 for r in R], float)
+    hp = ~np.isnan(pre[:, 0])
+    out["deflection_one_step_before_first_contact"] = {"n_ok": int((hp & ok).sum()), "n_gf": int((hp & gf).sum()),
+        "median_norm_ok_cm": float(100 * np.median(np.linalg.norm(pre[hp & ok], axis=1))), "median_norm_gf_cm": float(100 * np.median(np.linalg.norm(pre[hp & gf], axis=1))),
+        "median_z_ok_cm": float(100 * np.median(pre[hp & ok, 2])), "median_z_gf_cm": float(100 * np.median(pre[hp & gf, 2])),
+        "p90_z_gf_cm": float(100 * np.percentile(pre[hp & gf, 2], 90))}
+    gap = np.array([(r["t_rclose"] - r["t_touch"]) if r["t_touch"] is not None and 0 <= r["t_touch"] <= r["t_rclose"] else np.nan for r in R], float)
+    out["clean_contact_steps_before_close"] = {"gf_median": float(np.nanmedian(gap[gf])), "gf_more_than_20": int((gap[gf] > 20).sum()), "ok_median": float(np.nanmedian(gap[ok]))}
+    tb = np.array([r["t_touch"] is not None and 0 <= r["t_touch"] < r["t_rclose"] for r in R])
+    ea, ec = np.linalg.norm(aim - ref["aim"], axis=1), np.linalg.norm(cmd - ref["cmd"], axis=1)
+    p90a = np.percentile(ea[ok], 90)
+    out["grasp_fail_by_contact_before_close"] = {lab: {"n": int((gf & m).sum()), "aim_median_cm": float(100 * np.median(ea[gf & m])), "cmd_median_cm": float(100 * np.median(ec[gf & m])),
+                                                         "defl_norm_median_cm": float(100 * np.median(np.linalg.norm(df[gf & m], axis=1))), "defl_z_median_cm": float(100 * np.median(df[gf & m, 2])),
+                                                         "aim_share_above_success_p90": float((ea[gf & m] > p90a).mean())} for lab, m in (("contact_before_close", tb), ("no_contact_before_close", ~tb))}
+    out["cmd_lat"] = {}
+    for key in CMD_HEIGHTS_STR + ["close"]:
+        v = np.array([r["cmd_lat_close"] if key == "close" else (np.nan if r["cmd_lat_h"][key] is None else r["cmd_lat_h"][key]) for r in R], float)
+        have = ~np.isnan(v)
+        d = v[have] - ref["lat"][key]
+        o, g = ok[have], gf[have]
+        out["cmd_lat"][key] = block(np.abs(d), o, g)
+        out["cmd_lat"][key].update({"n_crossing": int(have.sum()), "signed_mean_dev_gf_cm": float(100 * d[g].mean()),
+                                    "signed_dev_positive_share_gf": float((d[g] > 0).mean()), "signed_auc": auc(d, g)})
+    return out
+
+
+def contact_free_stats(F, FG=None):
+    """Reference vectors/scalars = mean over clean successful design episodes."""
+    C = [r for r in F if r.get("cmd_clean") and r["benchmark_success"]]
+    ref = {"aim": np.nanmean([r["aim_rel"] for r in C], axis=0), "cmd": np.nanmean([r["cmd_rel"] for r in C], axis=0), "lat": {}}
+    for h in CMD_HEIGHTS_STR:
+        ref["lat"][h] = float(np.nanmean([np.nan if r["cmd_lat_h"][h] is None else r["cmd_lat_h"][h] for r in C]))
+    ref["lat"]["close"] = float(np.mean([r["cmd_lat_close"] for r in C]))
+    out = {"definition": "clean subset (chunk at the first close decided before any right-finger contact), reference vectors from clean successful design episodes",
+           "reference_lat_cm": {k: 100 * v for k, v in ref["lat"].items()}, "design": contact_free(F, ref)}
+    if FG is not None:
+        out["grid_design_reference"] = contact_free(FG, ref)
+    # per-class share of grasp failures above the success p90 of reach error (spec definition), for the taxonomy text
+    return out
 
 
 def pair_table(task, names):
@@ -191,6 +254,21 @@ def stats(task):
     rcok = np.hypot(xy[:, 0] - 0.1, xy[:, 1] - 0.5)
     st["pattern"]["success_reach_error_vs_centre_distance_spearman"] = float(np.corrcoef(np.argsort(np.argsort(rcok[ok])), np.argsort(np.argsort(err[ok])))[0, 1])
     st["pattern"]["success_reach_error_vs_y_spearman"] = float(np.corrcoef(np.argsort(np.argsort(xy[ok, 1])), np.argsort(np.argsort(err[ok])))[0, 1])
+    # centre pull: mean gripper deviation (reach_rel minus the success mean) per 4 cm cell, projected on the direction to the centre of the square
+    def centre_pull(sel):
+        bx_, by_ = bins_xy(5)
+        out = {}
+        for i in range(5):
+            for j in range(5):
+                m = sel & (xy[:, 0] >= bx_[i]) & (xy[:, 0] < bx_[i + 1] + (i == 4)) & (xy[:, 1] >= by_[j]) & (xy[:, 1] < by_[j + 1] + (j == 4))
+                c = np.array([(bx_[i] + bx_[i + 1]) / 2, (by_[j] + by_[j + 1]) / 2])
+                to = np.array([0.1, 0.5]) - c
+                if m.sum() < 3 or np.linalg.norm(to) < 1e-9:
+                    continue
+                kind = "corner" if i in (0, 4) and j in (0, 4) else ("edge" if i in (0, 4) or j in (0, 4) else "interior")
+                out.setdefault(kind, []).append(float(np.nanmean(dev[m, :2], 0) @ (to / np.linalg.norm(to))))
+        return {k: {"cells": len(v), "toward_centre": int(sum(x > 0 for x in v)), "mean_projection_m": float(np.mean(v)), "max_projection_m": float(np.max(v))} for k, v in out.items()}
+    st["pattern"]["centre_pull_success_only"] = centre_pull(ok)
     # circularity check: gripper at the first close against the cube's initial (untouched) position. The bump can still enter through
     # the policy, if a chunk decided after the bump follows the moved cube, hence the clean subset below
     def aim_auc(FF, use_mu=None):
@@ -223,6 +301,13 @@ def stats(task):
     st["clean_subset_chunk_decided_before_contact"] = {"design": clean_auc(F, amu, mu)}
     if (exp(task) / "stage1" / "features_grid.jsonl.gz").exists():
         st["clean_subset_chunk_decided_before_contact"]["grid_design_reference"] = clean_auc(FG, amu, mu)
+    st["contact_free_geometry"] = contact_free_stats(F, FG if (exp(task) / "stage1" / "features_grid.jsonl.gz").exists() else None)
+    # per-class share of grasp failures above the success p90 of reach error
+    p90r = np.percentile(err[ok], 90)
+    st["reach_error"]["share_gf_above_p90_by_class"] = {c: {"n": int(sum(1 for i, r in enumerate(F) if r["failure_class"] == c and r["grasp_fail"])), "above_p90": int(sum(1 for i, r in enumerate(F) if r["failure_class"] == c and r["grasp_fail"] and err[i] > p90r))} for c in ("0", "1", "2")}
+    # zone refinement in 4 cm cells and a 2 by 2 look at the hot block (design seeds)
+    fb = ((xy[:, 0] >= 0.08) & (xy[:, 0] < 0.16) & (xy[:, 1] >= 0.40) & (xy[:, 1] < 0.48))
+    st["zones"]["block_x0.08_0.16_y0.40_0.48"] = {"n": int(fb.sum()), "fail": int((fail & fb).sum()), "grasp_fail": int((gf & fb).sum()), "share_of_all_failures": float((fail & fb).sum() / fail.sum())}
     # SPEC diagnostic proper: reach error (and aim error) against the start position, over ALL episodes with a close, not successes only
     rc_all = np.hypot(xy[:, 0] - 0.1, xy[:, 1] - 0.5)
     eb = [0, 0.04, 0.06, 0.08, 0.10, 0.15]
@@ -325,7 +410,21 @@ def cmd_figures(task):
     fail_any = ~ok
     # ---------------------------------------------------------------- failure map
     G = records(task, "grid")
-    fig, axs = plt.subplots(1, 2, figsize=(12, 5.6), facecolor=SURF)
+    fig, axs = plt.subplots(1, 3, figsize=(18, 5.6), facecolor=SURF)
+    # SPEC.md step 3 asks for the failure map by class: max-reward class of every design episode
+    ax = axs[2]
+    F_ = load_features(task, "default")
+    cls = np.array([r["failure_class"] for r in F_])
+    for c, lab, col, mk, sz in (("4b", "4b handover complete (success)", GRAY, "o", 9), ("4a", "4a touch in the air, no complete handover (success)", AQUA, "o", 22),
+                                ("2", "2 lift flag, left never touched", ORANGE, "D", 26), ("1", "1 touch, no lift", BLUE, "s", 26), ("0", "0 touch flag never fired", "#7a3fa0", "^", 34)):
+        m_ = cls == c
+        if m_.any():
+            ax.scatter(*xy[m_].T, s=sz, c=col, marker=mk, edgecolors=SURF, linewidths=0.6, label=f"{lab} ({m_.sum()})", zorder=3 if c != "4b" else 2)
+    ax.scatter(*dm.T, s=34, c=INK, marker="x", linewidths=1.3, label="training demo cube", zorder=4)
+    ax.set_title("Design seeds by SPEC class (max reward reached)", fontsize=10, loc="left", color=INK)
+    ax.set_xlabel("cube start x (m)"), ax.set_ylabel("cube start y (m)")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=1, frameon=False, fontsize=8)
+    _axis_style(ax)
     ax = axs[0]
     ax.scatter(*xy[ok].T, s=9, c=GRAY, marker="o", label=f"success ({ok.sum()})", zorder=2)
     for lab, key, c, m in KINDS:

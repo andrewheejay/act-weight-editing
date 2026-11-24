@@ -13,6 +13,15 @@ Labels, per episode (the benchmark score decides failure):
 Geometry in the gripper frame: columns of the right gripper_link rotation, origin at the mean of the two finger links.
   lat         cube offset along the axis from the left to the right finger body (finger spacing about 0.11 m)
   fwd         cube offset along the gripper x axis (approach direction)
+Contact-free geometry (added for the Gate 1 review, round 1). In the clean subset (the active chunk at the first close was decided
+before any right-finger contact) the COMMANDED arm joints of every step up to the close are contact-free, so these cannot contain a
+push from the cube or a reaction to it:
+  cmd_rel     FK of the commanded right-arm joints at the first close (action[t]), minus the untouched cube position
+  defl        measured minus commanded gripper centre at the first close (tracking lag, sag and any push by contact)
+  defl_pre    the same one step before the first right-finger contact, when that contact comes no later than the close
+  cmd_lat_h   commanded gripper lateral offset from the untouched cube (along the finger axis) at the first step from step 20 to the
+              close where the commanded gripper centre is less than h metres above the cube, for h in CMD_HEIGHTS
+  cmd_lat_close  the same at the close step
 """
 import argparse
 import gzip
@@ -26,6 +35,7 @@ from .paths import cache_dir, exp
 
 LIFT_Z = 0.06
 SETTLE = 20
+CMD_HEIGHTS = (0.12, 0.10, 0.08, 0.06)
 
 
 def load_records(task, name):
@@ -56,6 +66,38 @@ def gripper_frames(task):
         return R, a, b
 
     return at
+
+
+def commanded_geometry(rec, z, frame_at):
+    """Contact-free commanded geometry, see the module docstring. Empty dict when the right gripper never starts to close."""
+    t = rec["t_rclose"]
+    if t is None or t < 0:
+        return {}
+    q, act, tr, cube = (z[k].astype(float) for k in ("qpos", "action", "tcpr", "cube"))
+    tt = rec["t_touch"]
+    c0 = cube[min(SETTLE, t)]
+    clean = bool(tt is None or tt < 0 or tt >= 100 * (t // 100))
+    path = []
+    for k in range(min(SETTLE, t), t + 1):
+        qq = q[k + 1].copy()
+        qq[8:14] = act[k][7:13]  # the right arm's 6 joint targets, action slots 7..12
+        R, a, b = frame_at(qq)
+        mid = 0.5 * (a + b)
+        ax = (b - a) / np.linalg.norm(b - a)
+        path.append((mid, float((c0 - mid) @ ax), float(mid[2] - c0[2])))
+    mid_t, lat_t, _ = path[-1]
+    defl_pre = None
+    if tt is not None and SETTLE < tt <= t:  # measured minus commanded one step before the first right-finger contact
+        qq = q[tt].copy()
+        qq[8:14] = act[tt - 1][7:13]
+        _, a, b = frame_at(qq)
+        defl_pre = [float(x) for x in tr[tt - 1] - 0.5 * (a + b)]
+    out = {"cmd_clean": clean, "defl_pre": defl_pre, "cmd_rel": [float(x) for x in mid_t - c0], "defl": [float(x) for x in tr[t] - mid_t], "cmd_lat_close": lat_t,
+           "cmd_lat_h": {}}
+    for h in CMD_HEIGHTS:
+        hit = next((p for p in path if p[2] < h), None)
+        out["cmd_lat_h"][f"{h:.2f}"] = None if hit is None else hit[1]
+    return out
 
 
 def feature_row(rec, z, frame_at):
@@ -103,6 +145,7 @@ def feature_row(rec, z, frame_at):
         d["pre_touch_cube_shift_m"] = float(np.linalg.norm(cube[k][:2] - b0[:2]))
     if "meet_rel" in rec:
         d["meet_rel"] = rec["meet_rel"]
+    d.update(commanded_geometry(rec, z, frame_at))
     return d
 
 
