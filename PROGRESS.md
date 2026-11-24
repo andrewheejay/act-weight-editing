@@ -337,3 +337,37 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 - Leaving s1 out of the choice is my decision and SPEC.md does not ask for it (it allows fewer than 40 random edits). The reason is the verdict rule: with 7 matched edits H2 would count as untested and the best ending would be Partial. s1 is within 0.5 points of r4 on the design seeds with one head instead of two. The report should say this. If s1 does as well as the chosen edit on validation, that is a result about parsimony that the report has to show.
 - The mechanisms in the validation section of hypotheses.md (for example that enc3.h4 carries the cube-position signal too weakly) are guesses. Nothing I ran in this session tests them. The dose table even says that the gain of enc3.h4 does not follow reach error.
 - "The eight candidates listed below" should read "listed above". I estimated the standard error of about 1.3 points as sqrt(fixed + broken) / 1000, not by bootstrap.
+
+## 2026-11-24, session 13 (Stage 3 closed by the rule, Stage 4 package partly built, auto-greedy running)
+
+**Done.** Job `validation` had finished cleanly (13 runs of 500, 12:24 to about 12:39 UTC, 6,500 rollouts). Committed its final files and `choice.json` (65513aa) before touching anything else. Rewrote `awe/autogreedy.py` as session 12 asked (all 15 pairs of the six pool edits, so every start is covered, then greedy additions up to 4 heads, 450 design seeds 20500 to 20949, at most 9,900 rollouts), committed it, then started job `autogreedy` at 12:44:18 UTC. Wrote `awe/freeze.py` (builds the freeze package from files), `experiments/transfer_cube/freeze/analysis.py` (run on validation data, output `freeze/analysis_validation/`), `random_family.json` (40 of 49, rng_seed 20261124) and `baselines.json`. Logged the open interpretations in DEVIATIONS.md. My own rollouts this session: only the auto-greedy job.
+
+**Validation, 500 seeds, original 82.2% (89 failures).** Gain in points, fixed/broken, share of failures removed, p, strict gain. All eight candidates pass the rule.
+- r6 +10.4 (68/16, 0.58, 8.5e-9, +12.2). r4 +9.2 (67/21, 0.52, 9.2e-7, +9.4). r1 +8.2 (67/26). c06 +7.8 (58/19). r5 +7.8 (67/28). s1 +7.8 (62/23). c03 +7.6 (69/31). r2 +7.6 (61/23).
+- Baselines, one check each: deviation gain +4.4 (63/41, share 0.247, p 0.039), simplest fix +3.0 (48/33), constant offset +2.4 (25/13), shorter chunk -3.0 (52/67).
+- Chosen by the pre-fixed rule: **r4** (enc3.h4 x2, cross.h1 x0.5), pooled net 152 against 150 for r6. r6 is ahead on validation alone. I did not change the rule after seeing this. Paired on validation: r4 against the deviation gain 37 to 13 (p 0.0009), r4 against r6 11 to 17 (p 0.34), r4 against s1 18 to 11 (p 0.26). The candidates are not distinguishable from each other, and one head (s1) does nearly as well as the chosen two.
+
+**What the files say against the written hypothesis of r4** (it said the first reach lands better). These are in `freeze/analysis_validation/tables.json` and go into edit.json next to the verbatim hypothesis.
+- Median reach error went up on validation, 1.198 cm for the original to 1.282 cm for r4. The tracking number moved the wrong way while failures fell.
+- The gain is not specific to the target failure: 39 of 51 grasp failures fixed and 28 of 38 other failures.
+- The edit breaks one zone. In the corner x < 0.06, y < 0.47 failures go 7 to 18 on validation (50 seeds, 0 fixed, 11 broken) and 11 to 25 on design (98 seeds, 5 fixed, 19 broken). I defined this corner after looking at the validation map, so it is post hoc on both sets. analysis.py names it as such and the test seeds will be its first clean check. (The design-seed counts came from a throwaway command on design_default.jsonl and combo.jsonl.gz, arm r4, and are not in a results file.)
+- Max-reward class 0 grew from 6 to 14 on validation but fell from 23 to 15 on design, so that one is not consistent.
+- Dial test on single heads (300 design seeds): enc3.h4 fails it on all three numbers, cross.h1 passes it from x0.5 to x4 on all three.
+
+**Not done.** No test_manifest.json, no edit.json, no exported checkpoint (they need autogreedy.json). No REQUEST.json.
+
+**Budgets.** Agent 94,889 of 100,000. Baselines 46,800 of 50,000. Auto-greedy up to 9,900 of 10,000 when the job ends. Validation checks 8 of 10 candidates, none left to use.
+
+**Next step (session 14), in order.**
+1. `autogreedy` finished? Read `jobs/autogreedy.log` and `freeze/autogreedy.json`, report its set and net whatever it is, commit the final `stage3/autogreedy.jsonl` and ledger file (gzip -n is fine, `all_runs` reads either form).
+2. `python -m awe.freeze build`, then `python -m awe.freeze check`. Then `python -m awe.export_checkpoint` a second time into another folder and compare the SHA-256 with edit.json.
+3. Smoke every arm on 3 design seeds with `python -m awe.run_arm --manifest ...` (about 160 rollouts, agent budget, outputs/ is gitignored), and compare trajectory hashes with the rows already on disk: agent_edit against arm r4 in combo.jsonl.gz, baselines against baselines_full, original_ens against design_ens.
+4. Run the whole test suite, rerun the status, fix the "not yet" lines. Only then REQUEST.json, on a clean committed tree.
+5. Reread `referee/reviewer_g2.md` (nine points) before the request. Point 1 (edit matches its hypothesis) is the weak one, see above, and the package says so.
+
+**Trap.** Do not edit `awe/autogreedy.py`, `pool.py`, `arms.py`, `rollout.py`, `policy.py`, `edits.py`, `post.py` while `autogreedy` runs. `awe/` changed this session (autogreedy.py rewritten, freeze.py new), so the referee re-confirms Gate 0. `analysis.py --mode test` was exercised on a throwaway folder with rows copied under fake arm names. Its numbers were meaningless and the folder is deleted.
+
+**Corrections to session 13 (same day, before ending the session).**
+- The auto-greedy rewrite happened after I had read the validation results. Its docstring says so. The pool and the search seeds use no validation data. Before committing the script I had also printed the six single-head results on the search seeds (`check`), which are rows of the stage 2 sweep.
+- `awe/freeze.py` builds `edit.json` evidence from `analysis_validation/tables.json`, so rerun analysis.py before `build` if the validation files ever change (they must not).
+- The first commit of `awe/freeze.py` had a hand-written hypothesis paragraph for a few minutes in the working tree only. It claimed things that the numbers do not show (that the pair mostly removes grasp failures). It was replaced before the commit by the verbatim line from hypotheses.md plus a separate evidence block.
