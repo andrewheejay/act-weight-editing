@@ -163,15 +163,42 @@ def hypothesis_line(task, cid):
     return next(l[2:] for l in sec.splitlines() if l.startswith(f"- {cid} "))
 
 
+def atlas_evidence(task):
+    """What the stage 2 head atlas says about the two edited heads: the cube-position signal they carry and the failure-map overlap."""
+    heads = j(exp(task) / "stage2" / "atlas" / "heads.json")
+    heads = heads["heads"] if isinstance(heads, dict) else heads
+    by = {x["id"]: x for x in heads}
+    order = sorted(heads, key=lambda x: -x["cube_signal_drop"]["x0"])
+    rank = {x["id"]: i for i, x in enumerate(order, 1)}
+    low = {x["id"]: i for i, x in enumerate(sorted(heads, key=lambda x: x["overlap"]["x0"]["step100"]), 1)}  # 1 is the most negative overlap
+    cid, ops, _ = chosen(task)
+    rows = {}
+    for o in ops:
+        enc = o["block"].startswith("model.encoder")
+        name = f"enc{o['block'].split('.')[3]}.h{o['head']}" if enc else ("cross" if "multihead" in o["block"] else "dself") + f".h{o['head']}"
+        x = by[name]
+        rows[name] = {"scale_in_edit": o["scale"], "cube_signal_drop_x0": x["cube_signal_drop"]["x0"], "rank_of_48_by_cube_signal_drop_x0": rank[name],
+                      "overlap_with_failure_map_x0": {"step0": x["overlap"]["x0"]["step0"], "step100": x["overlap"]["x0"]["step100"]},
+                      "rank_of_48_by_overlap_step100_ascending": low[name]}
+    e, c = rows["enc3.h4"], rows["cross.h1"]
+    sentence = (f"enc3.h4, the head the hypothesis says carries the cube signal too weakly, has a cube-signal drop of {e['cube_signal_drop_x0']:+.3f} when off "
+                f"(rank {e['rank_of_48_by_cube_signal_drop_x0']} of 48, so it carries almost none of it), and its effect map overlaps the failure map at step 100 at "
+                f"{e['overlap_with_failure_map_x0']['step100']:+.2f} (rank {e['rank_of_48_by_overlap_step100_ascending']} of 48, 1 is the most negative). "
+                f"cross.h1, which the edit halves, has a cube-signal drop of {c['cube_signal_drop_x0']:+.3f}, rank {c['rank_of_48_by_cube_signal_drop_x0']} of 48 (1 is the strongest reader). The validation gain stands on the score, not on the story.")
+    return {"heads": rows, "sentence": sentence}
+
+
 def evidence(task):
     """What the files say about the written hypothesis, with the numbers read from them (analysis.py on validation data, the dose response)."""
     t = j(fd(task) / "analysis_validation" / "tables.json")
     h = t["behaviour"]
     dose = j(exp(task) / "stage3" / "dose_response.json")["heads"]
+    atlas = atlas_evidence(task)
     return {
         "summary": ("On the validation seeds the edit passes the validation rule, but the files do not support the written mechanism (a better first reach): "
                     "the median reach error went up, the gain is as large on the other failures as on the target failures (fixed_by_kind), and the edit "
-                    "breaks successes in the low corner of the square (zones)."),
+                    "breaks successes in the low corner of the square (zones). The head atlas does not support it either: " + atlas["sentence"]),
+        "atlas_of_the_edited_heads": atlas["heads"],
         "reach_error_median_cm_validation": {"original": h["original"]["reach_err_median_cm"], "agent_edit": h["agent_edit"]["reach_err_median_cm"]},
         "original_failures_fixed_by_kind": t["fixed_by_kind"],
         "failure_class_counts_validation": t["class_counts"],

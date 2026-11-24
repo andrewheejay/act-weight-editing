@@ -21,7 +21,29 @@
  "hypothesis": "r4 (enc3.h4.x2 + cross.h1.x0.5): the best design gain (+10.6, 145 fixed, 39 broken) among the two-head arms. Hypothesis: the encoder head enc3.h4 carries the cube-position signal too weakly at \u00d71 and the arm stops short of the cube or overshoots it, so a milder amplification at \u00d72 plus a half-strength cross.h1 makes the first reach land better; r4's 53 against 30 paired lead over the deviation-gain rival on design seeds is screening, not proof. Expected validation gain 5 to 9 points.",
  "hypothesis_source": "hypotheses.md, validation section of 2026-11-24, copied word for word. Written before any validation rollout and after the design results.",
  "evidence_on_the_hypothesis": {
-  "summary": "On the validation seeds the edit passes the validation rule, but the files do not support the written mechanism (a better first reach): the median reach error went up, the gain is as large on the other failures as on the target failures (fixed_by_kind), and the edit breaks successes in the low corner of the square (zones).",
+  "summary": "On the validation seeds the edit passes the validation rule, but the files do not support the written mechanism (a better first reach): the median reach error went up, the gain is as large on the other failures as on the target failures (fixed_by_kind), and the edit breaks successes in the low corner of the square (zones). The head atlas does not support it either: enc3.h4, the head the hypothesis says carries the cube signal too weakly, has a cube-signal drop of -0.001 when off (rank 36 of 48, so it carries almost none of it), and its effect map overlaps the failure map at step 100 at -0.31 (rank 1 of 48, 1 is the most negative). cross.h1, which the edit halves, has a cube-signal drop of +0.194, rank 2 of 48 (1 is the strongest reader). The validation gain stands on the score, not on the story.",
+  "atlas_of_the_edited_heads": {
+   "enc3.h4": {
+    "scale_in_edit": 2,
+    "cube_signal_drop_x0": -0.001,
+    "rank_of_48_by_cube_signal_drop_x0": 36,
+    "overlap_with_failure_map_x0": {
+     "step0": 0.1014,
+     "step100": -0.3076
+    },
+    "rank_of_48_by_overlap_step100_ascending": 1
+   },
+   "cross.h1": {
+    "scale_in_edit": 0.5,
+    "cube_signal_drop_x0": 0.1943,
+    "rank_of_48_by_cube_signal_drop_x0": 2,
+    "overlap_with_failure_map_x0": {
+     "step0": 0.1916,
+     "step100": 0.1022
+    },
+    "rank_of_48_by_overlap_step100_ascending": 32
+   }
+  },
   "reach_error_median_cm_validation": {
    "original": 1.198,
    "agent_edit": 1.282

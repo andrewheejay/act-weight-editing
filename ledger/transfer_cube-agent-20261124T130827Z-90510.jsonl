@@ -1,0 +1,3 @@
+{"task": "transfer_cube", "seed": 20000, "arm": "agent_edit", "budget": "agent", "purpose": "freeze_clean_copy"}
+{"task": "transfer_cube", "seed": 20002, "arm": "agent_edit", "budget": "agent", "purpose": "freeze_clean_copy"}
+{"task": "transfer_cube", "seed": 20001, "arm": "agent_edit", "budget": "agent", "purpose": "freeze_clean_copy"}
