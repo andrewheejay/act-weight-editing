@@ -212,3 +212,5 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 - "Same-direction pattern at x0 and x2" was a slip. I meant the opposite sign of the gain at x0 and x2 (the pairs listed).
 - "The failure-prone head cross.h3 is the gripper head" is an interpretation: the x0 edit moves the right gripper joint most at steps 0 (0.77) and 100 (0.98), and "explains the collapse" is a guess. cross.h2.x0 also collapsed (−75.4) and I have not looked at why.
 - "The top gains" are the largest of 96 noisy estimates, so the true gains are likely smaller than these.
+- "The decoder's self-attention values are all zeros" is loose. The decoder input is zeros, so every value vector is the same constant (the projection bias). Changing the attention pattern then changes nothing, which fits the measured 2e-7. Scaling a head does shift that constant, hence the small x0/x2 effects.
+- `sweep_half2.jsonl` and ledger file `transfer_cube-agent-20261124T093039Z-72032.jsonl` are committed as snapshots of a running job. Commit the final versions when `recheck` ends. I have not looked at any edited arm's second-half outcome.
