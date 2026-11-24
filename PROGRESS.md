@@ -49,3 +49,19 @@ The spec, the plan, the rules and the referee were fixed before this line. No ro
 
 **Correction (same session).** The 17 mismatched seeds of the first run (TF32 on, stock batch 8) are 1054, 1064, 1123, 1147, 1168, 1213, 1267, 1334, 1340, 1344, 1357, 1365, 1370, 1389, 1419, 1471, 1491. The entry above said they were listed and they were not. "Ruled out: renderer difference" holds at reset only (seeds 1000 to 1007, byte-identical images and states). See the correction in DEVIATIONS.md for the wording fixed there.
 Also: "Harness at the same settings 82.8%" above is loose. That harness run was TF32 on at batch 1, the stock run at batch 8.
+
+## 2026-11-24, session 3 (Stage 0)
+
+**Done.** The job `stock_b1` finished (exit 0). Ran `python -m awe.stage0_finish --rps 7.5`, which copied its `eval_info.json` to `stage0/stock_eval/` (byte-identical, checked with cmp) and wrote `stage0/env.json`. Wrote `stage0/mismatches.md`. Status is now JUDGE_TURN, referee step confirm_g0. No rollouts run this session, and the ledger is unchanged.
+
+**Numbers measured.**
+- Stock run (Mesa, batch 1, TF32 off): 81.8% (409 of 500), inside the 78 to 88% window. 4 h 12 min, 30.2 s per episode (LeRobot's own figure).
+- Harness against stock: 0 of 500 success mismatches and 0 of 500 max reward mismatches (`python scratch/check_stock_agreement.py`). The 98% gate is met at 100%. This is agreement at settings chosen after the first comparison had 96.6% (17 mismatches), as `mismatches.md` and DEVIATIONS.md say.
+- Stock run against the published per-seed file: 94.0% agreement on success, 81.8% against 83.0%. Same as the harness (94.0%), since they match. The published seeds that flip sit inside what inference numerics alone do to this policy (1% to 4% of seeds flip between two numerics settings, session 2).
+- Speed: harness 7.5 rollouts per second (8 workers, box idle, session 2) against 0.033 per second for stock.
+
+**Cost table.** SPEC.md step 9 asks to fill in the cost table. SPEC.md is protected, so the timings live in `env.json` and here.
+
+**Ruled out / not done.** No settings changed after seeing the final result. I did not look into the 6% disagreement with the published file any further: the published run used GPU rendering and a different box, and GPU rendering is not repeatable here (session 1).
+
+**Next step.** The referee confirms Gate 0 (it replays 20 random rollouts and 5 stock seeds). If it passes, Stage 1 starts: `python -m awe.run_arm` on seeds 20000 to 20999 at chunks 100, 50, 25 and 200 seeds with ensembling at 0.01, budget `setup` for nothing (design runs are charged to `agent` or as CONTRACT.md says, reread it first). Expect a few hours for ensembling under Mesa, so use the job runner. If it fails, read the referee's log first.
