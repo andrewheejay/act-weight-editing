@@ -1,0 +1,13 @@
+{
+ "task": "transfer_cube",
+ "note": "ready",
+ "candidate": "r4",
+ "summary": [
+  "Edit: enc3.h4 scaled x2 and cross.h1 scaled x0.5 (2 heads). Passes the validation rule (500 seeds: 67 fixed, 21 broken, share of failures removed 0.517, p 9.2e-07, strict gain +9.4 points). The stop rule was not needed.",
+  "Chosen by the rule committed in awe/candidates.py before any validation rollout. r6 (3 heads) had the larger validation gain (+10.4 against +9.2 points), r4 the larger pooled design plus validation net (152 against 150). Candidates are not distinguishable from each other.",
+  "The written hypothesis (verbatim from hypotheses.md) is not supported by the files and edit.json says so next to it: median reach error rose, the head atlas shows enc3.h4 carries almost no cube-position signal (rank 36 of 48) and cross.h1, which the edit halves, is the second strongest cube reader, and the fixes are spread over failure kinds. The edit breaks the low corner of the square (post hoc zone).",
+  "The auto-greedy edit (enc0.h1 x0 and enc3.h4 x2) shares one head with the agent's edit and is about as strong on its own 450 search seeds (net +40 against +43 for r4, selected numbers).",
+  "The random-edit rule and seed were committed (5d457b4) before any random edit ran. Every arm ran on 3 design seeds from this tree and the arms with earlier rows reproduced their trajectory hashes (stage3/smoke_compare.json).",
+  "Validation checks used: 8 of 10. Budgets: agent 95,057 of 100,000, baselines 46,800 of 50,000, autogreedy 8,550 of 10,000."
+ ]
+}
