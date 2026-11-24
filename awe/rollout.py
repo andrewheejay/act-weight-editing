@@ -2,6 +2,7 @@
 import numpy as np
 
 from . import geom, measure
+from .post import Post
 
 EPISODE_STEPS = 400
 
@@ -24,6 +25,7 @@ def run_episode(env, policy, seed=None, pose=None, n_frames=0):
     cube0 = env.cube_pos() if tc else None
     frames = []
     queue, vis, n_dec = [], {}, 0
+    post = Post(spec["post"], env.task) if spec.get("post") else None
     for t in range(EPISODE_STEPS):
         need = ens or not queue
         img = env.image() if need else None
@@ -40,6 +42,8 @@ def run_episode(env, policy, seed=None, pose=None, n_frames=0):
                 vis[t] = red_pixels(img)
         else:
             a = queue.pop(0)
+        if post is not None:
+            a = post(t, a)
         agent_pos, r = env.step(a)
         rec["action"].append(np.array(a, dtype=np.float32))
         rec["reward"].append(int(r))

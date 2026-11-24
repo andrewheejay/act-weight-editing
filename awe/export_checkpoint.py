@@ -19,6 +19,8 @@ def export(task, arm_id, manifest_path, out):
     from .paths import checkpoint_dir
 
     spec = resolve(arm_id, manifest_path)
+    if spec.get("post"):
+        raise SystemExit(f"arm {arm_id!r} has an output-level recipe, which a checkpoint cannot carry")
     src, out = checkpoint_dir(task), Path(out)
     out.mkdir(parents=True, exist_ok=True)
     for f in src.iterdir():  # config, processors, and the README are copied as they are
