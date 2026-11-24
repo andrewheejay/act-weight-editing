@@ -1,0 +1,15 @@
+{
+  "blocking_issues": [],
+  "effort": "xhigh",
+  "gate": "g1",
+  "model_usage": [
+    "claude-opus-5-5"
+  ],
+  "notes": "Both round 1 issues are closed.\n\nIssue 1 (aim error, \"at least 80 of the 126\"): the sentence is withdrawn, and so is \"about 1 cm past what still works\". The requested numbers are in stage1_stats.json and match the text. On the clean subset, measured aim is above success p90/p95 in 60/53 of 80. The commanded gripper at the close is above it in 11/7 of 80 (AUC 0.57, grid 32 of 134), and deflection is 3.35 cm against 0.38 cm. The diagnosis now reads the 0.945 and 0.897 AUCs as mostly contact deflection. The remaining near-miss claim is a commanded lateral offset before contact. Median at 8 cm is 1.51 against 0.65 cm, and 34 of 80 exceed the success p90. It is stated as overlapping and with no tolerance measured.\n\nIssue 2 (neighbour sentence): removed from the near-miss section, restated as clustering with the base rate beside it (65.8% against 18.4%, 8.7% after a success).\n\nRecomputed or checked:\n- `referee.recompute decisions`: agrees (benchmark primary, 100 steps, proceed true, gap 3.2, problems empty).\n- Classes 0:23, 1:62, 2:99, 4a:32, 4b:784. Chunk 50 is 96/123 and ensembling 95/204. All five stage 1 rates match.\n- No design failure has t_touch -1, which fits \"all 126 touched\".\n- Ledger: no illegal rows, no test-range rollouts, no validation candidates. A grep for seeds 30000 to 30499 finds nothing. Agent 5,727 of 100,000.\n- Only awe/ analysis files changed since the reviewed commit. Referee, run and .claude are at their genesis commit.\n- The strict \"holds\" reading is now logged in DEVIATIONS.md, and the code for it dates from 2026-11-23.\n- The gzipped features could not be read here, so contact_free_geometry was checked against stage1_stats.json only.\n\nSmall observations, none blocking:\n- commanded_geometry() replaces the arm joints but keeps the measured finger slides (q[k+1]). After contact, the commanded lateral offset could contain a small finger displacement, so \"cannot contain a push\" is slightly too strong. The 12 and 10 cm rows, mostly before contact, show the same effect (AUC 0.75 and 0.78), so the conclusion does not rest on it. FK with the commanded gripper value would remove the doubt.\n- \"An edit can only move [the companion number] by changing where the policy aims\" holds only inside the clean subset, and an edit can change which episodes are in it.\n- cmd_lat_h[0.08] is not in the per-seed records. It must be computed in the sweep workers before Stage 2 starts, as PROGRESS.md already notes.\n- The lower end of \"0.6 to 1.9 cm\" for corner centre pull is not stored in stage1_stats.json (mean 1.33 and max 1.91 are).",
+  "reviewed_commit": "6128a6e154dd8a93358c04b9f2494a685058b46b",
+  "round": 2,
+  "session_id": "d250c4d3-ab4f-4854-83b1-9cf20ce24031",
+  "task": "transfer_cube",
+  "time": "2026-11-24T07:47:55Z",
+  "verdict": "pass"
+}
