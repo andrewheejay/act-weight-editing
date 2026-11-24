@@ -191,9 +191,72 @@ def stats(task):
     rcok = np.hypot(xy[:, 0] - 0.1, xy[:, 1] - 0.5)
     st["pattern"]["success_reach_error_vs_centre_distance_spearman"] = float(np.corrcoef(np.argsort(np.argsort(rcok[ok])), np.argsort(np.argsort(err[ok])))[0, 1])
     st["pattern"]["success_reach_error_vs_y_spearman"] = float(np.corrcoef(np.argsort(np.argsort(xy[ok, 1])), np.argsort(np.argsort(err[ok])))[0, 1])
+    # circularity check: gripper at the first close against the cube's initial (untouched) position. The bump can still enter through
+    # the policy, if a chunk decided after the bump follows the moved cube, hence the clean subset below
+    def aim_auc(FF, use_mu=None):
+        _, OK, GF, _ = arrays(FF)
+        a = np.array([r.get("aim_rel", [np.nan] * 3) for r in FF], float)
+        m_ = np.nanmean(a[OK], axis=0) if use_mu is None else use_mu
+        e = np.linalg.norm(a - m_, axis=1)
+        sel = GF | OK
+        return auc(e[sel], GF[sel]), float(np.nanmedian(e[OK])), float(np.nanmedian(e[GF])), m_, e, a
+    aa, mok, mgf, amu, aerr, aim = aim_auc(F)
+    st["aim_error_initial_cube"] = {"auc_grasp_fail_vs_ok": aa, "median_ok_m": mok, "median_grasp_fail_m": mgf,
+                                    "xy_only_auc": auc(np.linalg.norm((aim - amu)[:, :2], axis=1)[gf | ok], gf[gf | ok]),
+                                    "z_only_auc": auc(np.abs((aim - amu)[:, 2])[gf | ok], gf[gf | ok])}
+    if (exp(task) / "stage1" / "features_grid.jsonl.gz").exists():
+        ga = aim_auc(FG, amu)
+        st["aim_error_initial_cube"]["grid_auc_design_reference"] = ga[0]
+        st["aim_error_initial_cube"]["grid_medians_ok_gf_m"] = [ga[1], ga[2]]
+    # clean subset: the chunk that is active at the first close was decided (step 100*floor(t/100)) before any right-finger contact
+    def clean(FF):
+        tc_ = np.array([r["t_rclose"] if r["t_rclose"] is not None else -1 for r in FF]); tt_ = np.array([r["t_touch"] if r["t_touch"] is not None else -1 for r in FF])
+        return (tc_ >= 0) & ((tt_ < 0) | (tt_ >= 100 * (tc_ // 100)))
+    def clean_auc(FF, mu_aim, mu_reach):
+        _, OK, GF, LF_ = arrays(FF)
+        c_ = clean(FF)
+        a = np.array([r.get("aim_rel", [np.nan] * 3) for r in FF], float); q_ = np.array([r.get("reach_rel", [np.nan] * 3) for r in FF], float)
+        ea, eq = np.linalg.norm(a - mu_aim, axis=1), np.linalg.norm(q_ - mu_reach, axis=1)
+        sel = c_ & (GF | OK)
+        return {"n_success": int((c_ & OK).sum()), "n_grasp_fail": int((c_ & GF).sum()), "of_success": int(OK.sum()), "of_grasp_fail": int(GF.sum()),
+                "aim_auc": auc(ea[sel], GF[sel]), "reach_auc": auc(eq[sel], GF[sel]), "aim_median_ok_m": float(np.nanmedian(ea[c_ & OK])), "aim_median_gf_m": float(np.nanmedian(ea[c_ & GF]))}
+    st["clean_subset_chunk_decided_before_contact"] = {"design": clean_auc(F, amu, mu)}
+    if (exp(task) / "stage1" / "features_grid.jsonl.gz").exists():
+        st["clean_subset_chunk_decided_before_contact"]["grid_design_reference"] = clean_auc(FG, amu, mu)
+    # SPEC diagnostic proper: reach error (and aim error) against the start position, over ALL episodes with a close, not successes only
+    rc_all = np.hypot(xy[:, 0] - 0.1, xy[:, 1] - 0.5)
+    eb = [0, 0.04, 0.06, 0.08, 0.10, 0.15]
+    st["error_vs_centre_distance"] = {"bins_m": eb, "n": [], "fail_rate": [], "reach_median_all_m": [], "reach_median_success_m": [], "aim_median_all_m": [], "aim_median_success_m": []}
+    for lo, hi in zip(eb[:-1], eb[1:]):
+        m = (rc_all >= lo) & (rc_all < hi)
+        o = st["error_vs_centre_distance"]
+        o["n"].append(int(m.sum())); o["fail_rate"].append(float(fail[m].mean()))
+        o["reach_median_all_m"].append(float(np.nanmedian(err[m]))); o["reach_median_success_m"].append(float(np.nanmedian(err[m & ok])))
+        o["aim_median_all_m"].append(float(np.nanmedian(aerr[m]))); o["aim_median_success_m"].append(float(np.nanmedian(aerr[m & ok])))
+    st["aim_rel_regression_all_episodes"] = {}
+    good = ~np.isnan(aim[:, 0])
+    for c, j in (("x", 0), ("y", 1), ("z", 2)):
+        A = np.c_[np.ones(good.sum()), cx[good], cy[good]]
+        b, *_ = np.linalg.lstsq(A, aim[good, j], rcond=None)
+        st["aim_rel_regression_all_episodes"]["rel_" + c] = {"slope_cube_x": float(b[1]), "slope_cube_y": float(b[2]), "resid_sd": float((aim[good, j] - A @ b).std())}
+    # label cut and lateness of the lift among lift failures
+    zm = np.array([r["zmax20"] for r in F]); tl6 = np.array([r["t_lift60"] for r in F])
+    st["label_cut"] = {"grasp_fail_max_zmax20": float(zm[gf].max()), "lift_fail_min_zmax20": float(zm[lf].min()), "success_min_zmax20": float(zm[ok].min()),
+                       "grasp_fail_count_at_0.05_0.06_0.08": [int((fail & (zm <= c)).sum()) for c in (0.05, 0.06, 0.08)],
+                       "lift_fail_below_0.10": int((lf & (zm < 0.10)).sum()), "class2_not_lifted_zmax20_median": float(np.median([r["zmax20"] for r in F if r["failure_class"] == "2" and r["grasp_fail"]]))}
+    st["lift_fail_lateness"] = {"t_lift60_median_success": float(np.median(tl6[ok])), "t_lift60_p95_success": float(np.percentile(tl6[ok], 95)), "t_lift60_median_lift_fail": float(np.median(tl6[lf])),
+                                "lift_fail_later_than_success_p95": int((lf & (tl6 > np.percentile(tl6[ok], 95))).sum()), "lift_fail_after_step_250": int((lf & (tl6 > 250)).sum()), "n_lift_fail": int(lf.sum())}
     # max-reward class 0 means the stock touch flag never fired. The flag looks at one finger geom (10_right_gripper_finger).
     R0 = [r for r in F if r["failure_class"] == "0"]
     st["class0_contact_by_any_right_finger"] = {"n": len(R0), "with_t_touch": int(sum((r["t_touch"] or -1) >= 0 for r in R0))}
+    if len(mf):
+        dz = (mf - mm)[:, 2]
+        st["lift_fail_meet"].update({"z_error_above_10cm": int((dz > 0.10).sum()), "z_error_within_10cm": int((np.abs(dz) <= 0.10).sum()),
+                                     "xy_error_median_m_when_z_within_10cm": float(np.median(np.linalg.norm((mf - mm)[np.abs(dz) <= 0.10][:, :2], axis=1)))})
+    held = np.array([r["lift_fail"] and r["t_drop"] < 0 for r in F])
+    st["lift_fail_lateness"]["held_to_end"] = int(held.sum())
+    st["lift_fail_lateness"]["held_to_end_lifted_after_step_250"] = int((held & (tl6 > 250)).sum())
+    st["strict_variant_both_left_fingers"] = {"strict_any_left_finger": float(np.mean([r["strict_success"] for r in records(task, "default")])), "strict_both_left_fingers": float(np.mean([r["strict_both_fingers"] for r in records(task, "default")]))}
     rg = records(task, "grid")
     if rg:
         st["grid_rate"] = {"n": len(rg), "benchmark": float(np.mean([r["benchmark_success"] for r in rg])), "strict": float(np.mean([r["strict_success"] for r in rg])), "low_y_strip_success": float(np.mean([r["benchmark_success"] for r in rg if r["cube_y0"] < LOW_Y])) if any(r["cube_y0"] < LOW_Y for r in rg) else None}
@@ -241,15 +304,16 @@ def meet_figure(task, F, ok, lf):
     mm = np.median(mr, axis=0)
     fl = [r for r in F if r["lift_fail"] and "meet_rel" in r]
     fx = np.array([r["meet_rel"] for r in fl], float)
-    fig, ax = plt.subplots(figsize=(6.2, 5.2), facecolor=SURF)
-    ax.scatter((mr - mm)[:, 0] * 100, (mr - mm)[:, 1] * 100, s=7, c=GRAY, label=f"success ({len(mr)})", zorder=2)
-    if len(fx):
-        ax.scatter((fx - mm)[:, 0] * 100, (fx - mm)[:, 1] * 100, s=26, c=ORANGE, marker="D", edgecolors=SURF, linewidths=0.8, label=f"lifted, no handover ({len(fx)})", zorder=3)
-    ax.axhline(0, color=MUTED, lw=0.8, ls=":"), ax.axvline(0, color=MUTED, lw=0.8, ls=":")
-    ax.set_xlabel("x, relative to the success median (cm)"), ax.set_ylabel("y (cm)")
-    ax.set_title("Meet error of the left gripper at its first close", fontsize=10, loc="left", color=INK)
-    ax.legend(frameon=False, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=2)
-    _axis_style(ax)
+    fig, axs = plt.subplots(1, 2, figsize=(12, 5.2), facecolor=SURF)
+    for ax, j, lab in ((axs[0], 1, "y"), (axs[1], 2, "z")):
+        ax.scatter((mr - mm)[:, 0] * 100, (mr - mm)[:, j] * 100, s=7, c=GRAY, label=f"success ({len(mr)})", zorder=2)
+        if len(fx):
+            ax.scatter((fx - mm)[:, 0] * 100, (fx - mm)[:, j] * 100, s=26, c=ORANGE, marker="D", edgecolors=SURF, linewidths=0.8, label=f"lifted, no handover, left gripper closed ({len(fx)})", zorder=3)
+        ax.axhline(0, color=MUTED, lw=0.8, ls=":"), ax.axvline(0, color=MUTED, lw=0.8, ls=":")
+        ax.set_xlabel("x, relative to the success median (cm)"), ax.set_ylabel(lab + " (cm)")
+        _axis_style(ax)
+    axs[0].set_title("Meet error of the left gripper at its first close", fontsize=10, loc="left", color=INK)
+    axs[0].legend(frameon=False, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=2)
     fig.savefig(exp(task) / "stage1" / "meet_error.png", dpi=140, bbox_inches="tight")
     plt.close(fig)
 

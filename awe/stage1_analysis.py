@@ -82,6 +82,8 @@ def feature_row(rec, z, frame_at):
     if t is not None and t >= 0:
         rel = tr[t] - cube[t]
         d["reach_rel"] = [float(x) for x in rel]
+        # the same gripper position against where the cube was BEFORE anything touched it (settled after the reset drop)
+        d["aim_rel"] = [float(x) for x in tr[t] - cube[min(SETTLE, t)]]
         R, a, b = frame_at(q[t + 1])
         off = cube[t] - 0.5 * (a + b)
         ax = (b - a) / np.linalg.norm(b - a)

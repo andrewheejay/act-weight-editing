@@ -327,7 +327,10 @@
   ],
   "meet_error_median_success_m": 0.007533134909900895,
   "meet_error_median_lift_fail_m": 0.26391650722135296,
-  "n_lift_fail_with_meet": 34
+  "n_lift_fail_with_meet": 34,
+  "z_error_above_10cm": 22,
+  "z_error_within_10cm": 12,
+  "xy_error_median_m_when_z_within_10cm": 0.06232742255737203
  },
  "tracking_robustness": {
   "reference_from": "even-seed successes, tested on odd seeds, and the reverse",
@@ -377,9 +380,138 @@
   "success_reach_error_vs_centre_distance_spearman": 0.272358471438977,
   "success_reach_error_vs_y_spearman": -0.1663440901061749
  },
+ "aim_error_initial_cube": {
+  "auc_grasp_fail_vs_ok": 0.8902991752256458,
+  "median_ok_m": 0.011272306561698909,
+  "median_grasp_fail_m": 0.03611379004033913,
+  "xy_only_auc": 0.8648362122626828,
+  "z_only_auc": 0.8209519919078743,
+  "grid_auc_design_reference": 0.9007980227012452,
+  "grid_medians_ok_gf_m": [
+   0.011313250232973571,
+   0.03736463521090935
+  ]
+ },
+ "clean_subset_chunk_decided_before_contact": {
+  "design": {
+   "n_success": 734,
+   "n_grasp_fail": 80,
+   "of_success": 816,
+   "of_grasp_fail": 126,
+   "aim_auc": 0.8981948228882833,
+   "reach_auc": 0.9272990463215259,
+   "aim_median_ok_m": 0.010834823392817279,
+   "aim_median_gf_m": 0.03213306265776247
+  },
+  "grid_design_reference": {
+   "n_success": 1224,
+   "n_grasp_fail": 134,
+   "of_success": 1366,
+   "of_grasp_fail": 202,
+   "aim_auc": 0.923476977855819,
+   "reach_auc": 0.9529131304262999,
+   "aim_median_ok_m": 0.011062696443031138,
+   "aim_median_gf_m": 0.036029449842741146
+  }
+ },
+ "error_vs_centre_distance": {
+  "bins_m": [
+   0,
+   0.04,
+   0.06,
+   0.08,
+   0.1,
+   0.15
+  ],
+  "n": [
+   125,
+   154,
+   220,
+   273,
+   228
+  ],
+  "fail_rate": [
+   0.208,
+   0.21428571428571427,
+   0.19545454545454546,
+   0.23076923076923078,
+   0.08333333333333333
+  ],
+  "reach_median_all_m": [
+   0.01162934569780553,
+   0.012305149105381743,
+   0.011453712378024953,
+   0.011974833735251336,
+   0.01583691492088859
+  ],
+  "reach_median_success_m": [
+   0.010024331764501218,
+   0.010173417448863497,
+   0.010468329527161065,
+   0.010697023592224703,
+   0.015184772108654971
+  ],
+  "aim_median_all_m": [
+   0.011864066619563612,
+   0.011981785454821616,
+   0.011733664435788957,
+   0.01149805935360783,
+   0.015002242594342147
+  ],
+  "aim_median_success_m": [
+   0.010432713020122535,
+   0.010589323289018493,
+   0.010705445662031415,
+   0.010531758900188534,
+   0.01455803721227591
+  ]
+ },
+ "aim_rel_regression_all_episodes": {
+  "rel_x": {
+   "slope_cube_x": -0.04232108423226534,
+   "slope_cube_y": 0.048598199163903635,
+   "resid_sd": 0.012950605157057189
+  },
+  "rel_y": {
+   "slope_cube_x": -0.0043858142996403005,
+   "slope_cube_y": -0.0686237406510922,
+   "resid_sd": 0.007961816084901369
+  },
+  "rel_z": {
+   "slope_cube_x": 0.02287610591775298,
+   "slope_cube_y": -0.0715288826268209,
+   "resid_sd": 0.008871358089269553
+  }
+ },
+ "label_cut": {
+  "grasp_fail_max_zmax20": 0.05259047448635101,
+  "lift_fail_min_zmax20": 0.062002524733543396,
+  "success_min_zmax20": 0.2770111560821533,
+  "grasp_fail_count_at_0.05_0.06_0.08": [
+   125,
+   126,
+   129
+  ],
+  "lift_fail_below_0.10": 5,
+  "class2_not_lifted_zmax20_median": 0.028306761756539345
+ },
+ "lift_fail_lateness": {
+  "t_lift60_median_success": 164.0,
+  "t_lift60_p95_success": 212.0,
+  "t_lift60_median_lift_fail": 198.0,
+  "lift_fail_later_than_success_p95": 27,
+  "lift_fail_after_step_250": 24,
+  "n_lift_fail": 58,
+  "held_to_end": 29,
+  "held_to_end_lifted_after_step_250": 20
+ },
  "class0_contact_by_any_right_finger": {
   "n": 23,
   "with_t_touch": 23
+ },
+ "strict_variant_both_left_fingers": {
+  "strict_any_left_finger": 0.784,
+  "strict_both_left_fingers": 0.752
  },
  "grid_rate": {
   "n": 1681,
