@@ -205,3 +205,10 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Trap.** Do not edit anything under `awe/` while `recheck` runs (a restarted job imports it again). `awe/` was changed this session (report only), so the referee will re-confirm Gate 0.
 
 **Next step.** When `recheck` is done: `python -m awe.sweep_report second` (writes `stage2/split_half.json`), gzip `sweep_half2.jsonl` (`gzip -n`, keep the ledger), commit, check the status moves to Stage 3. Then Stage 3: write `hypotheses.md` (one line per idea before evaluating), dose response at x0.5, x1.5, x2, x3, x4 for the kept heads, tune the simple baselines.
+
+**Corrections to session 8 (same day).**
+- "max 0.00098" was an invented example. The dself x0/x2 effect maxima at step 0 are 0.00046 to 0.00125 (largest: dself.h2, 0.00125). The figure titles now print such values instead of 0.00.
+- 9 of 48 heads have shift p below 0.05 (checked). 2.4 would be expected at random, so more than chance, but the shift null wraps a blobby map and 48 tests are unadjusted.
+- "Same-direction pattern at x0 and x2" was a slip. I meant the opposite sign of the gain at x0 and x2 (the pairs listed).
+- "The failure-prone head cross.h3 is the gripper head" is an interpretation: the x0 edit moves the right gripper joint most at steps 0 (0.77) and 100 (0.98), and "explains the collapse" is a guess. cross.h2.x0 also collapsed (−75.4) and I have not looked at why.
+- "The top gains" are the largest of 96 noisy estimates, so the true gains are likely smaller than these.
