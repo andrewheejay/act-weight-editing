@@ -1,5 +1,5 @@
 {
- "rule": "Stage 3 step 4: the simple output-level baselines, SPEC.md Controls. Resumable, budget `baselines`.\n\npython -m awe.baselines mean       freeze/mean_action.json, the mean executed action of the original at each step (1,000 design episodes)\npython -m awe.baselines screen     every setting on the 200 screening seeds, stage3/baselines_screen.jsonl\npython -m awe.baselines full       the best settings on the other 800 design seeds, stage3/baselines_full.jsonl\npython -m awe.baselines report     stage3/baselines_summary.json (paired against the original, stage1/design_default.jsonl)\n\nRules fixed before the first baseline rollout.\n- Screening seeds 20000 to 20199. Order by benchmark gain, then strict gain, then id. Top 5 of constant_offset, deviation_gain and\n  simplest_fix each go on to all 1,000 design seeds. The final setting per family is the best benchmark gain on the 1,000 (ties as above).\n- constant_offset, 80 settings: 10 joints (right arm 7 to 13, left waist, shoulder, elbow 0 to 2) x 8 shifts.\n- deviation_gain, 36 settings: g in 0.8, 0.9, 1.1, 1.2, 1.3, 1.5 on the right arm, the left arm or both, each with and without the\n  gripper joint (SPEC.md does not say whether an arm includes it, so both are tuned).\n- simplest_fix, 40 settings: a shift of one right-arm target (waist 7, shoulder 8, elbow 9, wrist angle 11, gripper 13) only until the\n  right gripper starts to close. Two free numbers (joint, size). Idea: the diagnosis says the gripper arrives a centimetre off and lands\n  on the cube during the approach, so correct the approach and leave lift and handover alone. Chosen before any baseline rollout.\n- shorter_chunk: 50 and 25, already run on all design seeds in stage 1. No new rollouts.\n",
+ "rule": "Stage 3 step 4: the simple output-level baselines, SPEC.md Controls. Resumable, budget `baselines`.\n\npython -m awe.baselines mean       freeze/mean_action.json, the mean executed action of the original at each step (1,000 design episodes)\npython -m awe.baselines screen     every setting on the 200 screening seeds, stage3/baselines_screen.jsonl\npython -m awe.baselines full       the best settings on the other 800 design seeds, stage3/baselines_full.jsonl\npython -m awe.baselines report     stage3/baselines_summary.json (paired against the original, stage1/design_default.jsonl)\n\nRules fixed before the first baseline rollout.\n- Screening seeds 20000 to 20199. Order by benchmark gain, then strict gain, then id. Top 5 of constant_offset, deviation_gain and\n  simplest_fix each go on to all 1,000 design seeds. The final setting per family is the best benchmark gain on the 1,000 (ties as above).\n- constant_offset, 80 settings: 10 joints (right arm 7 to 13, left waist, shoulder, elbow 0 to 2) x 8 shifts.\n- deviation_gain, 36 settings plus 4 extra (EXTRA_GAINS, see DEVIATIONS.md): g in 0.8, 0.9, 1.1, 1.2, 1.3, 1.5 on the right arm, the left arm or both, each with and without the\n  gripper joint (SPEC.md does not say whether an arm includes it, so both are tuned).\n- simplest_fix, 40 settings: a shift of one right-arm target (waist 7, shoulder 8, elbow 9, wrist angle 11, gripper 13) only until the\n  right gripper starts to close. Two free numbers (joint, size). Idea: the diagnosis says the gripper arrives a centimetre off and lands\n  on the cube during the approach, so correct the approach and leave lift and handover alone. Chosen before any baseline rollout.\n- shorter_chunk: 50 and 25, already run on all design seeds in stage 1. No new rollouts.\n",
  "families": {
   "constant_offset": {
    "n_settings": 80,
@@ -1768,13 +1768,14 @@
    }
   },
   "deviation_gain": {
-   "n_settings": 36,
-   "screened": 36,
+   "n_settings": 40,
+   "screened": 40,
    "full": [
     "gain_both_nogrip_0.9",
     "gain_right_nogrip_0.9",
     "gain_both_grip_0.9",
     "gain_right_grip_0.9",
+    "gain_both_nogrip_0.95",
     "gain_left_nogrip_0.8"
    ],
    "best": "gain_both_nogrip_0.9",
@@ -1920,6 +1921,30 @@
     "gain_right_nogrip_1.5": {
      "kind": "gain",
      "g": 1.5,
+     "joints": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    },
+    "gain_right_nogrip_0.85": {
+     "kind": "gain",
+     "g": 0.85,
+     "joints": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    },
+    "gain_right_nogrip_0.95": {
+     "kind": "gain",
+     "g": 0.95,
      "joints": [
       7,
       8,
@@ -2306,6 +2331,42 @@
       11,
       12
      ]
+    },
+    "gain_both_nogrip_0.85": {
+     "kind": "gain",
+     "g": 0.85,
+     "joints": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    },
+    "gain_both_nogrip_0.95": {
+     "kind": "gain",
+     "g": 0.95,
+     "joints": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
     }
    },
    "results": {
@@ -2526,6 +2587,38 @@
       "reach_err_median_cm": 4.633,
       "cmd_lat8_dev_median_cm_clean": 4.013,
       "n_clean": 174,
+      "identical_traj": 0
+     }
+    },
+    "gain_right_nogrip_0.85": {
+     "screen": {
+      "n": 200,
+      "success": 0.835,
+      "gain": 0.03,
+      "strict_gain": 0.08,
+      "fixed": 35,
+      "broken": 29,
+      "p_mcnemar": 0.5323087760278421,
+      "grasp_fail": 25,
+      "reach_err_median_cm": 1.683,
+      "cmd_lat8_dev_median_cm_clean": 0.536,
+      "n_clean": 183,
+      "identical_traj": 0
+     }
+    },
+    "gain_right_nogrip_0.95": {
+     "screen": {
+      "n": 200,
+      "success": 0.86,
+      "gain": 0.055,
+      "strict_gain": 0.09,
+      "fixed": 23,
+      "broken": 12,
+      "p_mcnemar": 0.0895310789346695,
+      "grasp_fail": 16,
+      "reach_err_median_cm": 1.289,
+      "cmd_lat8_dev_median_cm_clean": 0.565,
+      "n_clean": 176,
       "identical_traj": 0
      }
     },
@@ -2952,6 +3045,52 @@
       "reach_err_median_cm": 4.568,
       "cmd_lat8_dev_median_cm_clean": 3.965,
       "n_clean": 173,
+      "identical_traj": 0
+     }
+    },
+    "gain_both_nogrip_0.85": {
+     "screen": {
+      "n": 200,
+      "success": 0.835,
+      "gain": 0.03,
+      "strict_gain": 0.085,
+      "fixed": 35,
+      "broken": 29,
+      "p_mcnemar": 0.5323087760278421,
+      "grasp_fail": 24,
+      "reach_err_median_cm": 1.667,
+      "cmd_lat8_dev_median_cm_clean": 0.549,
+      "n_clean": 183,
+      "identical_traj": 0
+     }
+    },
+    "gain_both_nogrip_0.95": {
+     "screen": {
+      "n": 200,
+      "success": 0.86,
+      "gain": 0.055,
+      "strict_gain": 0.09,
+      "fixed": 23,
+      "broken": 12,
+      "p_mcnemar": 0.0895310789346695,
+      "grasp_fail": 15,
+      "reach_err_median_cm": 1.26,
+      "cmd_lat8_dev_median_cm_clean": 0.572,
+      "n_clean": 176,
+      "identical_traj": 0
+     },
+     "all": {
+      "n": 1000,
+      "success": 0.875,
+      "gain": 0.059,
+      "strict_gain": 0.07,
+      "fixed": 93,
+      "broken": 34,
+      "p_mcnemar": 1.605578872812733e-07,
+      "grasp_fail": 68,
+      "reach_err_median_cm": 1.318,
+      "cmd_lat8_dev_median_cm_clean": 0.58,
+      "n_clean": 883,
       "identical_traj": 0
      }
     }
