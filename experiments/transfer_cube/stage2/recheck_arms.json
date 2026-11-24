@@ -1,0 +1,38 @@
+{
+ "arms": [
+  "cross.h1.x0",
+  "enc3.h4.x2",
+  "enc0.h1.x0",
+  "enc0.h6.x0",
+  "cross.h3.x2",
+  "enc1.h7.x0",
+  "cross.h6.x0",
+  "cross.h0.x2",
+  "enc2.h3.x0",
+  "cross.h5.x0",
+  "enc3.h0.x0",
+  "cross.h3.x0",
+  "enc2.h1.x0",
+  "enc0.h0.x2",
+  "dself.h2.x2"
+ ],
+ "top10_by_gain": [
+  "cross.h1.x0",
+  "enc3.h4.x2",
+  "enc0.h1.x0",
+  "enc0.h6.x0",
+  "cross.h3.x2",
+  "enc1.h7.x0",
+  "cross.h6.x0",
+  "cross.h0.x2",
+  "enc2.h3.x0",
+  "cross.h5.x0"
+ ],
+ "top5_by_overlap": [
+  "enc3.h0.x0",
+  "cross.h3.x0",
+  "enc2.h1.x0",
+  "enc0.h0.x2",
+  "dself.h2.x2"
+ ]
+}

@@ -34,11 +34,21 @@ def smooth(m):
     return gaussian_filter(m, s, mode="constant") / gaussian_filter(np.ones_like(m), s, mode="constant")
 
 
+NOISE = 1e-6  # effect maps below this everywhere are float noise (dself sharpen/soften: the decoder values are constant), rho undefined
+
+
 def rho(a, b):
     from scipy.stats import rankdata
 
+    if a.max() < NOISE:
+        return None
+
     a, b = rankdata(a.ravel()), rankdata(b.ravel())
     return float(np.corrcoef(a, b)[0, 1])
+
+
+def r4(v):
+    return None if v is None else round(v, 4)
 
 
 def shift_p(eff, fmap):
@@ -83,7 +93,7 @@ def build(task):
                 m0 = eff[i, step == 0][order0].reshape(GRID, GRID)
                 m100 = eff[i, step == 100][order100].reshape(GRID, GRID)
                 maps[f"{hid}.{v}.step0"], maps[f"{hid}.{v}.step100"] = m0.astype(np.float16), m100.astype(np.float16)
-                e["overlap"][v] = {"step0": round(rho(m0, fs), 4), "step100": round(rho(m100, fs), 4), "step0_grasp": round(rho(m0, gs), 4), "step100_grasp": round(rho(m100, gs), 4)}
+                e["overlap"][v] = {"step0": r4(rho(m0, fs)), "step100": r4(rho(m100, fs)), "step0_grasp": r4(rho(m0, gs)), "step100_grasp": r4(rho(m100, gs))}
                 e["joints"][v] = {str(s): {JOINTS[j]: round(float(z["joint"][i, k, j]), 4) for j in np.argsort(-z["joint"][i, k])[:3]} for k, s in enumerate(STEPS)}
                 e["time_profile"][v] = {str(s): [round(float(x), 4) for x in z["timep"][i, k]] for k, s in enumerate(STEPS)}
             mm = lambda s: (maps[f"{hid}.x0.{s}"].astype(float) + maps[f"{hid}.x2.{s}"]) / 2
@@ -129,7 +139,7 @@ def figures(task, meta, maps, fs):
         m = maps[f"{e['id']}.x0.step0"].astype(float)
         a.imshow(m, origin="lower", extent=ext, cmap="Blues")
         a.contour(np.linspace(0, 20, GRID), np.linspace(40, 60, GRID), fs, levels=[0.35], colors="#b0413e", linewidths=0.9)
-        a.set_title(f"{e['id']}  max {m.max():.2f}", fontsize=8, color="#333333")
+        a.set_title(f"{e['id']}  max {m.max():.2g}", fontsize=8, color="#333333")
     fig.suptitle("Effect size of removing each head (x0) on the first action chunk, over the cube start (x, y in cm). Own scale per panel. Red line: smoothed failure rate 0.35", fontsize=10)
     fig.supxlabel("cube x (cm)", fontsize=9)
     fig.supylabel("cube y (cm)", fontsize=9)
