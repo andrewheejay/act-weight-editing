@@ -2,6 +2,7 @@
 
 python -m awe.combo run A [ID ...]      ids (default all) on design seeds 20500 to 20999, stage3/combo.jsonl
 python -m awe.combo run B ID ...        the named ids on design seeds 20000 to 20499, same file
+python -m awe.combo run AB ID ...       the named ids on all 1,000 design seeds (refinement round r1 to r6)
 python -m awe.combo report              stage3/combo_summary.json, paired against the original (stage1/design_default.jsonl)
 
 Every combination has a line in hypotheses.md, written before it runs. Nothing here chooses heads or scales by search.
@@ -18,7 +19,7 @@ from .paths import exp
 from .sweep import SHORT, arm_id
 from .sweep_report import find, refs, rows_of, stats
 
-GROUP = {"A": range(20500, 21000), "B": range(20000, 20500)}
+GROUP = {"A": range(20500, 21000), "B": range(20000, 20500), "AB": range(20000, 21000)}
 LONG = {v: k for k, v in SHORT.items()}
 
 # (short block name, head, scale)
@@ -45,7 +46,16 @@ COMBOS = {
     "c16": [("enc3", 4, 3), ("cross", 1, 0.5), ("cross", 3, 2), ("enc0", 1, 0), ("enc0", 6, 0)],
     "c17": [("enc3", 4, 3), ("cross", 6, 0.5), ("cross", 1, 0.5)],
 }
-ALL = {**SINGLES, **COMBOS}
+# the refinement round, written after the group A and B results of the combinations (hypotheses.md), run with `run AB`
+REFINE = {
+    "r1": [("enc3", 4, 3), ("enc1", 7, 0)],
+    "r2": [("enc3", 4, 2), ("enc0", 1, 0)],
+    "r3": [("cross", 1, 0.5), ("enc0", 1, 0), ("enc1", 7, 0)],
+    "r4": [("enc3", 4, 2), ("cross", 1, 0.5)],
+    "r5": [("enc3", 4, 3), ("enc2", 3, 0.5)],
+    "r6": [("cross", 1, 0.5), ("enc0", 1, 0), ("enc3", 4, 1.5)],
+}
+ALL = {**SINGLES, **COMBOS, **REFINE}
 
 
 def spec(cid):

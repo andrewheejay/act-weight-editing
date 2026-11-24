@@ -53,3 +53,18 @@ Corrections to the combination section, same day, before any combination was run
 - "The only head at x0 with a clear reach improvement" is wrong. On the 300 seeds the x0 medians are enc0.h1 1.18, enc1.h7 1.20 and enc2.h3 1.21 cm against 1.30. I picked enc0.h1 because it also has the larger gain.
 - "Cluster around +6 to +10 since the single parts did" is wrong. In the second half the single parts I know gained +4.0 to +5.2. I have no sound forecast for the combinations. If gains are fully sub-additive they would land near +5, and if they add, near +10.
 - The 19 arms and their scales were written by hand after reading the 300-seed dose table. That is a selection, and the 19 comparisons on group A are screening.
+
+## 2026-11-24, refinement round, written after the group A and group B results of the combinations, before any refinement rollout
+
+Known when written: s1 (enc3.h4.x3) +10.1 points over all 1,000 design seeds (134 fixed, 33 broken), c06 (cross.h1.x0.5 + enc0.h1.x0) +9.6 (126, 30), c03 (enc3.h4.x3 + enc0.h1.x0) +9.1 (144, 53), s2 (cross.h1.x0.5) +8.2, c07 +7.4, c05 +7.5. All were chosen on the same design seeds, so these numbers are optimistic. Stacking a strong cross head (cross.h1.x0.5) on the strong encoder head (enc3.h4.x3) lowered the gain (c01 +4.8 on group A), and c16/c14, the larger stacks, hurt. My reading (a guess, untested): the helpful edits move the arm in the same direction and overshoot when stacked at full strength, so milder partners or heads that act on different episodes might add without overshooting. The six new combinations run on all 1,000 design seeds (20000 to 20999). No new candidate gets a validation check before that.
+
+- r1 (enc3.h4.x3 + enc1.h7.x0): the best single encoder head up, plus an encoder layer 1 head off (it lowered median reach error at x0 and gained +5.0 in the dose set). Expected to help if enc1.h7 acts on episodes enc3.h4 does not fix.
+- r2 (enc3.h4.x2 + enc0.h1.x0): a milder version of c03. If overshoot is what made c03 break more seeds than s1, the milder scale should break fewer at a similar gain.
+- r3 (cross.h1.x0.5 + enc0.h1.x0 + enc1.h7.x0): c06 plus the enc1.h7 head off. The question is whether the third mild head adds.
+- r4 (enc3.h4.x2 + cross.h1.x0.5): the c01 pair at the milder encoder scale (c01 used x3 and gained less than either part alone).
+- r5 (enc3.h4.x3 + enc2.h3.x0.5): adds the mild head that gained +3.3 and broke 9 in the dose set.
+- r6 (cross.h1.x0.5 + enc0.h1.x0 + enc3.h4.x1.5): c06 plus a small increase of enc3.h4.
+
+Shared expectation: none of the six is expected to exceed s1 or c06 by more than 2 points, given that combination gains so far were sub-additive. If none beats the best single edit (s1), s1 (or c06) goes to validation.
+
+Corrections to this section, same day: none yet.

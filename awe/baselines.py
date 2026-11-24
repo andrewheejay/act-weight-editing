@@ -9,7 +9,7 @@ Rules fixed before the first baseline rollout.
 - Screening seeds 20000 to 20199. Order by benchmark gain, then strict gain, then id. Top 5 of constant_offset, deviation_gain and
   simplest_fix each go on to all 1,000 design seeds. The final setting per family is the best benchmark gain on the 1,000 (ties as above).
 - constant_offset, 80 settings: 10 joints (right arm 7 to 13, left waist, shoulder, elbow 0 to 2) x 8 shifts.
-- deviation_gain, 36 settings: g in 0.8, 0.9, 1.1, 1.2, 1.3, 1.5 on the right arm, the left arm or both, each with and without the
+- deviation_gain, 36 settings plus 4 extra (EXTRA_GAINS, see DEVIATIONS.md): g in 0.8, 0.9, 1.1, 1.2, 1.3, 1.5 on the right arm, the left arm or both, each with and without the
   gripper joint (SPEC.md does not say whether an arm includes it, so both are tuned).
 - simplest_fix, 40 settings: a shift of one right-arm target (waist 7, shoulder 8, elbow 9, wrist angle 11, gripper 13) only until the
   right gripper starts to close. Two free numbers (joint, size). Idea: the diagnosis says the gripper arrives a centimetre off and lands
@@ -35,6 +35,10 @@ GRIP = (0.05, 0.1, 0.2, 0.4)
 OFFSET_JOINTS = (7, 8, 9, 10, 11, 12, 13, 0, 1, 2)
 FIX_JOINTS = (7, 8, 9, 11, 13)
 GAINS = (0.8, 0.9, 1.1, 1.2, 1.3, 1.5)
+# Added 2026-11-24 after the six-gain table was seen, logged in DEVIATIONS.md: the gain peaked between 0.8 and 1.0, so two finer gains
+# are tuned for the two best joint sets. They can only make this rival stronger.
+EXTRA_GAINS = (0.85, 0.95)
+EXTRA_SETS = {("both", False), ("right", False)}
 LIMBS = {"right": range(7, 14), "left": range(0, 7), "both": range(0, 14)}
 
 
@@ -53,7 +57,7 @@ def settings():
     for limb, js in LIMBS.items():
         for grip in (True, False):
             joints = [j for j in js if grip or j not in (6, 13)]
-            for g in GAINS:
+            for g in GAINS + (EXTRA_GAINS if (limb, grip) in EXTRA_SETS else ()):
                 out["deviation_gain"][f"gain_{limb}_{'grip' if grip else 'nogrip'}_{g:g}"] = {"kind": "gain", "g": g, "joints": joints}
     return out
 

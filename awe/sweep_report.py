@@ -52,7 +52,7 @@ def stats(base, rows, reach_ref, lat_ref):
     lat = [abs(q["cmd_lat8"] - lat_ref) for q in x if q.get("cmd_clean") and q["cmd_lat8"] is not None]
     return {
         "n": len(seeds), "success": round(float(e.mean()), 4), "gain": round(float(e.mean() - b.mean()), 4), "strict_gain": round(float(se.mean() - sb.mean()), 4),
-        "fixed": fixed, "broken": broken, "p_mcnemar": mcnemar_exact(fixed, broken), "grasp_fail": sum(q["grasp_fail"] for q in x),
+        "fixed": fixed, "broken": broken, "p_mcnemar": mcnemar_exact(fixed, broken), "grasp_fail": sum(q["grasp_fail"] for q in x) if all("grasp_fail" in q for q in x) else None,
         "reach_err_median_cm": round(100 * float(np.median(re)), 3) if re else None,
         "cmd_lat8_dev_median_cm_clean": round(100 * float(np.median(lat)), 3) if lat else None, "n_clean": len(lat),
         "identical_traj": sum(r[s]["traj_hash"] == base[s]["traj_hash"] for s in seeds),
