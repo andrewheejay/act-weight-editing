@@ -157,3 +157,5 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Checks run.** The status now says JUDGE_TURN (Gate 0 re-confirm because `awe/` changed, analysis files only, the rollout path is untouched), then the review round 2. `referee.gates.s1_diagnosis` headings still all present. I did not rerun pytest (analysis only).
 
 **Next step.** Referee re-confirms Gate 0, then the reviewer's round 2. If it passes, Stage 2 (head atlas and sweep, see the trap above).
+
+**Correction to session 6 (same day).** "About 1 cm larger" for the commanded lateral offset was loose. The median difference is 0.86 cm at 8 cm above the cube, 0.83 at 12 cm, 0.77 at 10, 0.67 at 6 and 0.43 at the close. The diagnosis and the response say this now. Median difference means grasp_fail median minus success median, not a paired difference.
