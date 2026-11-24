@@ -176,3 +176,12 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Next step.** When both jobs are done: `python -m awe.atlas report` (check the 5 figures by opening them), `python -m awe.sweep_report first`, gzip `sweep.jsonl` to `sweep.jsonl.gz` (`gzip -n`, the referee reads either), commit, then run `python run/jobs.py start recheck -- python -m awe.sweep recheck` (about 25 min), and `python -m awe.sweep_report second` after it. Commit sweep.jsonl.gz and the ledger files. Do not rerun anything under `awe/` while the sweep runs (the workers import code at spawn, so edits there would not change them, but a restarted job would).
 
 **Trap.** `awe/` changed this session (rollout records, atlas), so the referee will re-confirm Gate 0, and the GPU and CPU are shared with the two jobs.
+
+**Corrections to session 7 (same day).**
+- "One of each kind, and each block" is false. The 8 sample variants are enc0.h3.x0, enc2.h1.x2, enc3.h7.sharp2, cross.h2.x0, cross.h1.soft0.5, dself.h4.x2, lat5.-2 and lat9.+2, on 8 frames. enc1 was not sampled, and neither was every kind in every block. The stock side of that comparison was given the same cached backbone features, so it checks the transformer and the restart point only. The backbone and the re-rendering are checked by the recorded-action comparison on 60 frames, which is for the original weights only.
+- `sweep.jsonl` and the running ledger file are NOT untracked. The stop hook counts untracked files, so both are committed as snapshots while the job writes to them, as in stage 1. They will show as modified. Commit the final versions when the job ends. After gzipping, remove the plain `sweep.jsonl`.
+- The selection rules were committed after the sweep had started (07:51 UTC), so git order alone does not prove that I had not looked. I only saw progress lines, per-arm row counts and the original's rows. The overlap score does not use sweep data.
+- The atlas `kept` rule is a sign rule with no significance test. With noise near zero, about half of the null edits would pass it, so `kept` means "same direction", not "real effect".
+- `awe/sweep_report.py` was never run through its own commands. I called its functions on the original only.
+- The geometry check script is now `scratch/geom_check.py` (run with PYTHONPATH=. ; re-running skips the rows already there).
+- Budgets: 5,727 before the session, +24, then the sweep.
