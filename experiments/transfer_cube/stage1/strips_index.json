@@ -1,0 +1,242 @@
+{
+ "20003": {
+  "kind": "class1",
+  "file": "class1_20003_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20022": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20022_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20043": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20043_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20084": {
+  "kind": "class2_not_lifted",
+  "file": "class2_not_lifted_20084_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20108": {
+  "kind": "class1",
+  "file": "class1_20108_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20129": {
+  "kind": "class2_not_lifted",
+  "file": "class2_not_lifted_20129_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20133": {
+  "kind": "success",
+  "file": "success_20133_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20134": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20134_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20180": {
+  "kind": "class2_not_lifted",
+  "file": "class2_not_lifted_20180_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20317": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20317_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20318": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20318_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20390": {
+  "kind": "success",
+  "file": "success_20390_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20404": {
+  "kind": "success",
+  "file": "success_20404_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20407": {
+  "kind": "class1",
+  "file": "class1_20407_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20414": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20414_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20417": {
+  "kind": "class2_not_lifted",
+  "file": "class2_not_lifted_20417_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20455": {
+  "kind": "class0",
+  "file": "class0_20455_class0.jpg",
+  "class": "0",
+  "hash_matches_design_default": true
+ },
+ "20549": {
+  "kind": "class1",
+  "file": "class1_20549_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20563": {
+  "kind": "class1",
+  "file": "class1_20563_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20586": {
+  "kind": "class2_not_lifted",
+  "file": "class2_not_lifted_20586_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20587": {
+  "kind": "class1",
+  "file": "class1_20587_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20590": {
+  "kind": "class2_not_lifted",
+  "file": "class2_not_lifted_20590_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20628": {
+  "kind": "class0",
+  "file": "class0_20628_class0.jpg",
+  "class": "0",
+  "hash_matches_design_default": true
+ },
+ "20631": {
+  "kind": "class1",
+  "file": "class1_20631_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20656": {
+  "kind": "success",
+  "file": "success_20656_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20671": {
+  "kind": "class0",
+  "file": "class0_20671_class0.jpg",
+  "class": "0",
+  "hash_matches_design_default": true
+ },
+ "20674": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20674_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20684": {
+  "kind": "success",
+  "file": "success_20684_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20690": {
+  "kind": "success",
+  "file": "success_20690_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20708": {
+  "kind": "success",
+  "file": "success_20708_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20710": {
+  "kind": "class2_not_lifted",
+  "file": "class2_not_lifted_20710_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20760": {
+  "kind": "class1",
+  "file": "class1_20760_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20832": {
+  "kind": "class0",
+  "file": "class0_20832_class0.jpg",
+  "class": "0",
+  "hash_matches_design_default": true
+ },
+ "20837": {
+  "kind": "success",
+  "file": "success_20837_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20874": {
+  "kind": "success",
+  "file": "success_20874_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20938": {
+  "kind": "success",
+  "file": "success_20938_class4b.jpg",
+  "class": "4b",
+  "hash_matches_design_default": true
+ },
+ "20951": {
+  "kind": "class1",
+  "file": "class1_20951_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20961": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20961_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ },
+ "20967": {
+  "kind": "class1",
+  "file": "class1_20967_class1.jpg",
+  "class": "1",
+  "hash_matches_design_default": true
+ },
+ "20974": {
+  "kind": "class2_lifted",
+  "file": "class2_lifted_20974_class2.jpg",
+  "class": "2",
+  "hash_matches_design_default": true
+ }
+}
