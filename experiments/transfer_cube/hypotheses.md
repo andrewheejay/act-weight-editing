@@ -68,3 +68,19 @@ Known when written: s1 (enc3.h4.x3) +10.1 points over all 1,000 design seeds (13
 Shared expectation: none of the six is expected to exceed s1 or c06 by more than 2 points, given that combination gains so far were sub-additive. If none beats the best single edit (s1), s1 (or c06) goes to validation.
 
 Corrections to this section, same day: none yet.
+
+## 2026-11-24, validation round, written before any validation rollout
+
+Eight candidates get one check each on seeds 30000 to 30499 (8 of at most 10, plus the original, all in `stage3/candidates.json`). The ops are copied from `awe/combo.py`, nothing new is run.
+Choice rule: the docstring of `awe/candidates.py`, fixed before the first validation rollout. It uses the pooled design plus validation net gain (fixed minus broken) among candidates that pass the SPEC rule and have at least 40 distinct matched random edits. s1 (one head, 7 matched edits) is a reference only, because H2 could not be tested with it.
+
+- r4 (enc3.h4.x2 + cross.h1.x0.5): the best design gain (+10.6, 145 fixed, 39 broken) among the two-head arms. Hypothesis: the encoder head enc3.h4 carries the cube-position signal too weakly at ×1 and the arm stops short of the cube or overshoots it, so a milder amplification at ×2 plus a half-strength cross.h1 makes the first reach land better; r4's 53 against 30 paired lead over the deviation-gain rival on design seeds is screening, not proof. Expected validation gain 5 to 9 points.
+- r5 (enc3.h4.x3 + enc2.h3.x0.5): the s1 head plus the mild helper enc2.h3. Hypothesis: the same reach effect plus a small contribution of enc2.h3 at half scale on episodes that enc3.h4 does not fix.
+- r1 (enc3.h4.x3 + enc1.h7.x0): enc3.h4 up plus enc1.h7 off. Hypothesis: enc1.h7 off fixes episodes enc3.h4 does not.
+- r2 (enc3.h4.x2 + enc0.h1.x0): the milder c03. Hypothesis: the same effect at a lower dose breaks fewer seeds (22 broken on design seeds against 53 for c03), so it might hold its gain better off the design seeds.
+- r6 (cross.h1.x0.5 + enc0.h1.x0 + enc3.h4.x1.5): three milder heads. Hypothesis: broad small effects hold up off the design seeds better than one large effect.
+- c06 (cross.h1.x0.5 + enc0.h1.x0): the two-head edit without enc3.h4, 30 broken on design seeds. Hypothesis: it is the mechanism (cross-attention dose plus early-encoder head) that r6 refines.
+- c03 (enc3.h4.x3 + enc0.h1.x0): the strong version of r2. Hypothesis: the same at full dose, which broke 53 on design seeds, so it should lose on validation if r2's expectation holds.
+- s1 (enc3.h4.x3 alone): the single-head reference.
+
+Expectation across the group: validation gains will be 1 to 4 points smaller than design gains (they are the top of 25 selected arms), the candidates will be statistically tied among themselves, and at most one of r4, r5, r1 will beat the original by more than 8 points.

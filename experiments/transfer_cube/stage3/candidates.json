@@ -1,0 +1,234 @@
+{
+ "r4": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 4,
+    "scale": 2
+   },
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 1,
+    "scale": 0.5
+   }
+  ],
+  "heads": [
+   [
+    "enc3",
+    4,
+    2
+   ],
+   [
+    "cross",
+    1,
+    0.5
+   ]
+  ],
+  "n_matched": 49
+ },
+ "r5": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 4,
+    "scale": 3
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.2.self_attn",
+    "head": 3,
+    "scale": 0.5
+   }
+  ],
+  "heads": [
+   [
+    "enc3",
+    4,
+    3
+   ],
+   [
+    "enc2",
+    3,
+    0.5
+   ]
+  ],
+  "n_matched": 49
+ },
+ "r1": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 4,
+    "scale": 3
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.1.self_attn",
+    "head": 7,
+    "scale": 0
+   }
+  ],
+  "heads": [
+   [
+    "enc3",
+    4,
+    3
+   ],
+   [
+    "enc1",
+    7,
+    0
+   ]
+  ],
+  "n_matched": 49
+ },
+ "r2": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 4,
+    "scale": 2
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 1,
+    "scale": 0
+   }
+  ],
+  "heads": [
+   [
+    "enc3",
+    4,
+    2
+   ],
+   [
+    "enc0",
+    1,
+    0
+   ]
+  ],
+  "n_matched": 49
+ },
+ "r6": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 1,
+    "scale": 0.5
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 1,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 4,
+    "scale": 1.5
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    1,
+    0.5
+   ],
+   [
+    "enc0",
+    1,
+    0
+   ],
+   [
+    "enc3",
+    4,
+    1.5
+   ]
+  ],
+  "n_matched": 343
+ },
+ "c06": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 1,
+    "scale": 0.5
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 1,
+    "scale": 0
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    1,
+    0.5
+   ],
+   [
+    "enc0",
+    1,
+    0
+   ]
+  ],
+  "n_matched": 49
+ },
+ "c03": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 4,
+    "scale": 3
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 1,
+    "scale": 0
+   }
+  ],
+  "heads": [
+   [
+    "enc3",
+    4,
+    3
+   ],
+   [
+    "enc0",
+    1,
+    0
+   ]
+  ],
+  "n_matched": 49
+ },
+ "s1": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 4,
+    "scale": 3
+   }
+  ],
+  "heads": [
+   [
+    "enc3",
+    4,
+    3
+   ]
+  ],
+  "n_matched": 7
+ }
+}
