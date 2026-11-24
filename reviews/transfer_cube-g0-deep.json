@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "detail": "checkpoint hash 6fe4fbeb8d5f, recorded 6fe4fbeb8d5f",
+      "name": "g0.checkpoint_sha",
+      "ok": true,
+      "soft": false
+    },
+    {
+      "detail": "",
+      "name": "tests.pass",
+      "ok": true,
+      "soft": false
+    },
+    {
+      "detail": "replayed 20 random seeds from harness_repro.jsonl, 0 differ ",
+      "name": "audit.reproduction",
+      "ok": true,
+      "soft": false
+    },
+    {
+      "detail": "re-ran lerobot-eval on seeds 1003 to 1007. 5 of 5 match the Stage 0 run",
+      "name": "g0.stock_cmd_runs",
+      "ok": true,
+      "soft": false
+    }
+  ],
+  "commit": "a73f2d461727e61a5f2d8ead4c6e4ddbc185855e",
+  "failing": [],
+  "fingerprint_code": "f03a03af23d9706d934e9b599168f83f68e0745d32b684ad5530bc2b94b1d5d3",
+  "fingerprint_data": "081dee0b76989a8aaaf6e33f8de9fd105514b088fb702ac87cf65e70ae61e7b7",
+  "ok": true,
+  "stock_audit": "re-ran lerobot-eval on seeds 1003 to 1007. 5 of 5 match the Stage 0 run",
+  "task": "transfer_cube",
+  "time": "2026-11-24T04:39:54Z"
+}
