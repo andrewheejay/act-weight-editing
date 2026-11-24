@@ -1,0 +1,140 @@
+{
+ "built_by": "python -m awe.freeze build",
+ "selection_rule": "stage3/baselines_summary.json, `rule`, before any baseline rollout",
+ "deviations": "two extra deviation gains and both gripper readings (DEVIATIONS.md, 2026-11-24)",
+ "baselines": [
+  {
+   "family": "constant_offset",
+   "arm": "base_constant_offset",
+   "setting": "off_j9_m0.01",
+   "recipe": {
+    "post": {
+     "kind": "offset",
+     "joint": 9,
+     "delta": -0.01
+    }
+   },
+   "n_settings_tried": 80,
+   "tuned_on": "design seeds 20000 to 20999 (screening on 200, the best settings on all 1,000), see stage3/baselines_summary.json",
+   "design": {
+    "n": 1000,
+    "gain": 0.033,
+    "strict_gain": 0.028,
+    "fixed": 63,
+    "broken": 30,
+    "p_mcnemar": 0.0008100087738623599
+   },
+   "validation_one_check": {
+    "n": 500,
+    "gain": 0.024,
+    "strict_gain": 0.018,
+    "fixed": 25,
+    "broken": 13,
+    "p": 0.07295138851623051,
+    "share_of_failures_removed": 0.1348
+   }
+  },
+  {
+   "family": "deviation_gain",
+   "arm": "base_deviation_gain",
+   "setting": "gain_both_nogrip_0.9",
+   "recipe": {
+    "post": {
+     "kind": "gain",
+     "g": 0.9,
+     "joints": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    }
+   },
+   "n_settings_tried": 40,
+   "tuned_on": "design seeds 20000 to 20999 (screening on 200, the best settings on all 1,000), see stage3/baselines_summary.json",
+   "design": {
+    "n": 1000,
+    "gain": 0.083,
+    "strict_gain": 0.092,
+    "fixed": 150,
+    "broken": 67,
+    "p_mcnemar": 1.7587996400876623e-08
+   },
+   "validation_one_check": {
+    "n": 500,
+    "gain": 0.044,
+    "strict_gain": 0.07,
+    "fixed": 63,
+    "broken": 41,
+    "p": 0.03895793340131187,
+    "share_of_failures_removed": 0.2472
+   }
+  },
+  {
+   "family": "shorter_chunk",
+   "arm": "base_shorter_chunk",
+   "setting": "chunk50",
+   "recipe": {
+    "n_action_steps": 50
+   },
+   "n_settings_tried": 2,
+   "tuned_on": "design seeds 20000 to 20999 (screening on 200, the best settings on all 1,000), see stage3/baselines_summary.json",
+   "design": {
+    "n": 1000,
+    "gain": -0.027,
+    "strict_gain": -0.053,
+    "fixed": 96,
+    "broken": 123,
+    "p_mcnemar": 0.0786937337719646
+   },
+   "validation_one_check": {
+    "n": 500,
+    "gain": -0.03,
+    "strict_gain": -0.03,
+    "fixed": 52,
+    "broken": 67,
+    "p": 0.19915839818564474,
+    "share_of_failures_removed": -0.1685
+   }
+  },
+  {
+   "family": "simplest_fix",
+   "arm": "base_simplest_fix",
+   "setting": "app_j8_m0.04",
+   "recipe": {
+    "post": {
+     "kind": "approach_offset",
+     "joint": 8,
+     "delta": -0.04
+    }
+   },
+   "n_settings_tried": 40,
+   "tuned_on": "design seeds 20000 to 20999 (screening on 200, the best settings on all 1,000), see stage3/baselines_summary.json",
+   "design": {
+    "n": 1000,
+    "gain": 0.034,
+    "strict_gain": 0.019,
+    "fixed": 101,
+    "broken": 67,
+    "p_mcnemar": 0.010679293127422492
+   },
+   "validation_one_check": {
+    "n": 500,
+    "gain": 0.03,
+    "strict_gain": 0.028,
+    "fixed": 48,
+    "broken": 33,
+    "p": 0.11927366831176445,
+    "share_of_failures_removed": 0.1685
+   }
+  }
+ ]
+}

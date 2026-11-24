@@ -1,0 +1,3 @@
+{"task": "transfer_cube", "seed": 1000, "arm": "original", "budget": "setup", "purpose": "test suite"}
+{"task": "transfer_cube", "seed": 1000, "arm": "off0", "budget": "setup", "purpose": "test suite"}
+{"task": "transfer_cube", "seed": 1000, "arm": "off", "budget": "setup", "purpose": "test suite"}
