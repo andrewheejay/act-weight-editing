@@ -1,0 +1,22 @@
+{
+  "commit": "575c64c05b26daa9e7d6f23f3262eec567a99b4f",
+  "decisions_sha256": "ecaf23ff9ded9acede152f3bd51e66acd7062301c0a7ab8fab8e1d3f470dbd4e",
+  "diagnosis_sha256": "cfd777a38fd5dcff9289f8bccd9d985562c9e23f8f1713ebe89c8c85a21b18a2",
+  "recomputed": {
+    "benchmark_success": 0.816,
+    "chunk_gains_points": {
+      "25": -8.699999999999996,
+      "50": -2.6999999999999913
+    },
+    "failure_rate": 0.18400000000000005,
+    "n_action_steps": 100,
+    "primary_metric": "benchmark",
+    "proceed": true,
+    "strict_success": 0.784
+  },
+  "review_not_independent": false,
+  "review_rounds": 2,
+  "review_unresolved": false,
+  "task": "transfer_cube",
+  "time": "2026-11-24T07:47:57Z"
+}
