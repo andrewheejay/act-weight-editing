@@ -28,8 +28,10 @@ def torch_setup():
     torch.set_num_threads(1)
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
-    torch.backends.cuda.matmul.allow_tf32 = True  # what lerobot-eval sets
-    torch.backends.cudnn.allow_tf32 = True
+    # TF32 off: full float32. With it on, the first action chunk moves by about 1e-3 between batch sizes and by
+    # cudnn.benchmark. Off, the same comparison gives about 1e-6 (scratch/diag_batch.py). lerobot-eval is run with --tf32=false.
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
     torch.set_grad_enabled(False)
 
 

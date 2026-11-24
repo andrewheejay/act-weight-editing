@@ -1,0 +1,9 @@
+{"task": "transfer_cube", "seed": 1000, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=1 (scratch/diag_lp_threads.py), no policy"}
+{"task": "transfer_cube", "seed": 1005, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=1 (scratch/diag_lp_threads.py), no policy"}
+{"task": "transfer_cube", "seed": 1010, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=1 (scratch/diag_lp_threads.py), no policy"}
+{"task": "transfer_cube", "seed": 1000, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=4 (scratch/diag_lp_threads.py), no policy"}
+{"task": "transfer_cube", "seed": 1005, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=4 (scratch/diag_lp_threads.py), no policy"}
+{"task": "transfer_cube", "seed": 1010, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=4 (scratch/diag_lp_threads.py), no policy"}
+{"task": "transfer_cube", "seed": 1000, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=8 (scratch/diag_lp_threads.py), no policy"}
+{"task": "transfer_cube", "seed": 1005, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=8 (scratch/diag_lp_threads.py), no policy"}
+{"task": "transfer_cube", "seed": 1010, "arm": "original", "budget": "setup", "purpose": "backfill: 40-step zero-action render probe in the stock env, LP_NUM_THREADS=8 (scratch/diag_lp_threads.py), no policy"}

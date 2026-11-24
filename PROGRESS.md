@@ -26,3 +26,23 @@ The spec, the plan, the rules and the referee were fixed before this line. No ro
 **Jobs running at the end of this session.** `stock_gpu` (stock lerobot-eval, GPU, batch 50, about 60% done, a side reference only) and `stock_mesa` (the official stock run: software rendering, batch 8, 500 seeds, about 2 to 3 hours). `stock_mesa` is one call, so it cannot resume after a restart, it has to be started again.
 
 **Next step.** When `stock_mesa` is done: measure rollouts per second with nothing else running (`python -m awe.stage0 repeat --name` into a scratch file, or any 100-seed run), then `python -m awe.stage0_finish --rps R`. That copies eval_info.json, prints every harness/stock mismatch and writes env.json. Look at each mismatch, write `stage0/mismatches.md` with one line per seed, and run the status. Wall time of this session about 25 minutes before the jobs. Reproduction-seed rollouts run so far (harness, setup budget): 500 GPU + 500 GPU + 500 Mesa + 300 repeat and sham + the tests and probes, all in the ledger.
+
+## 2026-11-24, session 2 (Stage 0)
+
+**Done.** Looked at the finished stock run. It failed the agreement gate, so I found the cause and fixed it in the harness and the stock command. The gate number was seen before the change. DEVIATIONS.md says so in full.
+
+**Numbers measured.**
+- Stock run (Mesa, batch 8, TF32 on): 81.8% success (409 of 500). Harness at the same settings 82.8%. Agreement 96.6%, 17 mismatched seeds (listed in PROGRESS session 2 diag below).
+- Agreement matrix between variants (500 seeds, success): stock vs harness TF32-on batch 1 96.6%. Harness vs harness: TF32 off batch 1 vs TF32 on batch 1 96.2%, TF32 off batch 1 vs TF32 off with 8 copies in the batch and cudnn.benchmark 98.8%. Published file: 93.8% vs TF32-on harness, 94.0% vs TF32-off harness. `scratch/diag_compare.py` prints it.
+- First action chunk difference between batch 1 and batch 8, max over 8 seeds: 1.1e-3 TF32 on, 8e-7 TF32 off. cudnn.benchmark on or off: 1.0e-3 TF32 on, 0 TF32 off. Camera images and states at reset are identical in stock and harness.
+- Harness re-made with TF32 off: 81.8% success (409 of 500), identical hashes to the diagnostic run off1 on all 500 seeds. repeat_a, repeat_b and sham: 100 of 100 identical scores and trajectory hashes against each other and the 500-seed file.
+- Tests: 5 passed in 80 s. Harness speed with the box otherwise idle: 500 seeds in 66.5 s (7.5 rollouts/s, 8 workers, startup included), 100 seeds in 21 s.
+- Stock at batch 1, TF32 off: 3 seeds (1054 to 1056) agree with the harness on success and max reward, 35.7 s per episode.
+
+**Ruled out.** Renderer difference (images identical). Physics (the earlier test). Batch 8 as the stock setting.
+
+**My rollouts, with a correction.** scratch/diag_lp_threads.py ran 9 zero-action 40-step probes without the ledger. Backfilled in `ledger/transfer_cube-setup-20261124-backfill.jsonl`. Everything else went through the ledger. Setup rollouts this session: harness 500 (TF32 off) + 300 (repeat and sham) + 1,500 (diag_numerics off1, off8, on8) + test suite + stock 3, plus the 500 stock seeds logged for the running job.
+
+**Jobs running.** `stock_b1`, the official stock run: `lerobot-eval`, Mesa, batch 1, TF32 off, LP_NUM_THREADS=8, 500 seeds, seed 1000, about 5 hours (35 s per episode). One call, so it cannot resume after a restart.
+
+**Next step.** When `stock_b1` is done: `python -m awe.stage0_finish --rps 7.5`, which copies eval_info.json, prints the mismatches and writes env.json. Write `stage0/mismatches.md` with one line per remaining mismatched seed (expect few), then run the status. If agreement is still below 98%, do not change settings again without writing down why. Report the number as it is and consider WAITING_FOR_ANDREW.md.

@@ -1,0 +1,76 @@
+{
+  "per_task": [
+    {
+      "task_group": "AlohaTransferCube-v0",
+      "task_id": 0,
+      "metrics": {
+        "sum_rewards": [
+          321.0,
+          62.0,
+          259.0
+        ],
+        "max_rewards": [
+          4.0,
+          1.0,
+          4.0
+        ],
+        "successes": [
+          true,
+          false,
+          true
+        ],
+        "video_paths": [
+          "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_0.mp4",
+          "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_1.mp4",
+          "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_2.mp4"
+        ],
+        "predicted_video_paths": []
+      },
+      "n_episodes": 3,
+      "n_success": 2,
+      "pc_success": 66.66666666666667,
+      "pc_success_ci95": [
+        20.76596008020478,
+        93.85080552796038
+      ]
+    }
+  ],
+  "per_group": {
+    "AlohaTransferCube-v0": {
+      "avg_sum_reward": 214.0,
+      "avg_max_reward": 3.0,
+      "pc_success": 66.66666666666666,
+      "n_episodes": 3,
+      "n_success": 2,
+      "pc_success_ci95": [
+        20.76596008020478,
+        93.85080552796038
+      ],
+      "video_paths": [
+        "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_0.mp4",
+        "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_1.mp4",
+        "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_2.mp4"
+      ],
+      "predicted_video_paths": []
+    }
+  },
+  "overall": {
+    "avg_sum_reward": 214.0,
+    "avg_max_reward": 3.0,
+    "pc_success": 66.66666666666666,
+    "n_episodes": 3,
+    "n_success": 2,
+    "pc_success_ci95": [
+      20.76596008020478,
+      93.85080552796038
+    ],
+    "eval_s": 107.19748735427856,
+    "eval_ep_s": 35.732495864232384,
+    "video_paths": [
+      "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_0.mp4",
+      "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_1.mp4",
+      "scratch/stock_smoke_b1/videos/AlohaTransferCube-v0_0/eval_episode_2.mp4"
+    ],
+    "predicted_video_paths": []
+  }
+}

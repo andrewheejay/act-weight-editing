@@ -1,0 +1,3 @@
+{"task": "transfer_cube", "seed": 1054, "arm": "original", "budget": "setup", "purpose": "stock lerobot-eval smoke, tf32 off, batch 1, LP_NUM_THREADS=8"}
+{"task": "transfer_cube", "seed": 1055, "arm": "original", "budget": "setup", "purpose": "stock lerobot-eval smoke, tf32 off, batch 1, LP_NUM_THREADS=8"}
+{"task": "transfer_cube", "seed": 1056, "arm": "original", "budget": "setup", "purpose": "stock lerobot-eval smoke, tf32 off, batch 1, LP_NUM_THREADS=8"}
