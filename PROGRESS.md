@@ -265,3 +265,7 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Trap.** `combo.jsonl` and the ledger files for the running jobs are committed as snapshots. Do not edit `awe/` modules those jobs import until both are done (the new files `awe/post.py`, `awe/baselines.py` and the hook in rollout.py, arms.py are used by `baselines`). `baselines` is chained on `combo_a.exit`, so if the box restarts before combo_a finishes, restart `baselines` after it.
 
 **Budget.** Agent 71,851 before this session, +9,500 from combo_a, so about 81,351, leaving about 18,600 for group B, refinement and 5,500 of validation. Baselines 0, then 43,200 of 50,000 planned, plus 2,000 for validation. Validation checks used 0 of 10.
+
+**Corrections to session 10 (same day).**
+- "The fourfold difference between halves" is wrong. In split_half.json the gains of the 10 gain picks shrank from 4.0–9.4 points (first half) to −0.8–5.2 (second half), for most heads to about a half or two thirds. The correct reading is that gains shrink, not by a factor of four.
+- "The x3, x1.5, x0.5, x4 values were not used to choose anything before the combination lines were written" is wrong. They were the basis on which I chose the scales in the combinations (enc3.h4 x3, cross.h1 x0.5, cross.h6 x0.5). They were not used before the dose report. The group A seeds (20500 to 20999) were not used for the scale choices.
