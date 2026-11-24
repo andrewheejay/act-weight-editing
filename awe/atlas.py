@@ -130,7 +130,7 @@ def cmd_frames(task):
 
 # ------------------------------------------------------------------ forward pass from cached backbone features
 class Fwd:
-    """The LeRobot ACT forward pass, restarted at any layer. Checked against Policy.chunk in cmd_effects."""
+    """The LeRobot ACT forward pass, restarted at any layer. Identical to ACTPolicy.predict_action_chunk (scratch/atlas_smoke.py)."""
 
     def __init__(self, task):
         import torch
@@ -203,15 +203,15 @@ def start_layer(block):
     return {"latent": 0}.get(block, 9)  # 9: decoder only
 
 
-def check_fwd(task, F, meta, feats, n=12):
-    """Cached-feature forward against Policy.chunk on live env frames, and recorded actions against the base chunk."""
+def check_fwd(task, F, meta, feats):
+    """Recorded rollout actions against the base chunk from the re-rendered frame (60 frames). Stock-forward identity: scratch/atlas_smoke.py."""
     import numpy as np
 
     t = F.t
     poses, fl = frame_list()
     from .pool import trace_name
 
-    errs, rec_err = [], []
+    rec_err = []
     idx = np.linspace(0, len(fl) - 1, 60).astype(int)
     for k in idx:
         x, pos = F.embed(t.tensor(feats[k][None]).cuda(), t.tensor(meta["state"][k][None]).cuda())

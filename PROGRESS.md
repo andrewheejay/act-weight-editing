@@ -159,3 +159,20 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Next step.** Referee re-confirms Gate 0, then the reviewer's round 2. If it passes, Stage 2 (head atlas and sweep, see the trap above).
 
 **Correction to session 6 (same day).** "About 1 cm larger" for the commanded lateral offset was loose. The median difference is 0.86 cm at 8 cm above the cube, 0.83 at 12 cm, 0.77 at 10, 0.67 at 6 and 0.43 at the close. The diagnosis and the response say this now. Median difference means grasp_fail median minus success median, not a paired difference.
+
+## 2026-11-24, session 7 (Stage 2 started: sweep and atlas jobs running)
+
+**Done.**
+- `awe/geom.py`: every transfer-cube record now also carries `zmax20`, `grasp_fail`, `cmd_lat8` (commanded lateral offset at 8 cm, raw signed metres) and `cmd_clean`. It is pure kinematics on a private MjData, so the simulation is not touched. Checked on design seeds 20000 to 20023 (24 rollouts, agent budget, `scratch/geom_check.jsonl`): all old keys are identical to `design_default.jsonl`, `cmd_clean` and `grasp_fail` match the stage 1 features on all 24, and the largest difference in `cmd_lat8` and `zmax20` is 4.9e-6 m (record rounding and float32 traces). `pytest tests`: 5 passed in 70 s.
+- `awe/sweep.py` and job `sweep` (started 07:51 UTC): original and 96 single-head edits on 20000 to 20499, 48,500 rollouts, about 7 per second, writing `stage2/sweep.jsonl` (untracked until it is complete). Arm ids look like `enc0.h3.x0`, `cross.h2.x2`, `dself.h7.x0`. The original's 500 rows have the same trajectory hashes as stage 1 (500 of 500).
+- `awe/atlas.py`: overlap score, top-5 and top-10 selection and the `kept` rule are in its docstring and were committed (second commit of this session) before any edited arm's result was looked at. Frames job ran in the foreground (4,244 frames, 3 min 19 s, cache in `cache/atlas/`, gitignored). Job `atlas` (started 07:57 UTC) runs `awe.atlas effects`, writing `stage2/atlas/raw.npz`.
+- Forward pass from cached backbone features, `scratch/atlas_smoke.py`: differs from LeRobot's `predict_action_chunk` by 0.0 for the original and 8 sample variants (one of each kind, and each block). Recorded rollout actions minus the base chunk on re-rendered frames (60 frames): max abs 2.2e-4, 3.9e-3, 1.6e-3, 9.2e-4 at steps 0, 100, 200, 300, median 1.2e-4 (float32 qpos in the traces, so not exactly zero).
+- `awe/atlas_report.py` and `awe/sweep_report.py` are written. I ran the latter only on the original against itself (zero gain, as it must be) and never printed a partial edited arm. The first of those, atlas_report, has not been run at all, so expect a bug or two.
+
+**Numbers.** Original on 20000 to 20499: 80.8% benchmark (404 of 500), 63 grasp failures, median reach error 1.28 cm, median |cmd_lat8 - ref| 0.768 cm (424 clean episodes, ref +0.074 cm). Budget: 24 rollouts spent this session before the sweep. The sweep adds 48,500, so about 54,300 of 100,000 will be used when it ends, which leaves about 45,700 for the recheck (15 arms + original x 500 = 8,000) and Stage 3.
+
+**Decisions I fixed before looking.** See `awe/atlas.py` docstring (overlap at step 0 on the whole 41x41 grid with benchmark failures smoothed at 1 cm; top 5 heads, better of x0/x2 per head; top 10 edits by gain; kept means same sign in both halves). The scores at step 100 and for grasp failures only are secondary numbers.
+
+**Next step.** When both jobs are done: `python -m awe.atlas report` (check the 5 figures by opening them), `python -m awe.sweep_report first`, gzip `sweep.jsonl` to `sweep.jsonl.gz` (`gzip -n`, the referee reads either), commit, then run `python run/jobs.py start recheck -- python -m awe.sweep recheck` (about 25 min), and `python -m awe.sweep_report second` after it. Commit sweep.jsonl.gz and the ledger files. Do not rerun anything under `awe/` while the sweep runs (the workers import code at spawn, so edits there would not change them, but a restarted job would).
+
+**Trap.** `awe/` changed this session (rollout records, atlas), so the referee will re-confirm Gate 0, and the GPU and CPU are shared with the two jobs.
