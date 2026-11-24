@@ -214,3 +214,29 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 - "The top gains" are the largest of 96 noisy estimates, so the true gains are likely smaller than these.
 - "The decoder's self-attention values are all zeros" is loose. The decoder input is zeros, so every value vector is the same constant (the projection bias). Changing the attention pattern then changes nothing, which fits the measured 2e-7. Scaling a head does shift that constant, hence the small x0/x2 effects.
 - `sweep_half2.jsonl` and ledger file `transfer_cube-agent-20261124T093039Z-72032.jsonl` are committed as snapshots of a running job. Commit the final versions when `recheck` ends. I have not looked at any edited arm's second-half outcome.
+
+## 2026-11-24, session 9 (Stage 2 finished, Stage 3 dose response running)
+
+**Done.** `recheck` had ended cleanly (8,000 rollouts, 900.7 s, 8.9/s). Ran `python -m awe.sweep_report second`, gzipped `sweep_half2.jsonl` (checked identical before removing the plain file) and committed with the final ledger file (8,000 rows). Status moved to Stage 3. Wrote `experiments/transfer_cube/hypotheses.md` and `awe/dose.py`, committed both, then started job `dose` (09:49 UTC, 9,600 rollouts: 8 heads x 4 new scales x seeds 20000 to 20299, resumable, writes `stage3/dose.jsonl`). At about 7/s this is 20 to 25 min. No validation rollout has been run.
+
+**Split-half result.** 13 of 15 edits kept the sign of their gain (dropped: cross.h5.x0 and dself.h2.x2). Two of the 13 are harmful in both halves (cross.h3.x0, enc0.h0.x2), so 11 are positive in both. Original 404 and 412 of 500 (80.8%, 82.4%), 63 grasp failures in each half. The table is benchmark gain in points first/second half, then fixed and broken in the second half, then grasp failures first/second (original 63/63), then strict gain in the second half.
+- cross.h1.x0 +9.4/+5.0, 74 and 49, 25/38, +5.4
+- enc3.h4.x2 +7.8/+4.0, 29 and 9, 35/45, +3.6
+- enc0.h1.x0 +7.0/+4.8, 39 and 15, 30/46, +5.6
+- enc0.h6.x0 +6.8/+5.2, 57 and 31, 39/41, +6.2
+- cross.h3.x2 +6.8/+4.4, 48 and 26, 29/40, +3.2
+- enc1.h7.x0 +6.4/+4.4, 33 and 11, 37/46, +4.4
+- cross.h6.x0 +4.8/+2.4, enc2.h3.x0 +4.0/+3.8, cross.h0.x2 +4.2/+0.8, enc3.h0.x0 +3.0/+1.8, enc2.h1.x0 +1.6/+1.2
+- All 10 gain picks shrank in the second half (winner's curse, as expected). The second half was not used to pick them, so it is the less biased number, but the choice of which heads go on now uses it too.
+
+**Read with care.** The gain does not follow the tracking number. cross.h1.x0 cuts grasp failures to 25 and 38 of 500, yet its median reach error is 1.42 and 1.45 cm against the original's 1.28 in the first half. enc3.h4.x2, enc0.h1.x0 and enc1.h7.x0 have medians of 1.17 to 1.21. The dose check may therefore fail for reach error on the best head, and I said so in `hypotheses.md` before the run. Do not swap the tracking number to fit. The kept rule is a sign rule with no test.
+
+**Scope notes.** The 8 dose heads are the 8 largest mean gains among edits positive in both halves (rule in `awe/dose.py`, written after seeing the split-half table). The dose seeds are inside the half that selected the edits, so x0 and x2 values there are optimistic. The 300 seeds are a budget choice (the spec gives no count).
+
+**Budget.** Agent 62,251 before the dose job, about 71,850 when it ends, so about 28,000 left. Validation needs up to 5,500 of that (original plus 10 candidates x 500), which leaves about 22,000 for hand-written combinations (22 arms on all 1,000 design seeds, or more on 500). Baselines have their own 50,000 and have not been started.
+
+**Ruled out / not done.** No combination has been run. No baseline code exists (`awe/arms.py` raises NotImplementedError for output-level recipes). I did not touch other `awe/` files while the job runs.
+
+**Next step.** When `dose` is done: `python -m awe.dose report` (writes `stage3/dose_response.json`), gzip `stage3/dose.jsonl`, commit. Then add the combination hypotheses to `hypotheses.md` before running them (ideas: the five strongest of cross.h1.x0, enc3.h4.x2, enc0.h1.x0, enc0.h6.x0, cross.h3.x2, enc1.h7.x0 in pairs and triples, with dose-informed scales, up to 6 heads), run on the 1,000 design seeds, and write the baselines (constant offset, deviation gain, chunk 50/25, own simplest fix) in `awe/baselines.py` plus the `post` hook in `awe/arms.py`, with tests. The target is a net removal of at least 35% of failures (64 of 184 on the design seeds), with the strict gain not below -2 points.
+
+**Trap.** `dose.jsonl` and ledger file `transfer_cube-agent-20261124T094919Z-73756.jsonl` are committed as snapshots of a running job. Commit the final versions when it ends. Do not edit `awe/` modules the job imports while it runs.

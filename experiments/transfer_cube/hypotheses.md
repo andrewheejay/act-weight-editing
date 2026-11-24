@@ -16,3 +16,7 @@ The eight heads are picked by the rule in `awe/dose.py`, not by hand. Each has i
 - cross.h6 (cross.h6.x0.5, cross.h6.x1.5, cross.h6.x3, cross.h6.x4): turning it down reduces grasp failures but breaks nearly as many seeds, so I expect little net gain.
 
 Expectation on the tracking number, stated now because the sweep already hints at it: median reach error does not follow the gain. In split_half.json, cross.h1.x0 cuts grasp failures from 63 to 25 of 500 (first half) while its median reach error goes up (1.28 to 1.42 cm). So reach error may fail the dial test on the heads that help most, and that would be reported as it is.
+
+Corrections, same day, while the run was going and before any of its results were read:
+- cross.h1.x0 did not break "the most seeds". It broke 88 of the 1,000 design seeds over both halves. cross.h5.x0 broke 135 and cross.h6.x0 broke 89.
+- The head rule (positive in both halves, the 8 largest mean gains) and the seed range were written in this session, after the split-half table was seen. The seeds 20000 to 20299 are part of the half that selected these edits, so their x0 and x2 values are optimistic.
