@@ -19,12 +19,12 @@
       "soft": false
     }
   ],
-  "commit": "2e623b6245d1fca7db4534ce73d3df243827213e",
+  "commit": "cdad3f6bfd197d209a6c1d71e770a7286cef9937",
   "failing": [],
-  "fingerprint_code": "1f531c64f9ceb70735b41172bf3fc9ae384989d86d70a04fd3a8cab59b82af50",
+  "fingerprint_code": "57f7981af4afdf6468229e6d3121617436fa46ff142c20b24f950c989abda624",
   "fingerprint_data": "081dee0b76989a8aaaf6e33f8de9fd105514b088fb702ac87cf65e70ae61e7b7",
   "ok": true,
   "stock_audit": "re-ran lerobot-eval on seeds 1003 to 1007. 5 of 5 match the Stage 0 run",
   "task": "transfer_cube",
-  "time": "2026-11-24T12:21:03Z"
+  "time": "2026-11-24T12:41:36Z"
 }
