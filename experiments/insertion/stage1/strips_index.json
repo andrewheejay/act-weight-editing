@@ -1,0 +1,282 @@
+{
+ "20001": {
+  "kind": "G0",
+  "file": "G0_20001_class0.jpg",
+  "class": "0",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20019": {
+  "kind": "M",
+  "file": "M_20019_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20023": {
+  "kind": "G0",
+  "file": "G0_20023_class0.jpg",
+  "class": "0",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20024": {
+  "kind": "G1",
+  "file": "G1_20024_class1.jpg",
+  "class": "1",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20037": {
+  "kind": "M",
+  "file": "M_20037_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20090": {
+  "kind": "M",
+  "file": "M_20090_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20158": {
+  "kind": "M",
+  "file": "M_20158_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20192": {
+  "kind": "G1",
+  "file": "G1_20192_class1.jpg",
+  "class": "1",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20251": {
+  "kind": "M",
+  "file": "M_20251_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20276": {
+  "kind": "A",
+  "file": "A_20276_class4a.jpg",
+  "class": "4a",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20302": {
+  "kind": "M",
+  "file": "M_20302_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20365": {
+  "kind": "S",
+  "file": "S_20365_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20384": {
+  "kind": "G0",
+  "file": "G0_20384_class0.jpg",
+  "class": "0",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20393": {
+  "kind": "G0",
+  "file": "G0_20393_class0.jpg",
+  "class": "0",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20395": {
+  "kind": "S",
+  "file": "S_20395_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20473": {
+  "kind": "G0",
+  "file": "G0_20473_class0.jpg",
+  "class": "0",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20497": {
+  "kind": "M",
+  "file": "M_20497_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20499": {
+  "kind": "M",
+  "file": "M_20499_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20540": {
+  "kind": "G1",
+  "file": "G1_20540_class1.jpg",
+  "class": "1",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20578": {
+  "kind": "A",
+  "file": "A_20578_class4a.jpg",
+  "class": "4a",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20596": {
+  "kind": "S",
+  "file": "S_20596_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20605": {
+  "kind": "A",
+  "file": "A_20605_class4a.jpg",
+  "class": "4a",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20611": {
+  "kind": "S",
+  "file": "S_20611_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20620": {
+  "kind": "M",
+  "file": "M_20620_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20635": {
+  "kind": "S",
+  "file": "S_20635_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20647": {
+  "kind": "M",
+  "file": "M_20647_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20688": {
+  "kind": "G1",
+  "file": "G1_20688_class1.jpg",
+  "class": "1",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20710": {
+  "kind": "G1",
+  "file": "G1_20710_class1.jpg",
+  "class": "1",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20729": {
+  "kind": "S",
+  "file": "S_20729_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20788": {
+  "kind": "G2",
+  "file": "G2_20788_class2.jpg",
+  "class": "2",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20794": {
+  "kind": "A",
+  "file": "A_20794_class4a.jpg",
+  "class": "4a",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20809": {
+  "kind": "S",
+  "file": "S_20809_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20814": {
+  "kind": "M",
+  "file": "M_20814_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20821": {
+  "kind": "G1",
+  "file": "G1_20821_class1.jpg",
+  "class": "1",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20825": {
+  "kind": "G1",
+  "file": "G1_20825_class1.jpg",
+  "class": "1",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20832": {
+  "kind": "M",
+  "file": "M_20832_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20859": {
+  "kind": "S",
+  "file": "S_20859_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20894": {
+  "kind": "S",
+  "file": "S_20894_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ },
+ "20912": {
+  "kind": "M",
+  "file": "M_20912_class3.jpg",
+  "class": "3",
+  "strict": false,
+  "hash_matches_design_default": true
+ },
+ "20995": {
+  "kind": "S",
+  "file": "S_20995_class4b.jpg",
+  "class": "4b",
+  "strict": true,
+  "hash_matches_design_default": true
+ }
+}
