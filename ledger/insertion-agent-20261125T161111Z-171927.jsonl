@@ -1,0 +1,3 @@
+{"task": "insertion", "seed": 20001, "arm": "base_deviation_gain", "budget": "agent", "purpose": "freeze_clean_copy"}
+{"task": "insertion", "seed": 20002, "arm": "base_deviation_gain", "budget": "agent", "purpose": "freeze_clean_copy"}
+{"task": "insertion", "seed": 20000, "arm": "base_deviation_gain", "budget": "agent", "purpose": "freeze_clean_copy"}

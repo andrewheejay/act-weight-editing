@@ -699,3 +699,39 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 - `python -m awe.validate_ins report` was run once by hand at the start of this session (it rewrites stage3/validation/summary.json from the same rows, before the first commit of that file).
 - "1,400 of its 6,750 pair rollouts" in the DEVIATIONS correction is the count printed right after that commit, so it is approximate.
 - The session ends with `autogreedy_ins` running (about 2,400 of 6,750 pair rollouts). Rows written after the last commit are on disk and uncommitted.
+
+## 2026-11-25, session 27 (insertion Stage 4 package complete, every arm smoke-tested, freeze requested)
+
+**Done.** Job `autogreedy_ins` had finished cleanly (exit 0). Committed its final files first (0a07a30), before anything was built from them. Then `python -m awe.freeze_ins build` (relation, random family, baselines, manifest of 53 arms, edit.json), `check`, a second export, tensor diffs, the smoke of every arm, a clean-copy check, the test suite, the referee's per-task checks, and the request (last commit). Two text fixes in `awe/freeze_ins.py` (strings only: the `limits` tie wording and the sentence about the timing story). They rebuilt only edit.json. `awe/` changed again, so the status is JUDGE_TURN confirm_g0 (20 reproduction seeds are replayed) before the freeze steps.
+
+**Auto-greedy result.** Pool of six (cross.h0.x0, cross.h2.x0, enc0.h6.x2, enc3.h4.x2, enc3.h3.x0, enc2.h6.x0), 450 seeds 20500 to 20949.
+- Singles net: cross.h0.x0 +29 (46/17), cross.h2.x0 +21 (37/16), enc0.h6.x2 +18 (33/15), enc3.h4.x2 +16 (27/11), enc2.h6.x0 +14 (25/11), enc3.h3.x0 +14 (27/13).
+- Pairs: best **cross.h0.x0 + enc3.h3.x0, +56 (70/14)**, then cross.h0.x0 + cross.h2.x0 +48 (72/24), cross.h0.x0 + enc0.h6.x2 +38 (54/16). Worst pair of the 15: cross.h2.x0 + enc3.h4.x2 +10.
+- Triples: cross.h0.x0 + cross.h2.x0 + enc3.h3.x0 +56 (78/22), not larger than the pair, so the search stopped at 2 heads. The others +52 (cross.h0, enc0.h6, enc3.h3), +42, +36. 8,550 rollouts of 10,000 used.
+- It equals agent candidate c06 op for op (traj hashes 450/450). The frozen edit r1 = c06 + enc0.h6 x2. DEVIATIONS entry written. On validation r1 and c06 split 34 to 30 (p 0.71), r1 and r2 31 to 33 (p 0.90), r1 and the constant offset 60 to 45 (p 0.17) (scratch/ins_paired_candidates.py). The search's rival is the same edit with one head fewer, and the candidates cannot be told apart on 500 validation seeds.
+
+**Package checks this session.**
+- `build` left random_family.json and baselines.json byte-identical to the copies built before the auto-greedy run (sha256 -c passed). 53 arms, ids unique and legal, 40 distinct random edits, the dose arms differ from each other and from the edit. `python -m awe.freeze_ins check` prints edit r1, SHA 5d00999bbcd5...
+- Export of agent_edit run twice gives the same SHA-256 (5d00999bbcd500f6...). Referee's tensor_diff on agent_edit: 3 tensors, 98,304 weights (0.287% of inference weights): decoder layer 0 multihead_attn out_proj, encoder layer 0 and 3 self_attn out_proj, all checks pass (same architecture, no backbone, not output-level). autogreedy: 2 tensors, 65,536 weights (0.191%). Column check of the edited out_proj: cross head 0 columns 0 to 63 exactly x0, encoder 3 head 3 columns x0, encoder 0 head 6 columns x2, all other columns 1.0.
+- Smoke: `scratch/smoke_arms_ins.py run` (165 rollouts, 215.8 s, agent budget, purpose freeze_smoke): every manifest arm on seeds 20500 to 20502, and the two ensembling arms also on 20000 to 20002 (the only earlier ensembling rows cover 20000 to 20199). `compare`: 9 reference checks, all hashes equal (original design_default, agent_edit combo_AB r1, autogreedy both its autogreedy.jsonl rows and combo_A c06, the 4 baselines, original_ens). Random, dose and agent_edit_ens arms ran without error. This is the first time a random or dose arm of this freeze ran. Their outcomes on the 3 seeds are in smoke_arms.jsonl and were not used for anything.
+- Clean copy of commit cfd9069 (git archive to /tmp/awe_clean, 9 rollouts, agent budget, purpose freeze_clean_copy): agent_edit matches combo_AB r1 on 3 of 3 hashes (seeds 20000 to 20002), base_deviation_gain matches baselines_screen on 3 of 3, dose_k0.5 ran (0 of 3 strict, 0 of 3 benchmark). The ledger lines were copied into ledger/ with their original names.
+- Test suite: 15 passed in 96.5 s (39 setup rollouts, uncapped).
+- `referee` per-task checks for insertion (stages 0 to 4) all pass, except `s4.request` (the request is the next commit).
+- Referee recompute validation: candidate r1, 63 fixed, 24 broken, gain 7.8, share 0.0857, p 3.48e-05, passes_validation_rule false, guard drop -11.0 (benchmark rose). Same numbers as edit.json. Ledger recompute shows nothing else.
+
+**What the package says, and where the weak points are.**
+- The edit r1 misses the validation rule. The stop rule is used (edit.json stop_rule_used true, passes_validation_rule false, and the sentences there). It was chosen by the fixed rule (candidates_ins.py).
+- The hypothesis story (the two heads slow the approach) is stated with what supports it and what does not: timing measures move with it, the tip-offset tracking number got worse on validation, the atlas numbers for the heads are printed, and the dose dial is false for the single heads. No claim of mechanism beyond that.
+- The auto-greedy arm is c06 and not independent. Stated in edit.json, freeze/autogreedy.json and DEVIATIONS.
+- Baselines: constant offset +4.8 is the best of the family on validation and r1 is not distinguishable from it (p 0.17). Two of the winning settings sit at an edge of their search grid (deviation gain at 0.8, the lowest gain of the grid, and the late shift at 0.02, the smaller of its two steps). The constant offset winner is an interior point (0.04 rad on joint 1, grid 0.01 to 0.08). No baseline was refined beyond the fixed grids. Deviation gain has 36, constant offset 80, late shift 48 settings. Disclosed in the request.
+- 2 of 10 validation checks and 6,616 agent rollouts remain (93,384 of 100,000 used). They will not be used.
+
+**Ledger at end of session.** Agent 93,384/100,000, baselines 46,812/50,000, autogreedy 8,550/10,000, validation checks 8 of 10, all rollouts legal seeds.
+
+**Not done.** REQUEST.json is written in the last commit of this session (the commit after this note). No reviewer has read the insertion freeze package yet.
+
+**Next step.** The loop replays Gate 0, then the freeze review g2.1 round 1 for insertion reads the package, then the referee checks, tags `freeze-insertion-1`, draws the seeds and runs the test. If a review asks for something, answer in `reviews/insertion-g2.1-r<n>-response.md`. If the freeze is rejected (experiments/insertion/freeze/REJECTED-n.md), fix the named items and write a new REQUEST.json. After the tag nothing about the edit, baselines, analysis or manifest may change. If the status asks for the test report after the verdict, that is Stage 5 work (copy the verdict block, report from referee files).
+
+**Wall time and rollouts of this session.** Auto-greedy job 15:42 to 16:02 UTC (938.8 s for the 6,750 pair rollouts, 257.4 s for the 1,800 additions). My own rollouts: smoke 165 (215.8 s), clean copy 9 (about 20 s), test suite setup rollouts 39.
+
+**Corrections to notes of this session.** The sentence in PROGRESS session 26 "gzip -n the jsonl" is not followed: stage3/autogreedy.jsonl stays plain (8.3 MB), as for transfer cube, so the loader's resume path (`runs_file` exists) keeps working.
