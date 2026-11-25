@@ -81,3 +81,7 @@ SPEC.md Stage 0 step 4 asks for a seed-by-seed comparison with the published `ev
 - The file is stored where CONTRACT.md wants it (it is what the hub serves) and is never used as an insertion result. Any agreement the referee prints between our insertion run and this file is between two different tasks and means nothing.
 - No published failure map is drawn for insertion. The failure map comes from our own runs.
 - Consequently "agreement with the published per-seed file" cannot inform the insertion renderer choice.
+
+### 2026-11-25, correction to the entry on the insertion published file
+
+"All 4 earlier commits that carry the file" should read "the 4 commits that carry the file, the current one included". The initial commit 3dc6652c has no eval_info.json (404).
