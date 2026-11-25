@@ -424,3 +424,21 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Wall time and rollouts.** A few minutes, 33 setup rollouts by the test suite. Budgets unchanged: agent 95,057, baselines 46,800, auto-greedy 8,550, validation checks 8 of 10.
 
 **Next step.** Status is JUDGE_TURN confirm_g0 (awe/freeze.py changed), then the second round of the freeze review, then the freeze. Nothing for the agent until then. If round 2 raises issues, write reviews/transfer_cube-g2.1-r2-response.md.
+
+## 2026-11-25, session 16 (Stage 5 report written, Stage 6 stress checks running)
+
+**Done.** The referee's verdict was strong_win. `report/report.md` is written and its checks pass (status moved to Stage 6). Test-mode run of the frozen `freeze/analysis.py` is in `report/analysis/`. New descriptive scripts, run after the test was read and labelled so: `report/extra_tables.py` (paired edit-vs-arm table, class transitions, random-edit grid), `report/videos.py` (8 side-by-side clips on design seeds, 16 agent-budget rollouts, all 16 hashes equal the earlier rows), `report/write_report.py` (assembles report.md from body.md and the verdict block). DEVIATIONS.md has an entry for the design-seed videos.
+
+**Numbers (test, 1,000 seeds).**
+- Edit 90.1% against 81.7%, +8.4, 131 fixed, 47 broken. H2 passes with zero margin: 1 of 40 random edits (random_00, +9.2) gained as much, paired -0.8 (95% interval -2.7 to +1.1). 22 of 40 random edits positive, 14 of them with p < 0.05. Halving cross.h5 helps in all 6 draws (+3.1 to +9.2), cross.h3 hurts in all 6. The edit's own heads are not isolated by any test arm.
+- Edit vs deviation gain: +2.3 (95% interval +0.3 to +4.3, p 0.03), strict +0.4 (p 0.79). Edit vs auto-greedy 0.0 (47 each way).
+- Reach error did not drop (1.24 to 1.26 cm). The dial rule fails (not monotone). Low corner 81 to 74 of 100 (11 fixed, 18 broken, exact p 0.26).
+- The edit's hypothesis mechanism is not supported. The report says so.
+
+**Ruled out.** Running videos on test seeds (the referee's only). Putting stress code in `awe/` (it would trigger a Gate 0 replay). Standalone scripts are in report/ and stage6/ instead.
+
+**Stage 6.** `experiments/transfer_cube/stage6/stress_run.py` fixes the poses (rng 20261125, committed before any stress rollout): 1,000 band positions, and the same 500 positions at 0, 15 and 30 degrees (rotation_0 is an added control), both arms, 5,000 rollouts, budget `stress`. Job `stress` started 01:39:47 UTC, about 5.5 rollouts/s at the start, so roughly 15 minutes.
+
+**Wall time and rollouts.** About 40 minutes of session. 16 agent rollouts (videos, agent now 95,073). Stress rollouts are uncapped.
+
+**Next step.** When `stress` finishes: `python experiments/transfer_cube/stage6/stress_run.py report` (writes stress.json and stress.md), check the row count is 5,000, commit, rerun the status. Add one paragraph on the stress results to the post later, not to the report (the verdict block and report are done). Then insertion (PLAN.json lists only transfer_cube tasks by task and global s7 tasks, the status will say what is next). No `awe/` file was touched this session. The running job writes stage6/stress_runs.jsonl and a ledger file, so commit a snapshot if the hook asks for it.
