@@ -446,3 +446,9 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Corrections to session 16 (same session).**
 - "About 40 minutes of session" was a guess and is wrong. The verdict commit is at 01:34:57 UTC and the stress job started at 01:39:47, so the report work took about 5 minutes and the session about 10 in all.
 - "PLAN.json lists only transfer_cube tasks by task" is wrong. PLAN.json has a `per_task` list that applies to each task, and the status decides which task is next.
+
+**Session 16, end (the stress job finished while the session was open, so Stage 6 is done).** 5,000 rollouts in 562.3 s (8.9/s), 5,000 ledger rows. `stage6/stress.json` and `stress.md` written by `stress_run.py report`. The status has moved to insertion, stage 0.
+- band_3cm (n 1,000): original 39.7%, edit 26.1%, -13.6 points (95% interval -16.4 to -10.9), 42 fixed, 178 broken. **The edit hurts outside the square.** Class 0 (never touched) grew 326 to 406, class 2 197 to 242.
+- rotation_0, the added control (n 500): 79.8 to 88.4%, +8.6. rotation_15: 69.6 to 72.2%, +2.6 (interval -1.8 to +7.0). rotation_30: 51.6 to 48.4%, -3.2 (-7.6 to +1.2).
+- The sign of the two rotation gains is not established, the band loss is. I do not have an explanation for it. These are reported, not judged, and are in the report's limits (body.md), which supersedes the "not to the report" line above. The post must state the band loss next to the headline.
+- **Next step (session 17).** Insertion, stage 0: `s0.env`, then the checkpoint, stock evaluation, published file and harness. Read SPEC.md Stage 0 and the CONTRACT for the insertion differences (two bodies, peg and socket, the window 15.6% to 25.6%). awe/ assumes transfer_cube in places (arm_fk, flags, box_body, measure.transfer_cube), so check what insertion needs before the first rollout. Changing awe/ for it means the Gate 0 replay of transfer_cube runs again.

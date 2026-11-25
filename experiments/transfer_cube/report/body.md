@@ -107,6 +107,7 @@ The edit sits at the top of a hump. Because the edit turns one head up and the o
 - The H2 pass has no margin, and the rule is about how many random edits match the score, not how close they are.
 - The edit was chosen among 8 candidates checked on validation seeds, after the design seeds had been used to choose them. r6 and s1 were statistically tied with r4 on validation. The design numbers of r4 and the baseline were known when the choice rule was fixed, and the rule was not blind to the design results. DEVIATIONS.md lists this.
 - The low corner is worse on validation and test. A deployment that starts cubes there would lose.
+- **The gain does not carry outside the conditions it was chosen on** (Stage 6 stress checks, `../stage6/stress.md`, explicit poses, reported and not judged). In the 3 cm band outside the square the edit is much worse than the original, 26.1% against 39.7% (-13.6 points, 95% interval -16.4 to -10.9, 42 fixed, 178 broken, n 1,000). With the cube turned by 15 degrees the gain is +2.6 (-1.8 to +7.0), and by 30 degrees it is -3.2 (-7.6 to +1.2), against +8.6 (+5.0 to +12.2) on the same 500 positions unrotated. Both policies get worse as the cube turns. The unrotated control was added by the agent.
 - The referee's stock cross-check agreed on 100% of 357 episodes for both arms, so the harness and LeRobot's evaluator agree.
 
 ## Files behind this report
