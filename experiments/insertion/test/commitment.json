@@ -1,0 +1,37 @@
+{
+  "body": {
+    "beacon": {
+      "chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+      "delay_seconds": 600,
+      "name": "drand quicknet (League of Entropy)"
+    },
+    "edit_sha256": "f3f83fb3e909e3084f4267dd3dc9341e30787dcfb0ae3833f95fd7a56bab6100",
+    "edited_checkpoint_sha256": "5d00999bbcd500f66484be84150afe8f61adaf4f3ac776e61fc642cb838fa2da",
+    "freeze_commit": "e27fe8eae63bfcdeffa39cd24c14696df61f7f6e",
+    "freeze_tag": "freeze-insertion-1",
+    "genesis": "genesis-1",
+    "manifest_sha256": "ffbb13fa7312659583a13b7d5cc586537b4f97f5f757e356a30b7caad0801f37",
+    "rule": "The test seeds come from the first beacon round emitted at least delay_seconds after this commitment was published. start = base + int(sha256(domain|task|freeze_commit|randomness)[:8]) mod span, and the seeds are start to start + count - 1.",
+    "scheme": "awe-commit-v1",
+    "task": "insertion",
+    "test_seeds": {
+      "base": 1000000000,
+      "count": 1000,
+      "domain": "awe-test-seeds-v1",
+      "span": 1000000000
+    },
+    "tree": "2b1b7fcc99365f8c3cafee062720a545701409f0"
+  },
+  "dry_run": false,
+  "target_round": 34273862,
+  "witness": {
+    "kind": "github-release",
+    "public": true,
+    "published_at": 1795624349.0,
+    "published_at_iso": "2026-11-25T16:32:29Z",
+    "release_tag": "freeze-insertion-1",
+    "repo": "andrewheejay/act-weight-editing",
+    "url": "https://github.com/andrewheejay/act-weight-editing/releases/tag/freeze-insertion-1",
+    "wayback": "not saved (HTTPError)"
+  }
+}
