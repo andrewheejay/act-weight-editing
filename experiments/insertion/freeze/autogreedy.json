@@ -1,0 +1,326 @@
+{
+ "built_by": "awe/autogreedy_ins.py (python -m awe.autogreedy_ins run)",
+ "rule": "The auto-greedy edit for insertion, SPEC.md Controls and Stage 4: the search of awe/autogreedy.py with one change, the score.\n\npython -m awe.autogreedy_ins check     no rollouts: the pool, the pairs, the single-head starts on the search seeds\npython -m awe.autogreedy_ins run       stage3/autogreedy.jsonl, then freeze/autogreedy.json (budget autogreedy, at most 9,900 of 10,000)\npython -m awe.autogreedy_ins report    only rebuild freeze/autogreedy.json from the files already run\n\nRule. Everything is the rule of awe/autogreedy.py (pool of 6 kept single edits by the mean gain of the two halves, 450 search seeds 20500 to 20949,\nall pairs of distinct heads, then single additions up to 4 heads, accepted only if the net gain grows), with the primary score of this task, strict\nsuccess, where that file has benchmark success. stage2/split_half.json of this task is already on strict. Nothing else differs: same seeds, pool size, tie\nrules and caps. It runs only after stage3/choice.json exists, and choice.json does not read it.\n\nWhat the author had seen when this file was written (2026-11-25, session 25). The search rule is older than every insertion rollout (awe/autogreedy.py,\n2026-11-24). The author had seen the single-head sweep, the dose response, the group A table of 16 hand-written combinations (stage3/combo_summary.json,\nseeds 20500 to 20999, which contain all 450 search seeds), and the design net of c06 (cross.h0.x0 with enc3.h3.x0) on 1,000 seeds. If both of its heads are\nin the pool, the score of that pair is therefore known to the author and the search may return it, so this arm can be the agent's own candidate and is not an\nindependent no-LLM result by construction. The freeze states the relation from the files (as awe/freeze.py `disclose` does for transfer cube). No validation\nresult had been seen.\n\n\nThe search rule it reuses, awe/autogreedy.py:\n\nThe auto-greedy edit, SPEC.md Controls and Stage 4: a greedy search over the single-head sweep, with no reasoning. Budget `autogreedy`.\n\npython -m awe.autogreedy run       stage3/autogreedy.jsonl, then freeze/autogreedy.json\npython -m awe.autogreedy report    only rebuild freeze/autogreedy.json from the files already run\npython -m awe.autogreedy check     no rollouts: the pool, the number of planned rollouts, the single-head starts on the search seeds\n\nRule, rewritten and fixed before the first rollout of this script (docstring of this file).\n- Pool. The single-head edits that survived the split-half check (stage2/split_half.json, `kept`, the same sign of gain in both halves), with a\n  positive gain, ranked by the mean of the two half gains on the benchmark score (`gain_both_halves`). The first six are the pool (x0 or x2 only,\n  the two scales of the sweep).\n- Search seeds. 450 design seeds, 20500 to 20949, paired against the original (stage1/design_default.jsonl). Results of the six single edits on\n  these seeds come from the sweep (stage2/sweep_half2.jsonl, no new rollouts).\n- Step 1. Every pair of pool edits (15) on the search seeds, 6,750 rollouts. \"Starts from the six\": every pair contains two of the six, so the\n  search covers all six starts. The best is the pair with the largest net gain (fixed minus broken, benchmark score). Ties: fewer broken, then\n  the smaller sum of pool ranks. It is accepted only if its net is larger than the best single edit's net on the same seeds (else the single edit\n  is the result).\n- Steps 2 and 3. From the accepted set, every single addition of a pool edit not yet used (4, then 3), 1,800 and 1,350 rollouts. The best by the same\n  rule is accepted if its net gain is larger than the current set's, else the search stops. Up to 4 heads. At most 9,900 of the 10,000 rollouts.\n- The result is the set with the largest net gain found along this path (a set that fails to beat its parent is never the result).\n- Everything is computed by this script from stored files. No step reads the agent's candidates, their design numbers or any validation file.\n\nWhat the author had seen when the rule was written. This file was rewritten on 2026-11-24 after the author (the agent) had seen the combination table\nof its own candidates (stage3/combo_summary.json) on design seeds, including that c08 (enc3.h4.x3 + cross.h1.x0) scored -3.2 points on seeds 20500 to\n20999. It had also seen the validation results of the agent's candidates. The rewrite replaced a version that took only the top single edit (cross.h1.x0)\nas start, which could have ended early. The new rule is the plainer one and it uses the SPEC.md budget in full. The agent's own edit (the rule in\nawe/candidates.py) was chosen on 1,000 design seeds and 500 validation seeds, this script tunes on 450 design seeds and nothing else, so the rival\nis tuned on less data than the edit. Its result cannot influence the edit, which is frozen in choice.json before the script runs.\n",
+ "edits": [
+  "cross.h0.x0",
+  "enc3.h3.x0"
+ ],
+ "ops": [
+  {
+   "op": "scale_head",
+   "block": "model.decoder.layers.0.multihead_attn",
+   "head": 0,
+   "scale": 0
+  },
+  {
+   "op": "scale_head",
+   "block": "model.encoder.layers.3.self_attn",
+   "head": 3,
+   "scale": 0
+  }
+ ],
+ "n_heads": 2,
+ "pool": [
+  "cross.h0.x0",
+  "cross.h2.x0",
+  "enc0.h6.x2",
+  "enc3.h4.x2",
+  "enc3.h3.x0",
+  "enc2.h6.x0"
+ ],
+ "search_seeds": "20500 to 20949 (450 design seeds), paired against the original",
+ "final": {
+  "edits": [
+   "cross.h0.x0",
+   "enc3.h3.x0"
+  ],
+  "fixed": 70,
+  "broken": 14,
+  "net": 56,
+  "n_seeds": 450
+ },
+ "search_log": [
+  {
+   "step": 1,
+   "what": "single edits from the sweep, no new rollouts",
+   "options": [
+    {
+     "edits": [
+      "cross.h0.x0"
+     ],
+     "fixed": 46,
+     "broken": 17,
+     "net": 29,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h2.x0"
+     ],
+     "fixed": 37,
+     "broken": 16,
+     "net": 21,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc0.h6.x2"
+     ],
+     "fixed": 33,
+     "broken": 15,
+     "net": 18,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc3.h4.x2"
+     ],
+     "fixed": 27,
+     "broken": 11,
+     "net": 16,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc2.h6.x0"
+     ],
+     "fixed": 25,
+     "broken": 11,
+     "net": 14,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc3.h3.x0"
+     ],
+     "fixed": 27,
+     "broken": 13,
+     "net": 14,
+     "n_seeds": 450
+    }
+   ],
+   "best": [
+    "cross.h0.x0"
+   ]
+  },
+  {
+   "step": 2,
+   "what": "all pairs",
+   "options": [
+    {
+     "edits": [
+      "cross.h0.x0",
+      "enc3.h3.x0"
+     ],
+     "fixed": 70,
+     "broken": 14,
+     "net": 56,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h0.x0",
+      "cross.h2.x0"
+     ],
+     "fixed": 72,
+     "broken": 24,
+     "net": 48,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h0.x0",
+      "enc0.h6.x2"
+     ],
+     "fixed": 54,
+     "broken": 16,
+     "net": 38,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h0.x0",
+      "enc3.h4.x2"
+     ],
+     "fixed": 52,
+     "broken": 20,
+     "net": 32,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc3.h4.x2",
+      "enc3.h3.x0"
+     ],
+     "fixed": 44,
+     "broken": 13,
+     "net": 31,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h2.x0",
+      "enc0.h6.x2"
+     ],
+     "fixed": 45,
+     "broken": 14,
+     "net": 31,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h0.x0",
+      "enc2.h6.x0"
+     ],
+     "fixed": 46,
+     "broken": 16,
+     "net": 30,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc0.h6.x2",
+      "enc3.h3.x0"
+     ],
+     "fixed": 40,
+     "broken": 12,
+     "net": 28,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h2.x0",
+      "enc2.h6.x0"
+     ],
+     "fixed": 40,
+     "broken": 16,
+     "net": 24,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h2.x0",
+      "enc3.h3.x0"
+     ],
+     "fixed": 37,
+     "broken": 18,
+     "net": 19,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc0.h6.x2",
+      "enc3.h4.x2"
+     ],
+     "fixed": 31,
+     "broken": 13,
+     "net": 18,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc3.h4.x2",
+      "enc2.h6.x0"
+     ],
+     "fixed": 31,
+     "broken": 15,
+     "net": 16,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc0.h6.x2",
+      "enc2.h6.x0"
+     ],
+     "fixed": 30,
+     "broken": 15,
+     "net": 15,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "enc3.h3.x0",
+      "enc2.h6.x0"
+     ],
+     "fixed": 31,
+     "broken": 17,
+     "net": 14,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h2.x0",
+      "enc3.h4.x2"
+     ],
+     "fixed": 29,
+     "broken": 19,
+     "net": 10,
+     "n_seeds": 450
+    }
+   ],
+   "best": [
+    "cross.h0.x0",
+    "enc3.h3.x0"
+   ],
+   "current_net_before": 29,
+   "accepted": true
+  },
+  {
+   "step": 3,
+   "what": "3 heads",
+   "options": [
+    {
+     "edits": [
+      "cross.h0.x0",
+      "cross.h2.x0",
+      "enc3.h3.x0"
+     ],
+     "fixed": 78,
+     "broken": 22,
+     "net": 56,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h0.x0",
+      "enc0.h6.x2",
+      "enc3.h3.x0"
+     ],
+     "fixed": 67,
+     "broken": 15,
+     "net": 52,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h0.x0",
+      "enc3.h4.x2",
+      "enc3.h3.x0"
+     ],
+     "fixed": 61,
+     "broken": 19,
+     "net": 42,
+     "n_seeds": 450
+    },
+    {
+     "edits": [
+      "cross.h0.x0",
+      "enc3.h3.x0",
+      "enc2.h6.x0"
+     ],
+     "fixed": 52,
+     "broken": 16,
+     "net": 36,
+     "n_seeds": 450
+    }
+   ],
+   "best": [
+    "cross.h0.x0",
+    "cross.h2.x0",
+    "enc3.h3.x0"
+   ],
+   "current_net_before": 56,
+   "accepted": false
+  }
+ ]
+}
