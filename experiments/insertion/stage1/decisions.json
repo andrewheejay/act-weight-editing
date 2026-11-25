@@ -4,8 +4,8 @@
   "n_action_steps": 100
  },
  "proceed": true,
- "target_failure_class": "3 (max reward 3: the peg touched the socket off the table but never the pin, 405 of 1000 design seeds, kind M in stage1/analysis_ins.py). Not the target: 4a (pin contact, not strict, 114) and the grasp classes 0, 1 and 2 (159, 205, 43).",
- "tracking_number": "pre_tip_lat (stage1/analysis_ins.py): one control step before the first peg-socket contact off the table (t_meet - 1), the larger of the two absolute offsets, across the socket axis, of the peg's leading end from the socket centre, in the socket frame, in cm. Defined only for episodes that meet. Design seeds, M against strict successes: AUC 0.843.",
+ "target_failure_class": "3 (max reward 3: the peg touched the socket off the table but never the pin, 405 of 1000 design seeds, kind M in stage1/analysis_ins.py). Not the target: 4a (pin contact, not strict, 114), the grasp classes 0, 1 and 2 (159, 205, 43) and the parts of them by arm (right arm peg not lifted 214, left arm socket not lifted 120, neither 52, both 21). Reason: a rescued M episode that reaches the pin is worth about 0.39 strict (74 of 188 pin contacts), a rescued grasp episode about 0.11 (strict rate of the 10 nearest seeds that met), and M is the largest group at that value; M is not a near miss in depth (22 of 405 enter the opening at the deepest step).",
+ "tracking_number": "pre_tip_lat (stage1/analysis_ins.py): one control step before the first peg-socket contact off the table (t_meet - 1), the larger of the two absolute offsets, across the socket axis, of the peg's leading end from the socket centre, in the socket frame, in cm. Defined only for episodes that meet. Design seeds, M against strict successes: AUC 0.843. Report the met count and met set beside it, because the number is defined for 593 of 1000 episodes only.",
  "evidence": {
   "benchmark_success": 0.188,
   "strict_success": 0.074,
