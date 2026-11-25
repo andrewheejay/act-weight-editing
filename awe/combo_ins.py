@@ -43,7 +43,15 @@ COMBOS = {
     "c15": [("enc3", 4, 2), ("enc0", 6, 2), ("enc2", 1, 0)],
     "c16": [("cross", 0, 0), ("enc3", 4, 2), ("enc0", 6, 2), ("enc2", 1, 0), ("enc1", 1, 2)],
 }
-REFINE = {}  # filled after the group A and B results, each id with a line in hypotheses.md written before it runs
+# Refinements, written after the group A results of COMBOS (hypotheses.md, session 25). They run on all 1,000 design seeds (group AB).
+REFINE = {
+    "r1": [("cross", 0, 0), ("enc3", 3, 0), ("enc0", 6, 2)],
+    "r2": [("cross", 0, 0), ("enc3", 3, 0), ("enc0", 6, 4)],
+    "r3": [("cross", 0, 0), ("enc3", 3, 0), ("enc2", 1, 0)],
+    "r4": [("cross", 0, 0), ("enc3", 3, 0.5)],
+    "r5": [("cross", 0, 0), ("enc3", 3, 0.5), ("enc0", 6, 2)],
+    "r6": [("cross", 0, 0), ("enc3", 3, 0), ("enc0", 6, 2), ("enc2", 1, 0)],
+}
 ALL = {**COMBOS, **REFINE}
 
 # reference single: cross.h0.x0 has rows on both halves in the sweep files (stage2/sweep.jsonl, sweep_half2.jsonl)

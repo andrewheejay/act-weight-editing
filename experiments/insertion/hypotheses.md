@@ -56,3 +56,26 @@ Ids are the arm ids in the result files (awe/combo_ins.py).
 
 What the combinations are measured against, written before any combination ran. The simple baselines were tuned on the same design seeds (stage3/baselines_summary.json, 1,000 seeds, strict gains, guard gains): constant_offset off_j1_p0.04 +6.7 (guard +6.6), simplest_fix late_j2_p0.02 +5.5 (guard +4.7), deviation_gain gain_right_nogrip_0.8 +2.5 (guard -0.3), shorter chunk 50 +2.8 (guard +3.0). Their gains are also selected on the same 1,000 seeds, as the edits' will be, and so are optimistic in the same direction. cross.h0.x0 alone is at +7.2 (guard +5.6) on the 1,000 seeds (sweep and recheck rows), so the best single edit and the best baseline are about level, within the noise of the comparison. A win (H3 in RULES.md) needs the edit to beat every baseline on the test seeds, which is why the combinations try for more than about +8 points on the design seeds. The baselines are close in mechanism too: off_j1_p0.04 shifts the left shoulder by a constant and late_j2_p0.02 shifts the left elbow from step 200 on, and both lower the tip offset (median over the met episodes 1.38 cm, 581 met, and 1.29 cm, 587 met, against 1.70 cm for the original, 593 met of 1,000, in features_default), while cross.h0.x0 gives 1.69 cm (the sweep and recheck rows, met counts not re-counted here). Whether cross.h0 works by the same route as the offsets is open and will be said either way.
 A 25% failures-removed pass needs about 230 net fixes out of about 926 strict failures per 1,000 seeds (+23 points), which no arm here comes near. So the validation pass rule of SPEC.md Stage 3 (25% and p < 0.05 and guard) is expected to fail for every candidate, and the stop rule (freeze the best, say it missed) is the likely path. Nothing will be tuned to it.
+
+## 2026-11-25, session 25, group B and refinements (stage 3 step 3), written before any of these rollouts
+
+Known when written: group A of c01 to c16 (stage3/combo_summary.json, seeds 20500 to 20999, 500 seeds). Nothing on group B for any combination, nothing on any refinement.
+Group A, strict gain / guard gain in points: c06 +12.4 / +10.2 (78 fixed, 16 broken), c08 +8.6 / +7.4, c02 +8.4 / +8.8, c01 +7.6 / +8.8, c11 +7.6 / +8.2, c07 +7.6 / +6.4, the reference single cross.h0.x0 +6.4 / +6.8. The others are between +2.6 (c13) and +6.8.
+c06 is the best of 16 arms on the seeds that picked it, so it is optimistic (winner's curse). With 94 discordant seeds the standard error of its gain is about 1.9 points.
+
+Group B (seeds 20000 to 20499). By the plan of session 24 it goes to the four best arms by group A strict gain. Three arms tie for fourth at +7.6 (c01, c07, c11). The tie is broken by the guard gain, so c01 (+8.8) goes. These are the seeds on which the heads were first chosen (sweep) and the dose scales, so group B is optimistic for the heads and not independent of the choice of cross.h0 and enc3.h3.
+- c06 (group B): expected strict gain +8 to +12, less than the group A value.
+- c08 (group B): expected +6 to +9.
+- c02 (group B): expected +6 to +9.
+- c01 (group B): expected +5 to +8.
+
+Refinements, all on 1,000 design seeds (group AB), built on c06 because it is the best. The idea of each is stated before it runs. One head per block as before (so the matched random family has at least 7 x 7 = 49 edits for two heads).
+What group A says about what could add to it, descriptive only: on top of the cross.h0 x0 edit, adding enc0.h6 x2 gave +2.0 points on group A (c02 +8.4 against the single +6.4), adding enc3.h4 x2, enc2.h1 x0, enc2.h6 x0 or enc1.h1 x2 gave +1.2, +0.2, +0.4 and -0.6. c06 is the pair where the second head is enc3.h3 x0, which gave +6.0. The first-reading explanation is that c06 and the other arms rescue different episodes (an offline count on group A: 53 of 79 c08 rescues lie inside the 98 c06 rescues, the union of the two would be 124 rescues of 500).
+- r1 (cross.h0 x0, enc3.h3 x0, enc0.h6 x2): adds the head that helped cross.h0 most. Expected +1 to +2 over c06, or nothing.
+- r2 (cross.h0 x0, enc3.h3 x0, enc0.h6 x4): as r1 with the largest scale of the dose run, where enc0.h6 x4 was +5.7 alone (x2 was +3.0, x3 +3.0). Expected like r1.
+- r3 (cross.h0 x0, enc3.h3 x0, enc2.h1 x0): a third head at scale 0, which added 0.2 on top of cross.h0. Expected nothing.
+- r4 (cross.h0 x0, enc3.h3 x0.5): enc3.h3 at half strength. The dose gave the same strict gain (+3.7) and a much better guard (+5.0 against -0.7 for x0) with 300 seeds, so it may keep more benchmark episodes. Expected about c06 on strict, a higher guard.
+- r5 (cross.h0 x0, enc3.h3 x0.5, enc0.h6 x2): r4 with the head of r1. Expected like r1 or better.
+- r6 (cross.h0 x0, enc3.h3 x0, enc0.h6 x2, enc2.h1 x0): four heads. Expected no more than r1.
+
+Rules that stay as they are: the choice of the final edit uses the design and the validation data in the way the candidates file will say, written before any validation rollout. Nothing here is tuned to the validation rule, which needs 25% of failures removed and is out of reach (the failure pool of the primary score is about 93%, so 25% means about +23 points).
