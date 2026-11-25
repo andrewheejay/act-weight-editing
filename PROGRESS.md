@@ -735,3 +735,5 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Wall time and rollouts of this session.** Auto-greedy job 15:42 to 16:02 UTC (938.8 s for the 6,750 pair rollouts, 257.4 s for the 1,800 additions). My own rollouts: smoke 165 (215.8 s), clean copy 9 (about 20 s), test suite setup rollouts 39.
 
 **Corrections to notes of this session.** The sentence in PROGRESS session 26 "gzip -n the jsonl" is not followed: stage3/autogreedy.jsonl stays plain (8.3 MB), as for transfer cube, so the loader's resume path (`runs_file` exists) keeps working.
+
+**Correction to session 27 (same session).** The line "Ledger recompute shows nothing else" was written after I had only seen the tail of its output. Read in full afterwards: `python -m referee.recompute ledger` reports illegal [], test_range_rollouts 0, bad_lines 0, unknown_budget {}, insertion agent 93,384, autogreedy 8,550, baselines 46,812, setup 2,936, and the 8 insertion candidates on validation seeds are c02, c06, c08, r1, r2, r3, r5, r6. The freeze request is experiments/insertion/freeze/REQUEST.json, committed together with this line.
