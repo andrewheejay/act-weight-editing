@@ -1,0 +1,147 @@
+{
+ "built_by": "python -m awe.freeze_ins build",
+ "selection_rule": "stage3/baselines_summary.json, `rule`, written before the first insertion baseline rollout (session 23)",
+ "note": "design_strict and validation numbers are of the primary score (strict success); guard_gain is benchmark success. Each family got one validation check, with the setting chosen on the design seeds.",
+ "baselines": [
+  {
+   "family": "constant_offset",
+   "arm": "base_constant_offset",
+   "setting": "off_j1_p0.04",
+   "recipe": {
+    "post": {
+     "kind": "offset",
+     "joint": 1,
+     "delta": 0.04
+    }
+   },
+   "n_settings_tried": 80,
+   "tuned_on": "design seeds 20000 to 20999 (screening on 200, the best settings on all 1,000), see stage3/baselines_summary.json",
+   "design_strict": {
+    "n": 1000,
+    "strict": 0.141,
+    "gain": 0.067,
+    "fixed": 107,
+    "broken": 40,
+    "p_mcnemar": 3.0396695381385514e-08,
+    "benchmark": 0.254,
+    "guard_gain": 0.066
+   },
+   "validation_one_check": {
+    "n": 500,
+    "strict": 0.138,
+    "gain": 0.048,
+    "fixed": 54,
+    "broken": 30,
+    "p": 0.011634454119925829,
+    "share_of_failures_removed": 0.0527,
+    "guard_gain": 0.076
+   }
+  },
+  {
+   "family": "deviation_gain",
+   "arm": "base_deviation_gain",
+   "setting": "gain_right_nogrip_0.8",
+   "recipe": {
+    "post": {
+     "kind": "gain",
+     "g": 0.8,
+     "joints": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    }
+   },
+   "n_settings_tried": 36,
+   "tuned_on": "design seeds 20000 to 20999 (screening on 200, the best settings on all 1,000), see stage3/baselines_summary.json",
+   "design_strict": {
+    "n": 1000,
+    "strict": 0.099,
+    "gain": 0.025,
+    "fixed": 65,
+    "broken": 40,
+    "p_mcnemar": 0.01874091540825805,
+    "benchmark": 0.185,
+    "guard_gain": -0.003
+   },
+   "validation_one_check": {
+    "n": 500,
+    "strict": 0.078,
+    "gain": -0.012,
+    "fixed": 21,
+    "broken": 27,
+    "p": 0.4708790136217118,
+    "share_of_failures_removed": -0.0132,
+    "guard_gain": -0.04
+   }
+  },
+  {
+   "family": "shorter_chunk",
+   "arm": "base_shorter_chunk",
+   "setting": "chunk50",
+   "recipe": {
+    "n_action_steps": 50
+   },
+   "n_settings_tried": 2,
+   "tuned_on": "design seeds 20000 to 20999 (screening on 200, the best settings on all 1,000), see stage3/baselines_summary.json",
+   "design_strict": {
+    "n": 1000,
+    "strict": 0.102,
+    "gain": 0.028,
+    "fixed": 76,
+    "broken": 48,
+    "p_mcnemar": 0.014984618863332326,
+    "benchmark": 0.218,
+    "guard_gain": 0.03
+   },
+   "validation_one_check": {
+    "n": 500,
+    "strict": 0.068,
+    "gain": -0.022,
+    "fixed": 27,
+    "broken": 38,
+    "p": 0.21453919400817845,
+    "share_of_failures_removed": -0.0242,
+    "guard_gain": -0.006
+   }
+  },
+  {
+   "family": "simplest_fix",
+   "arm": "base_simplest_fix",
+   "setting": "late_j2_p0.02",
+   "recipe": {
+    "post": {
+     "kind": "late_offset",
+     "joint": 2,
+     "delta": 0.02,
+     "t0": 200
+    }
+   },
+   "n_settings_tried": 48,
+   "tuned_on": "design seeds 20000 to 20999 (screening on 200, the best settings on all 1,000), see stage3/baselines_summary.json",
+   "design_strict": {
+    "n": 1000,
+    "strict": 0.129,
+    "gain": 0.055,
+    "fixed": 74,
+    "broken": 19,
+    "p_mcnemar": 7.720918443812012e-09,
+    "benchmark": 0.235,
+    "guard_gain": 0.047
+   },
+   "validation_one_check": {
+    "n": 500,
+    "strict": 0.118,
+    "gain": 0.028,
+    "fixed": 33,
+    "broken": 19,
+    "p": 0.07039422106706228,
+    "share_of_failures_removed": 0.0308,
+    "guard_gain": 0.048
+   }
+  }
+ ]
+}

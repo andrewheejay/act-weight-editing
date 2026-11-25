@@ -1,0 +1,930 @@
+{
+ "rule": "Matched random edits: the agent edit's ops with each head replaced by one of the 7 other heads of the same block (same layer, same attention type, same scale, same number of heads). All distinct combinations are listed in a fixed order (product of the other heads, ascending, ops in the order of edit.json) and 40 are drawn without repeats by random.Random(rng_seed).sample. If fewer than 40 exist, all are used.",
+ "rng_seed": 20261124,
+ "n_available": 343,
+ "n_drawn": 40,
+ "for_candidate": "r1",
+ "matched_on": "number of heads, block (layer and attention type) and scale. Different heads.",
+ "draws": [
+  {
+   "id": "random_00",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_01",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 1,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_02",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 1,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_03",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_04",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 2,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_05",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_06",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 5,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_07",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 7,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_08",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_09",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_10",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_11",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_12",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 3,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_13",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_14",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_15",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_16",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 1,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_17",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 2,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_18",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_19",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_20",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 2,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_21",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 7,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_22",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_23",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 5,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_24",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_25",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 2,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_26",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 1,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 2,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_27",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_28",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_29",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_30",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 7,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_31",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_32",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_33",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 2,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_34",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 5,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 7,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_35",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 2,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_36",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 3,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_37",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 6,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 4,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_38",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 7,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 0,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 0,
+     "scale": 2
+    }
+   ]
+  },
+  {
+   "id": "random_39",
+   "ops": [
+    {
+     "op": "scale_head",
+     "block": "model.decoder.layers.0.multihead_attn",
+     "head": 2,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.3.self_attn",
+     "head": 4,
+     "scale": 0
+    },
+    {
+     "op": "scale_head",
+     "block": "model.encoder.layers.0.self_attn",
+     "head": 1,
+     "scale": 2
+    }
+   ]
+  }
+ ]
+}
