@@ -1,1 +1,31 @@
-{"chosen": "egl_mesa"}
+{
+ "chosen": "egl_mesa",
+ "why": "Software rendering (Mesa llvmpipe through EGL), the renderer chosen for transfer cube. SPEC.md asks for one renderer for the whole project. GPU rendering is not repeatable here: two GPU runs of the 500 insertion reproduction seeds have identical trajectories on 127 seeds, and 13 benchmark and 22 strict outcomes flip, so the repeat-run gate could not hold. Mesa runs are identical on 100 of 100 seeds.",
+ "comparison_on_reproduction_seeds": {
+  "note": "No published per-seed insertion file exists (published_note.md), so closeness to it cannot be measured. These are agreements between our own runs. Recompute with scratch/ins_stage0_cmp.py.",
+  "mesa": {
+   "benchmark_success": 0.182,
+   "file": "harness_repro.jsonl"
+  },
+  "egl_nvidia": {
+   "benchmark_success": 0.176,
+   "file": "renderer_compare/gpu.jsonl"
+  },
+  "egl_nvidia_run2": {
+   "benchmark_success": 0.166,
+   "file": "renderer_compare/gpu_run2.jsonl"
+  },
+  "gpu_vs_gpu_run2": {
+   "benchmark_agreement": 0.974,
+   "strict_agreement": 0.956,
+   "max_reward_agreement": 0.936,
+   "identical_trajectories": 127,
+   "seeds": 500
+  },
+  "gpu_vs_mesa": {
+   "benchmark_agreement": 0.934,
+   "strict_agreement": 0.932,
+   "max_reward_agreement": 0.842
+  }
+ }
+}

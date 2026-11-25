@@ -452,3 +452,27 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 - rotation_0, the added control (n 500): 79.8 to 88.4%, +8.6. rotation_15: 69.6 to 72.2%, +2.6 (interval -1.8 to +7.0). rotation_30: 51.6 to 48.4%, -3.2 (-7.6 to +1.2).
 - The sign of the two rotation gains is not established, the band loss is. I do not have an explanation for it. These are reported, not judged, and are in the report's limits (body.md), which supersedes the "not to the report" line above. The post must state the band loss next to the headline.
 - **Next step (session 17).** Insertion, stage 0: `s0.env`, then the checkpoint, stock evaluation, published file and harness. Read SPEC.md Stage 0 and the CONTRACT for the insertion differences (two bodies, peg and socket, the window 15.6% to 25.6%). awe/ assumes transfer_cube in places (arm_fk, flags, box_body, measure.transfer_cube), so check what insertion needs before the first rollout. Changing awe/ for it means the Gate 0 replay of transfer_cube runs again.
+
+## 2026-11-25, session 17 (insertion Stage 0: harness done, stock evaluation running)
+
+**Done.**
+- Checkpoint migrated to `checkpoints/insertion` (SHA-256 7a82635a..., `stage0/checkpoint.json`). Hub revision 33259aa8, model card says 100k steps.
+- Defined strict insertion and the failure classes in DEVIATIONS.md and committed them (609a77a) before any insertion rollout. Definition: 25 steps in a row with the peg on the pin, the right gripper on the peg, the left gripper on the socket, no table contact.
+- Insertion path in `awe/` (fast reward, flags, peg and socket poses, measurements, traces, `stage0_finish --task insertion --stock stock_ins`) and `tests/test_insertion.py` (physics and reward equal stock at every step for 6 seeds). Commit f682dfc. The `awe/` change leaves transfer cube alone: full suite 14 passed in 127 s, and 20 random reproduction seeds replayed through the new code are equal to the stored file on all 23 common keys. The transfer-cube verdict is already written, so the status does not re-run its Gate 0.
+- Published file: `stage0/published_eval_info.json` is stored because CONTRACT.md asks for the hub file, but it is the transfer-cube file byte for byte (566d1661..., 83.0%). No insertion per-seed file was ever published, see DEVIATIONS.md and `published_note.md`. Ignore the soft "agreement" line the referee prints between it and our stock run.
+- Renderer egl_mesa (`stage0/renderer.json`), the project-wide choice from transfer cube. GPU was run twice for the comparison.
+
+**Numbers measured (seeds 1000 to 1499, harness, Mesa, TF32 off, batch 1).**
+- Benchmark 18.2% (91 of 500), inside the window 15.6 to 25.6%. Strict 7.6% (38 of 500). Gap 10.6 points. The 10-point swap rule is decided on the design seeds, not here, and the strict definition was fixed first, so do not touch it.
+- Classes: 0: 87, 1: 118, 2: 22, 3: 182, 4a: 53, 4b: 38. Extra variants, logged only: strict_depth 28, strict_both_fingers 8.
+- repeat_a, repeat_b and sham: 100 of 100 identical scores and hashes, and equal to the 500-seed run.
+- GPU: 17.6% and 16.6% (two runs). GPU against itself: 127 of 500 trajectories identical, benchmark agree 97.4% (13 flips), strict 95.6% (22 flips). GPU against Mesa: benchmark 93.4% and 93.6%. Recompute with `python scratch/ins_stage0_cmp.py`.
+- Speed while the stock job ran beside it: 5.2 rollouts/s (Mesa), 8.8 (GPU). The idle figure is not measured yet.
+
+**Running.** `stock_ins`: `lerobot-eval`, Mesa, batch 1, TF32 off, LP_NUM_THREADS=8, seed 1000, 500 episodes, one call, started 01:50:53 UTC, about 4 to 5 hours (44 s per episode so far while the harness ran beside it). It cannot resume after a restart. Its ledger line set (500 stock seeds) is written.
+
+**Rollouts this session (setup budget).** insertion: 500 (harness) + 300 (repeats and sham) + 1,000 (GPU twice) + 12 in the test suite (two runs of `tests/test_insertion.py`, 6 seeds each) + 500 stock logged. Transfer cube: about 40 in the test suite plus 20 replays, setup budget.
+
+**Ruled out / traps.** A published insertion map (the hub file is not insertion). Opposite-order contacts: the stock reward matches ordered geom pairs, the flags for strict are unordered and any-finger. The peg can be pushed onto the pin without the peg being held, so benchmark success does not need the grippers.
+
+**Next step (session 18, after `stock_ins` finishes).** Measure the idle rate with a throwaway run (`python -m awe.stage0 repeat --task insertion --name idle_rate --n 100`, gives rollouts/s in its last line, then delete the file), then `python -m awe.stage0_finish --task insertion --stock stock_ins --rps R` (writes env.json, prints mismatches), write `stage0/mismatches.md`, run `python -m referee.status`. The harness should agree on 100% (it did for transfer cube at these settings), but nothing has been compared yet for insertion. If agreement is below 98%, find the cause before changing anything. Then Stage 1 for insertion: stage1.py, stage1_analysis.py, atlas.py, atlas_report.py, geom.py, baselines.py, post.py, candidates.py, freeze.py and autogreedy.py are all written for transfer cube and need the insertion path.

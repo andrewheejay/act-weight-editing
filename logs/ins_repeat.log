@@ -1,0 +1,27 @@
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+100 rollouts in 30.5s (3.3/s, 8 workers, egl_mesa) -> /home/ubuntu/act-weight-editing/experiments/insertion/stage0/repeat_a.jsonl
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+100 rollouts in 29.6s (3.4/s, 8 workers, egl_mesa) -> /home/ubuntu/act-weight-editing/experiments/insertion/stage0/repeat_b.jsonl
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+100 rollouts in 29.6s (3.4/s, 8 workers, egl_mesa) -> /home/ubuntu/act-weight-editing/experiments/insertion/stage0/sham.jsonl

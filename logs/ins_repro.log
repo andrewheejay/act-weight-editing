@@ -1,0 +1,15 @@
+200/500 rollouts, 3.8/s
+400/500 rollouts, 4.7/s
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+500 rollouts in 96.9s (5.2/s, 8 workers, egl_mesa) -> /home/ubuntu/act-weight-editing/experiments/insertion/stage0/harness_repro.jsonl
+
+real	1m39.032s
+user	9m53.912s
+sys	0m15.003s

@@ -1,0 +1,22 @@
+200/500 rollouts, 6.1/s
+400/500 rollouts, 8.0/s
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+500 rollouts in 57.1s (8.8/s, 8 workers, egl_nvidia) -> experiments/insertion/stage0/renderer_compare/gpu.jsonl
+200/500 rollouts, 6.1/s
+400/500 rollouts, 7.7/s
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+Loading weights from local directory
+500 rollouts in 58.5s (8.5/s, 8 workers, egl_nvidia) -> experiments/insertion/stage0/renderer_compare/gpu_run2.jsonl
