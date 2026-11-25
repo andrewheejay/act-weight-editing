@@ -1,6 +1,6 @@
-"""After the job stock_b1 finishes: copy its eval_info.json as LeRobot wrote it, list every mismatch, write env.json.
+"""After the stock job finishes (stock_b1 for transfer cube, stock_ins for insertion): copy its eval_info.json as LeRobot wrote it, list every mismatch, write env.json.
 
-python -m awe.stage0_finish [--rps R]   R is the harness rollouts per second, measured with nothing else running
+python -m awe.stage0_finish --rps R [--task insertion --stock stock_ins]   R is the harness rollouts per second, measured with nothing else running
 """
 import argparse
 import json
@@ -22,9 +22,11 @@ STOCK_FLAGS = [
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--rps", type=float, required=True)
+    ap.add_argument("--task", default="transfer_cube")
+    ap.add_argument("--stock", default="stock_b1", help="folder under outputs/")
     a = ap.parse_args()
-    s0 = exp("transfer_cube") / "stage0"
-    src = ROOT / "outputs/stock_b1/eval_info.json"
+    s0 = exp(a.task) / "stage0"
+    src = ROOT / f"outputs/{a.stock}/eval_info.json"
     (s0 / "stock_eval").mkdir(exist_ok=True)
     shutil.copyfile(src, s0 / "stock_eval/eval_info.json")
     info = json.loads(src.read_text())
@@ -34,7 +36,7 @@ def main():
     print(f"stock {100 * sum(m['successes']) / 500:.1f}%  harness {100 * sum(r['benchmark_success'] for r in mine.values()) / 500:.1f}%  mismatches {len(bad)}: {bad}")
     for s in bad:
         i = s - 1000
-        print(f"  seed {s}: stock max_reward {m['max_rewards'][i]}, harness max_reward {mine[s]['max_reward']}, class {mine[s]['failure_class']}, x {mine[s]['cube_x0']:.3f} y {mine[s]['cube_y0']:.3f}")
+        print(f"  seed {s}: stock max_reward {m['max_rewards'][i]}, harness max_reward {mine[s]['max_reward']}, class {mine[s]['failure_class']}")
     gpu = subprocess.run(["nvidia-smi", "--query-gpu=name,driver_version", "--format=csv,noheader"], capture_output=True, text=True).stdout.strip()
     env = {
         "lerobot": version("lerobot"), "gym_aloha": version("gym-aloha"), "mujoco": version("mujoco"), "torch": version("torch"),

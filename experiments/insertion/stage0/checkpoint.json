@@ -1,0 +1,9 @@
+{
+ "dir": "checkpoints/insertion",
+ "model_file": "model.safetensors",
+ "model_sha256": "7a82635a7901d57cfbcd25dcc41cc9fa5ae687bdbbcde49a24a34fa348dd92c1",
+ "source": "lerobot/act_aloha_sim_insertion_human",
+ "hub_revision": "33259aa86eb45fdf85350280044a33d9d50e40c3",
+ "how": "python -m lerobot.processor.migrate_policy_normalization --pretrained-path lerobot/act_aloha_sim_insertion_human --output-dir checkpoints/insertion (LeRobot 0.7.0). The model card says the checkpoint is at 100k steps.",
+ "note": "checkpoints/ is gitignored, this hash pins it. config.json is identical to the transfer-cube one."
+}

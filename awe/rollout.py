@@ -12,6 +12,14 @@ def red_pixels(img) -> int:
     return int(((r - np.maximum(g, b)) > 60).sum())
 
 
+def blue_pixels(img) -> int:
+    r, g, b = img[..., 0].astype(int), img[..., 1].astype(int), img[..., 2].astype(int)
+    return int(((b - np.maximum(r, g)) > 60).sum())
+
+
+INS_FLAGS = ("left", "right", "table", "pegtable", "socktable", "pin", "pegsock", "leftboth", "rightboth")
+
+
 def run_episode(env, policy, seed=None, pose=None, n_frames=0):
     """Returns the arrays of one episode. n_frames > 0 also keeps that many evenly spaced camera frames."""
     spec = policy.spec
@@ -23,8 +31,12 @@ def run_episode(env, policy, seed=None, pose=None, n_frames=0):
     rec = {k: [] for k in ("action", "reward", "qpos", "left", "right", "table", "cube", "tcpl", "tcpr", "leftboth")}
     rec["qpos"].append(env.qpos())
     cube0 = env.cube_pos() if tc else None
+    if not tc:
+        rec = {k: [] for k in ("action", "reward", "qpos", "tcpl", "tcpr", "peg", "pegR", "sock", "sockR", *INS_FLAGS)}
+        rec["qpos"].append(env.qpos())
+        start = (env.body_pose(env.peg_body)[0], env.body_pose(env.sock_body)[0])
     frames = []
-    queue, vis, n_dec = [], {}, 0
+    queue, vis, visb, n_dec = [], {}, {}, 0
     post = Post(spec["post"], env.task) if spec.get("post") else None
     for t in range(EPISODE_STEPS):
         need = ens or not queue
@@ -38,8 +50,10 @@ def run_episode(env, policy, seed=None, pose=None, n_frames=0):
                 queue = list(policy.chunk(img, agent_pos)[:n])
                 a = queue.pop(0)
             n_dec += 1
-            if t % 100 == 0 and tc:
+            if t % 100 == 0:
                 vis[t] = red_pixels(img)
+                if not tc:
+                    visb[t] = blue_pixels(img)
         else:
             a = queue.pop(0)
         if post is not None:
@@ -57,12 +71,22 @@ def run_episode(env, policy, seed=None, pose=None, n_frames=0):
             rec["table"].append(TB)
             rec["leftboth"].append(LB)
             rec["cube"].append(env.cube_pos())
+        else:
+            for k in INS_FLAGS:
+                rec[k].append(env.flags[k])
+            for name, body in (("peg", env.peg_body), ("sock", env.sock_body)):
+                pos, mat = env.body_pose(body)
+                rec[name].append(pos)
+                rec[name + "R"].append(mat)
     arr = {k: np.array(v) for k, v in rec.items() if len(v)}
     arr["vis"] = [vis.get(t, -1) for t in (0, 100, 200, 300)]
     arr["n_decisions"] = n_dec
     if tc:
         arr["cube0"] = cube0
         arr["fk"] = env.arm_fk
+    else:
+        arr["peg0"], arr["sock0"] = start
+        arr["visb"] = [visb.get(t, -1) for t in (0, 100, 200, 300)]
     if frames:
         arr["frames"] = np.stack(frames)
     return arr
@@ -76,8 +100,11 @@ def summarize(arr, arm_id, seed=None, pose=None) -> dict:
     rew = arr["reward"]
     out["max_reward"] = int(rew.max())
     out["benchmark_success"] = bool((rew == 4).any())
-    tc = "left" in arr
-    strict = measure.strict_success(arr["left"], arr["right"], arr["table"]) if tc else False
+    tc = "cube" in arr
+    if tc:
+        strict = measure.strict_success(arr["left"], arr["right"], arr["table"])
+    else:
+        strict = measure.strict_insertion(arr)
     out["strict_success"] = bool(strict)
     out["failure_class"] = measure.failure_class(out["max_reward"], strict)
     out["traj_hash"] = measure.traj_hash(arr["qpos"])
@@ -85,4 +112,6 @@ def summarize(arr, arm_id, seed=None, pose=None) -> dict:
     if tc:
         out.update(measure.transfer_cube(arr))
         out.update(geom.transfer_cube(arr, out, arr["fk"]))
+    else:
+        out.update(measure.insertion(arr))
     return out

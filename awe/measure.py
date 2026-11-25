@@ -52,6 +52,12 @@ def strict_success(left, right, table) -> bool:
     return longest_run(ok) >= STRICT_WINDOW
 
 
+def strict_insertion(arr) -> bool:
+    """DEVIATIONS.md, 2026-11-25: peg on the pin, right gripper on the peg, left gripper on the socket, no table contact, 25 steps."""
+    ok = arr["pin"] & arr["right"] & arr["left"] & ~arr["table"]
+    return longest_run(ok) >= STRICT_WINDOW
+
+
 def vec(a) -> list:
     return [round(float(x), 5) for x in a]
 
@@ -94,4 +100,66 @@ def transfer_cube(arr) -> dict:
     out["cube_x0"], out["cube_y0"] = float(start[0]), float(start[1])
     out["vis_px"] = [int(v) for v in arr["vis"]]
     out["strict_both_fingers"] = bool(longest_run(arr["leftboth"] & ~R & ~TB) >= STRICT_WINDOW)
+    return out
+
+
+# Centre distance along the socket axis (m): the peg tip enters at 0.12 and touches the pin at 0.10 (half-lengths 0.06, 0.06, 0.04).
+# The interior half-gap is 0.018 and the peg's half-width 0.010, so a peg inside can sit at most 0.008 off axis. 0.012 allows slack.
+# Used only for the extra variant strict_depth.
+PEG_ENTER, PIN_REACH = 0.12, 0.10
+INSERT_LATERAL = 0.012
+
+
+def peg_in_socket(peg, pegR, sock, sockR):
+    """Axial distance, lateral offset (m) and axis angle (degrees) of the peg in the socket frame, per step.
+
+    Both long axes are the bodies' own x axes. The offsets are measured in the socket frame.
+    """
+    d = np.einsum("tij,ti->tj", sockR, peg - sock)  # socket frame
+    cosang = np.abs(np.einsum("ti,ti->t", pegR[:, :, 0], sockR[:, :, 0]))
+    ang = np.degrees(np.arccos(np.clip(cosang, 0, 1)))
+    return np.abs(d[:, 0]), np.abs(d[:, 1:]).max(1), ang, d
+
+
+def insertion(arr) -> dict:
+    """Behaviour numbers for the insertion task. Vectors are in metres, (x, y, z)."""
+    act, rew = arr["action"], arr["reward"]
+    L, R = arr["left"], arr["right"]
+    peg, sock = arr["peg"], arr["sock"]
+    out = {}
+    t_rtouch, t_ltouch = first(R), first(L)
+    t_grasp = first(rew >= 2)  # both held off the table
+    t_meet = first(rew >= 3)
+    t_pin = first(arr["pin"])
+    t_rclose, t_lclose = close_start(act[:, 13]), close_start(act[:, 6])
+    out.update(t_rtouch=t_rtouch, t_ltouch=t_ltouch, t_grasp=t_grasp, t_meet=t_meet, t_pin=t_pin, t_rclose=t_rclose, t_lclose=t_lclose)
+    if t_rclose >= 0:
+        out["reach_rel_r"] = vec(arr["tcpr"][t_rclose] - peg[t_rclose])
+    if t_lclose >= 0:
+        out["reach_rel_l"] = vec(arr["tcpl"][t_lclose] - sock[t_lclose])
+    out["peg_z_max"] = round(float(peg[:, 2].max()), 5)
+    out["sock_z_max"] = round(float(sock[:, 2].max()), 5)
+    held = R & L & ~arr["pegtable"] & ~arr["socktable"]
+    out["held_steps"] = int(held.sum())
+    ax, lat, ang, d = peg_in_socket(peg, arr["pegR"], sock, arr["sockR"])
+    near = held & (ax < 0.2)
+    if near.any():
+        t = int(np.argmin(np.where(near, ax, 9.0)))
+        out["min_axial"], out["axial_t"] = round(float(ax[t]), 5), t
+        out["lat_at_min_axial"], out["ang_at_min_axial"] = round(float(lat[t]), 5), round(float(ang[t]), 3)
+    if t_meet >= 0:
+        out["meet_lat"], out["meet_ang"] = round(float(lat[t_meet]), 5), round(float(ang[t_meet]), 3)
+        out["meet_d"] = vec(d[t_meet])
+    inside = (ax < PIN_REACH + 0.005) & (lat < INSERT_LATERAL)
+    out["strict_depth"] = bool(longest_run(inside & held) >= STRICT_WINDOW)
+    out["strict_both_fingers"] = bool(longest_run(arr["pin"] & arr["leftboth"] & arr["rightboth"] & ~arr["table"]) >= STRICT_WINDOW)
+    for name, b, b0 in (("peg", peg, arr["peg0"]), ("sock", sock, arr["sock0"])):
+        off = (rew >= 2).argmax() if (rew >= 2).any() else len(b)
+        slide = np.linalg.norm(b[:off, :2] - b0[:2], axis=1)
+        out[f"{name}_knock_m"] = round(float(slide.max()) if len(slide) else 0.0, 5)
+        out[f"{name}_x0"], out[f"{name}_y0"] = float(b0[0]), float(b0[1])
+    jumps = [float(np.abs(act[t] - act[t - 1]).max()) for t in (100, 200, 300) if t < len(act)]
+    out["chunk_jump"] = round(max(jumps), 5)
+    out["vis_px"] = [int(v) for v in arr["vis"]]
+    out["vis_blue"] = [int(v) for v in arr["visb"]]
     return out

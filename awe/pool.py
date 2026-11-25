@@ -26,7 +26,11 @@ def _init(task, renderer, n_frames, trace_dir=None):
 
 
 def trace_name(seed, pose) -> str:
-    return f"{seed}.npz" if seed is not None else f"pose_{pose[0]:.4f}_{pose[1]:.4f}.npz"
+    if seed is not None:
+        return f"{seed}.npz"
+    if len(pose) == 7:
+        return f"pose_{pose[0]:.4f}_{pose[1]:.4f}.npz"
+    return "pose_" + "_".join(f"{v:.4f}" for v in pose[:2]) + "_" + "_".join(f"{v:.4f}" for v in pose[7:9]) + ".npz"
 
 
 def _save_trace(d, arr, seed, pose):
@@ -34,6 +38,7 @@ def _save_trace(d, arr, seed, pose):
     import numpy as np
 
     keys = ("action", "reward", "qpos", "left", "right", "table", "cube", "tcpl", "tcpr", "leftboth")
+    keys += ("peg", "pegR", "sock", "sockR", "pin", "pegsock", "pegtable", "socktable", "rightboth")
     out = {k: (arr[k].astype(np.float32) if arr[k].dtype.kind == "f" else arr[k].astype(np.int8)) for k in keys if k in arr}
     tmp = Path(d) / (trace_name(seed, pose) + f".{os.getpid()}.tmp")
     with open(tmp, "wb") as fh:

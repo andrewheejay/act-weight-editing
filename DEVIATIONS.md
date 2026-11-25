@@ -74,3 +74,10 @@ SPEC.md defines the strict score and the classes for transfer cube only and says
 - Strict insertion, the direct analogue of strict handover. Somewhere in the episode, for 25 steps in a row, the peg touches the pin, the right gripper holds the peg, the left gripper holds the socket, and neither the peg nor the socket touches the table. "Holds" means contact with any finger of that gripper, as for transfer cube (the insertion socket counts as its four walls, socket-1 to socket-4, as in the stock reward).
 - Failure class 0 to 3 is the highest stock reward reached (0 nothing, 1 both grippers touch their object, 2 both objects held off the table, 3 peg touches socket off the table). 4a and 4b are reward 4 without and with strict insertion.
 The gate rules (10-point swap, guard, operating point) apply unchanged to these two scores. Variants (both fingers, a depth-based version that tolerates contact flicker) may be logged beside them and never replace them.
+
+### 2026-11-25, insertion Stage 0, no published per-seed file exists (operational)
+
+SPEC.md Stage 0 step 4 asks for a seed-by-seed comparison with the published `eval_info.json` and a failure map redrawn from it. The insertion repo's file (lerobot/act_aloha_sim_insertion_human, revision 33259aa8) is byte for byte the transfer-cube file (SHA-256 566d1661..., 83.0% success, video paths under act_aloha_transfer). All 4 earlier commits that carry the file (04be2f0a, 1d723220, 2bd896d0, 33259aa8) hold the same bytes. SPEC.md's "Not checked yet" table already suspected this. So no per-seed insertion result was ever published there. The only published insertion number I know of is the model card's 20.6%.
+- The file is stored where CONTRACT.md wants it (it is what the hub serves) and is never used as an insertion result. Any agreement the referee prints between our insertion run and this file is between two different tasks and means nothing.
+- No published failure map is drawn for insertion. The failure map comes from our own runs.
+- Consequently "agreement with the published per-seed file" cannot inform the insertion renderer choice.

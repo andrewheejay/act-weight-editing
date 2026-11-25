@@ -20,10 +20,12 @@ def main(inp, out, task="transfer_cube"):
     for key in data.files:
         env.reset(seed=int(key))
         traj = [env._env.physics.data.qpos.copy()]
+        rew = []
         for a in data[key]:
-            env.step(np.asarray(a, dtype=np.float32))
+            rew.append(int(env.step(np.asarray(a, dtype=np.float32))[1]))
             traj.append(env._env.physics.data.qpos.copy())
         res[key] = np.array(traj)
+        res[f"{key}_reward"] = np.array(rew)
     np.savez(out, **res)
 
 
@@ -31,4 +33,4 @@ if __name__ == "__main__":
     from awe import render
 
     render.configure("egl_nvidia")  # only physics is compared, so the faster renderer is used here
-    main(sys.argv[1], sys.argv[2])
+    main(*sys.argv[1:4])
