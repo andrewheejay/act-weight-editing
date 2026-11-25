@@ -66,3 +66,11 @@ This corrects the auto-greedy item in the entry above and the docstring of awe/a
 ### 2026-11-25, Stage 5, side-by-side videos use design seeds (operational)
 
 SPEC.md asks for side-by-side videos on the same seeds in the report. The test seeds may be run only by the referee, so the clips use design seeds (the same seed for the original and the edit in each clip), picked by a fixed rule with rng 0 from the earlier design results. 16 rollouts from the agent budget, purpose "report videos". They illustrate the edit and are not evidence, since the design seeds were used to choose it. Nothing in the freeze changed.
+
+### 2026-11-25, insertion, what strict success and the failure classes mean (interpretation, written before any insertion rollout)
+
+SPEC.md defines the strict score and the classes for transfer cube only and says of insertion "the measurements swap in the peg and the socket" (Stage 6). The definitions, fixed here before any rollout of the insertion policy on this box and before I have looked at any per-seed insertion result (the published success rate, 20.6%, is in SPEC.md):
+- Benchmark success is what LeRobot's evaluator reports, stock reward 4 at any step (the peg touches the pin inside the socket).
+- Strict insertion, the direct analogue of strict handover. Somewhere in the episode, for 25 steps in a row, the peg touches the pin, the right gripper holds the peg, the left gripper holds the socket, and neither the peg nor the socket touches the table. "Holds" means contact with any finger of that gripper, as for transfer cube (the insertion socket counts as its four walls, socket-1 to socket-4, as in the stock reward).
+- Failure class 0 to 3 is the highest stock reward reached (0 nothing, 1 both grippers touch their object, 2 both objects held off the table, 3 peg touches socket off the table). 4a and 4b are reward 4 without and with strict insertion.
+The gate rules (10-point swap, guard, operating point) apply unchanged to these two scores. Variants (both fingers, a depth-based version that tolerates contact flicker) may be logged beside them and never replace them.
