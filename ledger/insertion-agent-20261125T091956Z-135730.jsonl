@@ -1,0 +1,8 @@
+{"task": "insertion", "seed": 20003, "arm": "original", "budget": "agent", "purpose": "smoke"}
+{"task": "insertion", "seed": 20002, "arm": "original", "budget": "agent", "purpose": "smoke"}
+{"task": "insertion", "seed": 20001, "arm": "original", "budget": "agent", "purpose": "smoke"}
+{"task": "insertion", "seed": 20000, "arm": "original", "budget": "agent", "purpose": "smoke"}
+{"task": "insertion", "seed": 20001, "arm": "cross.h1.x0", "budget": "agent", "purpose": "smoke"}
+{"task": "insertion", "seed": 20000, "arm": "cross.h1.x0", "budget": "agent", "purpose": "smoke"}
+{"task": "insertion", "seed": 20002, "arm": "cross.h1.x0", "budget": "agent", "purpose": "smoke"}
+{"task": "insertion", "seed": 20003, "arm": "cross.h1.x0", "budget": "agent", "purpose": "smoke"}

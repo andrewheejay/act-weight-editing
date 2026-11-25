@@ -90,3 +90,11 @@ SPEC.md Stage 0 step 4 asks for a seed-by-seed comparison with the published `ev
 
 SPEC.md Stage 1 step 3 asks for "an even grid of 41 by 41 cube positions". Insertion has two objects, so the start is a point in four dimensions. I run two grids of 41 by 41 poses each, 1,681 rollouts per grid: the peg on an even grid over its own start box (x 0.1 to 0.2, y 0.4 to 0.6, 10 by 20 cm) with the socket held at the centre of its box, and the socket on an even grid over its box (x -0.2 to -0.1, y 0.4 to 0.6) with the peg at the centre of its box. Both are conditional maps, not marginal ones. The 1,000 design seeds, where both move, are the marginal picture.
 The temporal ensembling run uses the first 200 design seeds, 20000 to 20199, which is the minimum the plan allows ("at least 200"). At stock speed it costs about 28 minutes per 200 seeds. On transfer cube all 1,000 were run. If it matters for a later comparison I will extend it in the same file.
+
+### 2026-11-25, insertion Stage 2, the two-grid atlas and the selection rules (interpretation, written before any insertion edit was run beyond a 4-seed smoke test, and before any sweep)
+
+SPEC.md Stage 2 describes one grid of cube positions. Insertion has two objects and two 41 by 41 grids (entry of 2026-11-25, insertion Stage 1), so the rules fixed in the docstring of awe/atlas_ins.py are:
+- The local failure rate is the strict (primary) failure, per grid, smoothed with a 1 cm Gaussian. The overlap score of an edit is the Spearman correlation of its step-0 effect map with that failure map, averaged over the two grids. Steps 100 and 200, and maps of class 3, benchmark failure and grasp failure, are secondary numbers and choose nothing.
+- The "best 10 by success gain" are by the primary score (strict), ties by benchmark gain then arm id. "Kept" means the same non-zero sign of the strict gain in both halves.
+- The atlas frames add step 200 at every pose (transfer cube had it at every second one), because the approach of the target failure is mostly commanded there.
+The smoke test was 8 rollouts (the original and cross.h1.x0 on seeds 20000 to 20003, agent budget, purpose smoke). It showed 0 of 4 strict for both. No rule was changed after it.

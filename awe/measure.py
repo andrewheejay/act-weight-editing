@@ -52,10 +52,25 @@ def strict_success(left, right, table) -> bool:
     return longest_run(ok) >= STRICT_WINDOW
 
 
+def strict_run(arr) -> int:
+    """Longest run of steps meeting the strict insertion condition (the strict score needs 25)."""
+    return longest_run(arr["pin"] & arr["right"] & arr["left"] & ~arr["table"])
+
+
 def strict_insertion(arr) -> bool:
     """DEVIATIONS.md, 2026-11-25: peg on the pin, right gripper on the peg, left gripper on the socket, no table contact, 25 steps."""
-    ok = arr["pin"] & arr["right"] & arr["left"] & ~arr["table"]
-    return longest_run(ok) >= STRICT_WINDOW
+    return strict_run(arr) >= STRICT_WINDOW
+
+
+def tip_in_socket(peg, pegR, sock, sockR):
+    """The peg's leading end (the end nearer the socket centre) in the socket frame (m), per step: [axial, across y, across z].
+
+    Same definition as experiments/insertion/stage1/analysis_ins.py tip_offset, which made the stage 1 features.
+    """
+    ax = pegR[:, :, 0]
+    e1, e2 = peg + 0.06 * ax, peg - 0.06 * ax
+    near1 = np.linalg.norm(e1 - sock, axis=1) < np.linalg.norm(e2 - sock, axis=1)
+    return np.einsum("tij,ti->tj", sockR, np.where(near1[:, None], e1, e2) - sock)
 
 
 def vec(a) -> list:
@@ -150,6 +165,14 @@ def insertion(arr) -> dict:
     if t_meet >= 0:
         out["meet_lat"], out["meet_ang"] = round(float(lat[t_meet]), 5), round(float(ang[t_meet]), 3)
         out["meet_d"] = vec(d[t_meet])
+        tip = tip_in_socket(peg, arr["pegR"], sock, arr["sockR"])
+        alat = np.abs(tip[:, 1:]).max(1)
+        if t_meet >= 1:  # the tracking number of the diagnosis: one step before the first peg-socket contact off the table
+            out["pre_tip_d"], out["pre_tip_lat"] = vec(tip[t_meet - 1]), round(float(alat[t_meet - 1]), 5)
+        after = np.arange(len(tip)) >= t_meet
+        ink = after & (alat < 0.018)  # the tip centre inside the 1.8 cm half-opening
+        out["deep_in_ax"] = round(float(np.abs(tip[ink, 0]).min()), 5) if ink.any() else None
+    out["strict_run"], out["pin_steps"] = strict_run(arr), int(arr["pin"].sum())
     inside = (ax < PIN_REACH + 0.005) & (lat < INSERT_LATERAL)
     out["strict_depth"] = bool(longest_run(inside & held) >= STRICT_WINDOW)
     out["strict_both_fingers"] = bool(longest_run(arr["pin"] & arr["leftboth"] & arr["rightboth"] & ~arr["table"]) >= STRICT_WINDOW)
