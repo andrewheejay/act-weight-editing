@@ -1,0 +1,28 @@
+{
+  "beacon": {
+    "bls_verified": true,
+    "chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+    "public_key": "83cf0f2896adee7eb8b5f01fcad3912212c437e0073e911fb90022d3e760183c8c4b450b6a0a6c3ac6a5776a2d1064510d1fec758c921cc22b0e17e63aaf4bcb5ed66304de9cf809bd274ca73bab4af5a6e9c76a4bc09e76eae8991ef5ece45a",
+    "randomness": "b8b6df636456c0881aa9015ed647550cf81b399edda0fe55a778a671bdc2a2ce",
+    "relays": [
+      "https://api.drand.sh"
+    ],
+    "round": 34273862,
+    "round_time": 1795624950,
+    "signature": "a5be3acf260c0df14ebb31bfc7a2416583e8c8d8b26b3f2fc09765c5d64c0bd90a98cbd80e7aa5730a8bc95a6e38ff31"
+  },
+  "block": {
+    "count": 1000,
+    "derivation": "start = base + int(sha256(domain|task|commit|randomness)[:8]) mod span",
+    "digest": "74ae251ffb9514cd01344326448a3f036f8974bd8455d53fd78981c47996bbd9",
+    "end": 1642361012,
+    "start": 1642360013
+  },
+  "drawn_at": "2026-11-25T16:42:31Z",
+  "dry_run": false,
+  "freeze_commit": "e27fe8eae63bfcdeffa39cd24c14696df61f7f6e",
+  "freeze_tag": "freeze-insertion-1",
+  "published_at": 1795624349.0,
+  "published_at_iso": "2026-11-25T16:32:29Z",
+  "task": "insertion"
+}
