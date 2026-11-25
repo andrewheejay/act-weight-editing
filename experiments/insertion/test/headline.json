@@ -1,0 +1,13 @@
+{
+  "broke": 48,
+  "fixed": 129,
+  "gain_points": 8.1,
+  "n": 1000,
+  "new_success": 0.193,
+  "note": "main arms only. The verdict follows when every arm has run",
+  "orig_failures": 888,
+  "orig_success": 0.112,
+  "p_mcnemar": 9.303678367009965e-10,
+  "primary_metric": "strict",
+  "share_removed": 0.09121621621621621
+}
