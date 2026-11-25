@@ -1,0 +1,19 @@
+{
+  "arms": {
+    "agent_edit": {
+      "agreement": 1.0,
+      "episodes": 357,
+      "harness_success": 0.9103641456582633,
+      "stock_success": 0.9103641456582633
+    },
+    "original": {
+      "agreement": 1.0,
+      "episodes": 357,
+      "harness_success": 0.8375350140056023,
+      "stock_success": 0.8375350140056023
+    }
+  },
+  "n": 357,
+  "note": "",
+  "ok": true
+}
