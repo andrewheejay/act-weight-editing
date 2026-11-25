@@ -442,3 +442,7 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Wall time and rollouts.** About 40 minutes of session. 16 agent rollouts (videos, agent now 95,073). Stress rollouts are uncapped.
 
 **Next step.** When `stress` finishes: `python experiments/transfer_cube/stage6/stress_run.py report` (writes stress.json and stress.md), check the row count is 5,000, commit, rerun the status. Add one paragraph on the stress results to the post later, not to the report (the verdict block and report are done). Then insertion (PLAN.json lists only transfer_cube tasks by task and global s7 tasks, the status will say what is next). No `awe/` file was touched this session. The running job writes stage6/stress_runs.jsonl and a ledger file, so commit a snapshot if the hook asks for it.
+
+**Corrections to session 16 (same session).**
+- "About 40 minutes of session" was a guess and is wrong. The verdict commit is at 01:34:57 UTC and the stress job started at 01:39:47, so the report work took about 5 minutes and the session about 10 in all.
+- "PLAN.json lists only transfer_cube tasks by task" is wrong. PLAN.json has a `per_task` list that applies to each task, and the status decides which task is next.
