@@ -1,0 +1,311 @@
+{
+ "c06": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 0,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 3,
+    "scale": 0
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    0,
+    0
+   ],
+   [
+    "enc3",
+    3,
+    0
+   ]
+  ],
+  "n_matched": 49
+ },
+ "r1": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 0,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 3,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 6,
+    "scale": 2
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    0,
+    0
+   ],
+   [
+    "enc3",
+    3,
+    0
+   ],
+   [
+    "enc0",
+    6,
+    2
+   ]
+  ],
+  "n_matched": 343
+ },
+ "r2": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 0,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 3,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 6,
+    "scale": 4
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    0,
+    0
+   ],
+   [
+    "enc3",
+    3,
+    0
+   ],
+   [
+    "enc0",
+    6,
+    4
+   ]
+  ],
+  "n_matched": 343
+ },
+ "c08": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 0,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 4,
+    "scale": 2
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 6,
+    "scale": 2
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    0,
+    0
+   ],
+   [
+    "enc3",
+    4,
+    2
+   ],
+   [
+    "enc0",
+    6,
+    2
+   ]
+  ],
+  "n_matched": 343
+ },
+ "r6": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 0,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 3,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 6,
+    "scale": 2
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.2.self_attn",
+    "head": 1,
+    "scale": 0
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    0,
+    0
+   ],
+   [
+    "enc3",
+    3,
+    0
+   ],
+   [
+    "enc0",
+    6,
+    2
+   ],
+   [
+    "enc2",
+    1,
+    0
+   ]
+  ],
+  "n_matched": 2401
+ },
+ "r5": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 0,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 3,
+    "scale": 0.5
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 6,
+    "scale": 2
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    0,
+    0
+   ],
+   [
+    "enc3",
+    3,
+    0.5
+   ],
+   [
+    "enc0",
+    6,
+    2
+   ]
+  ],
+  "n_matched": 343
+ },
+ "r3": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 0,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.3.self_attn",
+    "head": 3,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.2.self_attn",
+    "head": 1,
+    "scale": 0
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    0,
+    0
+   ],
+   [
+    "enc3",
+    3,
+    0
+   ],
+   [
+    "enc2",
+    1,
+    0
+   ]
+  ],
+  "n_matched": 343
+ },
+ "c02": {
+  "ops": [
+   {
+    "op": "scale_head",
+    "block": "model.decoder.layers.0.multihead_attn",
+    "head": 0,
+    "scale": 0
+   },
+   {
+    "op": "scale_head",
+    "block": "model.encoder.layers.0.self_attn",
+    "head": 6,
+    "scale": 2
+   }
+  ],
+  "heads": [
+   [
+    "cross",
+    0,
+    0
+   ],
+   [
+    "enc0",
+    6,
+    2
+   ]
+  ],
+  "n_matched": 49
+ }
+}

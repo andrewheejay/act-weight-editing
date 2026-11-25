@@ -81,3 +81,23 @@ What group A says about what could add to it, descriptive only: on top of the cr
 Rules that stay as they are: the choice of the final edit uses the design and the validation data in the way the candidates file will say, written before any validation rollout. Nothing here is tuned to the validation rule, which needs 25% of failures removed and is out of reach (the failure pool of the primary score is about 93%, so 25% means about +23 points).
 
 Correction, same session, before any group B or refinement result was read (job stage3c_ins just started): the line above "53 of 79 c08 rescues lie inside the 98 c06 rescues, the union of the two would be 124 rescues of 500" is wrong. 79, 98, 53 and 124 are strict successes on group A (including the 36 the original already had), not rescues. Counted properly (rescue = strict success where the original was not strict, group A): c06 78, c08 58, c02 61, c01 62, the single 52. c06 and c08 share 35 rescues, their union is 101; with c02 shared 36, union 103; with c01 shared 40, union 100. So the arms rescue partly different episodes, but a smaller difference than the wrong numbers suggested, and a union is not a forecast for a combination.
+
+The counts in the correction above, and the ones below, come from `python scratch/ins_combo_overlap.py` (no rollouts).
+
+## 2026-11-25, session 25, validation round, written before any validation rollout
+
+Known when written: every design result (stage3/combo_summary.json on 1,000 seeds for ten combinations, the baselines, the dose response). No insertion rollout on seeds 30000 to 30499 exists. The list is the list rule of awe/candidates_ins.py, the 8 largest net strict gains on the design seeds. Design gains are selected and optimistic (the best of 22 combinations, heads chosen on the same seeds).
+
+What the refinements showed. None of r1 to r6 is above c06 on the 1,000 design seeds (c06 +11.0, r1 +10.6, r2 +9.9, r6 +8.6, r3 and r5 +8.3, r4 +7.6), so the hopes written for r1, r2, r4 and r5 did not come out: a third head adds nothing measurable, and enc3.h3 at half strength is worse than off. c06, c08, c02 and c01 all lost points from group A to group B (12.4 to 9.6, 8.6 to 8.6, 8.4 to 7.6, 7.6 to 5.2), except c08.
+What the files say about a mechanism, c06 against the original on the 1,000 design seeds: pin contacts 273 against 188, strict among pin contacts 184 of 273 (67%) against 74 of 188 (39%), pin contacts in the last 25 steps 4.0% against 16.5%, episodes that meet 632 against 593, grasp failures 368 against 407, class 3 (the target) 359 against 405, class 4a 89 against 114. The tracking number does not support an alignment mechanism: the median tip offset is 1.87 cm against 1.70 cm, which is worse. So the edit is not shown to fix the target failure the way diagnosis.md describes it. The reading "earlier arrival and better conversion of contacts" is post hoc, from the same seeds that chose the edit.
+Against the baselines on the same 1,000 design seeds, paired on strict: c06 is above the constant offset by 4.3 points (p 0.003), the late shift by 5.5, the deviation gain by 8.5 and chunk 50 by 8.2. Both sides are selected on these seeds. The edit was the best of 22 hand-made combinations after a 96-edit sweep, the offset the best of 80 settings, and I have not tried to say which is more optimistic.
+Expected for every candidate: the validation rule (25% of strict failures removed) fails, because it needs about 23 points, and the stop rule applies.
+
+- c06 cross.h0 x0 with enc3.h3 x0: the best design gain (+11.0, 147 fixed, 37 broken). Hypothesis: the two heads slow the approach or delay the arms when they are on, and turning both off makes the peg reach the pin earlier in the 400 steps, so more contacts last the 25 steps that strict needs. Expected validation gain +7 to +11.
+- r1 cross.h0 x0, enc3.h3 x0, enc0.h6 x2: c06 plus the encoder head that helped cross.h0 (+10.6, 146 fixed, 40 broken). Same hypothesis, the third head is expected to add nothing. Expected +7 to +10.
+- r2 cross.h0 x0, enc3.h3 x0, enc0.h6 x4: r1 with more of the third head (+9.9, best design guard +11.6, more pins, 304, but more class 4a, 131). Expected +6 to +10.
+- c08 cross.h0 x0, enc3.h4 x2, enc0.h6 x2: the three-family edit without enc3.h3 (+8.6). Expected +5 to +9.
+- r6 cross.h0 x0, enc3.h3 x0, enc0.h6 x2, enc2.h1 x0: four heads (+8.6). Expected +5 to +9.
+- r5 cross.h0 x0, enc3.h3 x0.5, enc0.h6 x2: r1 with enc3.h3 at half strength (+8.3). Expected +5 to +9.
+- r3 cross.h0 x0, enc3.h3 x0, enc2.h1 x0: c06 plus enc2.h1 off (+8.3). Expected +5 to +9.
+- c02 cross.h0 x0, enc0.h6 x2: cross.h0 plus the encoder head (+8.0). Expected +5 to +8.

@@ -32,8 +32,11 @@ from awe.sweep_report import find, rows_of  # noqa: E402
 from referee.stats import bootstrap_ci, paired  # noqa: E402
 
 BLUE, ORANGE, AQUA, INK, MUTED, SURF, GRAY = "#2a78d6", "#eb6834", "#1baf7a", "#0b0b0b", "#8a8985", "#fcfcfb", "#c9c8c3"
-# Zones named in diagnosis.md before any edit (the sides of the box where the tip offset is larger). They are half-planes on the design box, fixed here.
-ZONES = {"peg x below 0.14 (larger tip offset)": lambda r: r["peg_x0"] < 0.14, "peg y above 0.52 (larger tip offset)": lambda r: r["peg_y0"] > 0.52}
+# Zones. The directions come from diagnosis.md (stage 1, before any edit): the tip offset is larger in the two lowest fifths of peg x and in the three
+# highest fifths of peg y. The cutoffs are the edges of those fifths on the design seeds (scratch/ins_combo_overlap.py, part 3). diagnosis.md names no zone
+# and no cutoff. They were set in session 25, after the design results of the combinations, and a first version of this file used peg y 0.52, which does not match the fifths. It
+# was changed for that reason, after its zone table had been printed once for c06 on group A.
+ZONES = {"peg x below 0.143 (larger tip offset)": lambda r: r["peg_x0"] < 0.143, "peg y above 0.483 (larger tip offset)": lambda r: r["peg_y0"] > 0.483}
 KINDS = ("S", "A", "M", "peg_not_lifted", "socket_not_lifted", "neither_lifted", "both_lifted")
 
 
