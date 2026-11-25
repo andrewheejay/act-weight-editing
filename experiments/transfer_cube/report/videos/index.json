@@ -1,0 +1,76 @@
+{
+ "rule": "rng 0, see videos.py",
+ "pool_sizes": {
+  "fixed_grasp_failure": 99,
+  "fixed_other_failure": 46,
+  "broken_by_edit": 39,
+  "both_succeed": 777,
+  "both_fail": 39
+ },
+ "videos": [
+  {
+   "seed": 20024,
+   "kind": "broken_by_edit",
+   "file": "broken_by_edit_20024.mp4",
+   "original_class": "4b",
+   "edit_class": "0",
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20197,
+   "kind": "broken_by_edit",
+   "file": "broken_by_edit_20197.mp4",
+   "original_class": "4b",
+   "edit_class": "2",
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20262,
+   "kind": "fixed_other_failure",
+   "file": "fixed_other_failure_20262.mp4",
+   "original_class": "2",
+   "edit_class": "4b",
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20271,
+   "kind": "fixed_other_failure",
+   "file": "fixed_other_failure_20271.mp4",
+   "original_class": "2",
+   "edit_class": "4b",
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20609,
+   "kind": "fixed_grasp_failure",
+   "file": "fixed_grasp_failure_20609.mp4",
+   "original_class": "1",
+   "edit_class": "4b",
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20642,
+   "kind": "both_fail",
+   "file": "both_fail_20642.mp4",
+   "original_class": "2",
+   "edit_class": "2",
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20808,
+   "kind": "both_succeed",
+   "file": "both_succeed_20808.mp4",
+   "original_class": "4b",
+   "edit_class": "4b",
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20810,
+   "kind": "fixed_grasp_failure",
+   "file": "fixed_grasp_failure_20810.mp4",
+   "original_class": "1",
+   "edit_class": "4b",
+   "hash_matches_earlier": true
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{"task": "transfer_cube", "seed": 20271, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20609, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20642, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20024, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20810, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20808, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20262, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20197, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20024, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20262, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20197, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20271, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20609, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20642, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20808, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "transfer_cube", "seed": 20810, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
