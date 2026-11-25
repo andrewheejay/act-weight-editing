@@ -1,0 +1,23 @@
+{
+ "primary_metric": "strict",
+ "operating_point": {
+  "n_action_steps": 100
+ },
+ "proceed": true,
+ "target_failure_class": "3 (max reward 3: the peg touched the socket off the table but never the pin, 405 of 1000 design seeds, kind M in stage1/analysis_ins.py). Not the target: 4a (pin contact, not strict, 114) and the grasp classes 0, 1 and 2 (159, 205, 43).",
+ "tracking_number": "pre_tip_lat (stage1/analysis_ins.py): one control step before the first peg-socket contact off the table (t_meet - 1), the larger of the two absolute offsets, across the socket axis, of the peg's leading end from the socket centre, in the socket frame, in cm. Defined only for episodes that meet. Design seeds, M against strict successes: AUC 0.843.",
+ "evidence": {
+  "benchmark_success": 0.188,
+  "strict_success": 0.074,
+  "gap_points": 11.4,
+  "chunk_gains_points_on_strict": {
+   "50": 2.8,
+   "25": -4.5
+  },
+  "chunk_gains_points_on_benchmark": {
+   "50": 3.0,
+   "25": -6.9
+  },
+  "note": "The rule reads the primary (strict) score, so chunk 50 is 0.2 points short of the +3 margin. On benchmark it would equal the margin exactly (218 against 188 of 1000). The two disagree; the rule is followed as written."
+ }
+}

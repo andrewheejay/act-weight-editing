@@ -50,6 +50,15 @@ def kind(r):
     return {"4a": "A", "3": "M", "2": "G2", "1": "G1", "0": "G0"}[r["failure_class"]]
 
 
+def tip_offset(z):
+    """The peg's leading end in the socket frame (m), per step: [axial, across y, across z]. The end nearer the socket centre is the tip."""
+    peg, pR, so, sR = [z[k].astype(float) for k in ("peg", "pegR", "sock", "sockR")]
+    ax = pR[:, :, 0]
+    e1, e2 = peg + 0.06 * ax, peg - 0.06 * ax
+    tip = np.where((np.linalg.norm(e1 - so, axis=1) < np.linalg.norm(e2 - so, axis=1))[:, None], e1, e2)
+    return np.einsum("tij,ti->tj", sR, tip - so)
+
+
 def feature_row(rec, z):
     d = dict(rec)
     d["kind"] = kind(rec)
@@ -64,6 +73,15 @@ def feature_row(rec, z):
         # same 20 steps earlier: is the approach closing in
         j = max(0, k - 20)
         d["pre20_lat"], d["pre20_ang"], d["pre20_ax"] = float(lat[j]), float(ang[j]), float(ax[j])
+        # the peg TIP (leading end) in the socket frame at the same step, in metres: [axial, across-y, across-z]
+        td = tip_offset(z)
+        d["pre_tip_d"] = [float(x) for x in td[k]]
+        d["pre_tip_lat"] = float(np.abs(td[k][1:]).max())
+        d["pre_tip_lat_20"] = float(np.abs(td[j][1:]).max())
+        d["first_pegsock"] = int(np.argmax(z["pegsock"] > 0)) if (z["pegsock"] > 0).any() else -1
+        pos = td[t:]
+        d["post_min_tip_ax"] = float(np.abs(pos[:, 0]).min())   # deepest the tip gets after contact (mouth 0.06, pin 0.04)
+        d["post_tip_lat_at_end"] = float(np.abs(td[-1][1:]).max())
     return d
 
 
