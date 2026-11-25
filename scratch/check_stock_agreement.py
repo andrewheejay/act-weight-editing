@@ -1,8 +1,9 @@
-"""Stock lerobot-eval (b1) against the harness: success bits, max rewards, and the published file."""
+"""Stock lerobot-eval (batch 1) against the harness: success bits, max rewards, and the published file.
+python scratch/check_stock_agreement.py [task]   (for insertion the stored published file is the transfer-cube one, so its line means nothing)"""
 import json, sys
 sys.path.insert(0, ".")
 from referee.common import stock_per_episode
-S = range(1000, 1500); d = "experiments/transfer_cube/stage0/"
+S = range(1000, 1500); d = f"experiments/{sys.argv[1] if len(sys.argv) > 1 else 'transfer_cube'}/stage0/"
 m = json.load(open(d + "stock_eval/eval_info.json"))["per_task"][0]["metrics"]
 h = {r["seed"]: r for r in map(json.loads, open(d + "harness_repro.jsonl"))}
 pub = {r["seed"]: r["success"] for r in stock_per_episode(json.load(open(d + "published_eval_info.json")))}

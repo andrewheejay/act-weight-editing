@@ -482,3 +482,18 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 - Transfer-cube setup rollouts this session: 33 in the test suite (the ledger count) and 20 replays, not "about 40".
 - "All 4 earlier commits" (here and in DEVIATIONS.md) should read: the 4 commits that carry the file, the current one included. The initial commit 3dc6652c has no eval_info.json (404).
 - "The peg can be pushed onto the pin without being held" is read off the stock reward code (reward 4 needs only the peg-pin contact). I have not looked at how often it happens.
+
+## 2026-11-25, session 18 (insertion Stage 0 finished, waiting for the Gate 0 replay)
+
+**Done.** `stock_ins` finished (exit 0). `python -m awe.stage0_finish --task insertion --stock stock_ins --rps 6.3` copied its `eval_info.json` (cmp identical) and wrote `stage0/env.json`. Wrote `stage0/mismatches.md`. Extended `scratch/check_stock_agreement.py` to take a task. Status is JUDGE_TURN, referee step confirm_g0. No `awe/` file was touched.
+
+**Numbers measured.**
+- Stock `lerobot-eval` 18.2% (91 of 500), harness 18.2%, 0 of 500 mismatches on success and 0 on max reward. Inside the window 15.6 to 25.6%.
+- Harness speed idle: 500 rollouts in 79.9 s (6.3/s, 8 workers), and 100 in 24.7 s (4.1/s, startup dominates). Saved in `logs/ins_idle_rate.log`. Both runs were repeats of the stored rollouts: the 100 equal `repeat_a.jsonl` and the 500 equal `harness_repro.jsonl`. The output files were then deleted.
+- Stock run: 5 h 52 min in all, 42.3 s per episode (21,154 s over 500), and `env.json` holds that average. It is not mostly contention: the first 100 episodes took 1:13:45 (44.3 s each) and the last 400 took 4:38:48 (41.8 s each). The session 17 notes said "4 to 5 hours" and that the slow start pushes the average up. The first was wrong and the second explains about 0.5 s of the 42.3. Transfer cube was 30.2 s. I did not check why insertion is slower; a likely reason, not tested, is that only 18% of episodes succeed and end early.
+
+**Rollouts this session (setup budget, insertion).** 100 + 500 idle-rate rollouts, in the ledger.
+
+**Ruled out.** Any insertion mismatch between the harness and stock at these settings.
+
+**Next step (session 19).** After the Gate 0 replay: Stage 1 for insertion. The four design runs (`s1.design_runs`, 20000 to 20999 at chunk 100, 50, 25, plus 200 with ensembling), then figures, decisions, diagnosis. Before the first design rollout, read SPEC.md Stage 1 and check what insertion needs: stage1.py, stage1_analysis.py, stage1_report.py and geom.py are written for transfer cube. Run the design rollouts as a job and keep all changes to `awe/` in one commit where possible, because each one makes the referee replay Gate 0 again.
