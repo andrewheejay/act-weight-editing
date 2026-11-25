@@ -210,6 +210,11 @@ def evidence(task):
             x_only = sum(bool(x[s]["strict_success"]) and not e[s]["strict_success"] for s in seeds)
             others[fam] = {"edit_only": a_only, "baseline_only": x_only, "p_mcnemar": mcnemar_exact(a_only, x_only)}
     dose = j(exp(task) / "stage3" / "dose_response.json")["heads"]
+    val = j(vd / "summary.json")["results"]
+    best = max(others, key=lambda f: val[f"base_{f}"]["gain"])
+    bv = others[best]
+    vs_base = (f"Against the best simple baseline on these validation seeds ({best}, {100 * val[f'base_{best}']['gain']:+.1f} points) the edit is {100 * (sum(bool(e[s]['strict_success']) for s in seeds) - sum(bool(R(f'base_{best}')[s]['strict_success']) for s in seeds)) / len(seeds):+.1f} points ahead, "
+               f"paired: {bv['edit_only']} seeds only the edit solves, {bv['baseline_only']} only the baseline, exact p {bv['p_mcnemar']:.2g}, so on validation the edit is not distinguishable from it at 0.05. " if bv['p_mcnemar'] >= 0.05 else "")
     tab = choice["table"][cid]
     gr = t["classes_that_grew"]
     missed = (f"The edit {'passes' if choice['chosen_passes_validation'] else 'does not pass'} the validation rule: on the 500 validation seeds it fixed {tab['val_fixed']} and broke {tab['val_broken']} "
@@ -221,7 +226,9 @@ def evidence(task):
                f"and {conv(e)} of {pin(e)} pin contacts became strict successes against {conv(o)} of {pin(o)} for the original. "
                "Where the files do not support it: the tracking number (the median offset of the peg tip before contact) got worse, not better "
                f"({b['original']['tip_median_cm']:.2f} cm for the original, {b['agent_edit']['tip_median_cm']:.2f} cm for the edit, over {b['agent_edit']['n_tip']} episodes that meet), so this "
-               "edit is not shown to fix the target failure the way diagnosis.md describes it, and the timing reading came from the design seeds that also chose the edit.")
+               "edit is not shown to fix the target failure the way diagnosis.md describes it, and the timing reading came from the design seeds that also chose the edit. "
+               "The medians above are over the episodes that reach the pin, and the edit also changes which episodes do, so part of the change is composition. "
+               + vs_base)
     return {
         "summary": summary,
         "timing_validation": {"original": timing(list(o.values())), "agent_edit": timing(list(e.values()))},
