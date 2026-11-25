@@ -85,3 +85,8 @@ SPEC.md Stage 0 step 4 asks for a seed-by-seed comparison with the published `ev
 ### 2026-11-25, correction to the entry on the insertion published file
 
 "All 4 earlier commits that carry the file" should read "the 4 commits that carry the file, the current one included". The initial commit 3dc6652c has no eval_info.json (404).
+
+### 2026-11-25, insertion Stage 1, the 41 by 41 grid and the ensembling seeds (interpretation, written before any insertion design rollout)
+
+SPEC.md Stage 1 step 3 asks for "an even grid of 41 by 41 cube positions". Insertion has two objects, so the start is a point in four dimensions. I run two grids of 41 by 41 poses each, 1,681 rollouts per grid: the peg on an even grid over its own start box (x 0.1 to 0.2, y 0.4 to 0.6, 10 by 20 cm) with the socket held at the centre of its box, and the socket on an even grid over its box (x -0.2 to -0.1, y 0.4 to 0.6) with the peg at the centre of its box. Both are conditional maps, not marginal ones. The 1,000 design seeds, where both move, are the marginal picture.
+The temporal ensembling run uses the first 200 design seeds, 20000 to 20199, which is the minimum the plan allows ("at least 200"). At stock speed it costs about 28 minutes per 200 seeds. On transfer cube all 1,000 were run. If it matters for a later comparison I will extend it in the same file.
