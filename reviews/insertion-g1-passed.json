@@ -1,0 +1,22 @@
+{
+  "commit": "f29ab65d8b01482825fd57ceb000c91b0d61311d",
+  "decisions_sha256": "07853ef4e7fe4f6e3bcbf0439d420df6004f0bec32759822f5f4b42cf1ec462e",
+  "diagnosis_sha256": "0b7bec85916bce2775552e06e895f734c3defc732f411890fa1cc4c246140ba5",
+  "recomputed": {
+    "benchmark_success": 0.188,
+    "chunk_gains_points": {
+      "25": -4.5,
+      "50": 2.8
+    },
+    "failure_rate": 0.926,
+    "n_action_steps": 100,
+    "primary_metric": "strict",
+    "proceed": true,
+    "strict_success": 0.074
+  },
+  "review_not_independent": false,
+  "review_rounds": 2,
+  "review_unresolved": false,
+  "task": "insertion",
+  "time": "2026-11-25T09:14:13Z"
+}
