@@ -112,6 +112,11 @@ def ranked(tab, ids, key):
     return sorted(ids, key=lambda a: (-tab[a][key]["gain"], -tab[a][key]["guard_gain"], a))
 
 
+def stage1_features(task, name):
+    """Stage 1 rows lack the tip numbers, the feature files have them (same definition, within 5e-6 m)."""
+    return {r["seed"]: r for r in rows_of(exp(task) / "stage1" / f"features_{name}.jsonl.gz")}
+
+
 def full(task):
     tab = tables(task)
     for fam, arms in settings().items():
@@ -133,7 +138,8 @@ def report(task):
                      "recipes": arms, "results": {a: tab[a] for a in ids}}
     chunk = {}
     for n in (50, 25):
-        rows = rows_of(find(d / "stage1", f"design_chunk{n}.jsonl"))
+        f = stage1_features(task, f"chunk{n}")
+        rows = [{**r, **{k: f[r["seed"]][k] for k in ("pre_tip_lat", "pre_tip_d") if k in f[r["seed"]]}} for r in rows_of(find(d / "stage1", f"design_chunk{n}.jsonl"))]
         chunk[f"chunk{n}"] = {"n_action_steps": n, "all": stats(base, rows, ref)}
     fams["shorter_chunk"] = {"n_settings": 2, "results": chunk, "best": max(chunk, key=lambda c: (chunk[c]["all"]["gain"], chunk[c]["all"]["guard_gain"]))}
     (d / "stage3" / "baselines_summary.json").write_text(json.dumps({"rule": __doc__, "families": fams}, indent=1) + "\n")

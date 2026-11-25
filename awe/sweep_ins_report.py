@@ -54,7 +54,7 @@ def stats(base, rows, ref):
     parts = [part(q) for q in x]
     met = [q for q in x if q.get("pre_tip_lat") is not None]
     M = [q["pre_tip_lat"] for q in met if part(q) == "M"]
-    A = [q["strict_run"] for q in x if part(q) == "A"]
+    A = [q["strict_run"] for q in x if part(q) == "A" and q.get("strict_run") is not None]  # absent in stage 1 rows
     reach = {s: [np.linalg.norm(np.array(q["reach_rel_" + s]) - ref[s]) for q in x if q.get("reach_rel_" + s)] for s in ("r", "l")}
     return {
         "n": len(seeds), "strict": round(float(e.mean()), 4), "gain": round(float(e.mean() - b.mean()), 4), "fixed": f, "broken": br, "p_mcnemar": mcnemar_exact(f, br),
