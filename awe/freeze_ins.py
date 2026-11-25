@@ -225,7 +225,7 @@ def evidence(task):
                f"{timing(list(e.values()))['median_t_pin']:.0f} and the share of pins that start after step 375 from {b['original']['late_pin_share']:.3f} to {b['agent_edit']['late_pin_share']:.3f}, "
                f"and {conv(e)} of {pin(e)} pin contacts became strict successes against {conv(o)} of {pin(o)} for the original. "
                "Where the files do not support it: the tracking number (the median offset of the peg tip before contact) got worse, not better "
-               f"({b['original']['tip_median_cm']:.2f} cm for the original, {b['agent_edit']['tip_median_cm']:.2f} cm for the edit, over {b['agent_edit']['n_tip']} episodes that meet), so this "
+               f"({b['original']['tip_median_cm']:.2f} cm for the original, {b['agent_edit']['tip_median_cm']:.2f} cm for the edit, over the {b['original']['n_tip']} and {b['agent_edit']['n_tip']} episodes that meet), so this "
                "edit is not shown to fix the target failure the way diagnosis.md describes it, and the timing reading came from the design seeds that also chose the edit. "
                "The medians above are over the episodes that reach the pin, and the edit also changes which episodes do, so part of the change is composition. "
                + vs_base)
