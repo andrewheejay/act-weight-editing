@@ -322,5 +322,196 @@
    "current_net_before": 56,
    "accepted": false
   }
- ]
+ ],
+ "relation_to_agent_candidates": {
+  "identical_to_validated_candidate": [
+   "c06"
+  ],
+  "identical_to_any_agent_arm": [
+   "c06"
+  ],
+  "agent_arms_built_only_from_pool_edits": {
+   "c01": {
+    "ops": [
+     [
+      "model.decoder.layers.0.multihead_attn",
+      0,
+      0.0
+     ],
+     [
+      "model.encoder.layers.3.self_attn",
+      4,
+      2.0
+     ]
+    ],
+    "design": {
+     "n": 1000,
+     "fixed": 115,
+     "broken": 51,
+     "gain_points": 6.4
+    }
+   },
+   "c02": {
+    "ops": [
+     [
+      "model.decoder.layers.0.multihead_attn",
+      0,
+      0.0
+     ],
+     [
+      "model.encoder.layers.0.self_attn",
+      6,
+      2.0
+     ]
+    ],
+    "design": {
+     "n": 1000,
+     "fixed": 120,
+     "broken": 40,
+     "gain_points": 8.0
+    }
+   },
+   "c04": {
+    "ops": [
+     [
+      "model.decoder.layers.0.multihead_attn",
+      0,
+      0.0
+     ],
+     [
+      "model.encoder.layers.2.self_attn",
+      6,
+      0.0
+     ]
+    ],
+    "design": {
+     "n": 500,
+     "fixed": 53,
+     "broken": 19,
+     "gain_points": 6.8
+    }
+   },
+   "c06": {
+    "ops": [
+     [
+      "model.decoder.layers.0.multihead_attn",
+      0,
+      0.0
+     ],
+     [
+      "model.encoder.layers.3.self_attn",
+      3,
+      0.0
+     ]
+    ],
+    "design": {
+     "n": 1000,
+     "fixed": 147,
+     "broken": 37,
+     "gain_points": 11.0
+    }
+   },
+   "c08": {
+    "ops": [
+     [
+      "model.decoder.layers.0.multihead_attn",
+      0,
+      0.0
+     ],
+     [
+      "model.encoder.layers.0.self_attn",
+      6,
+      2.0
+     ],
+     [
+      "model.encoder.layers.3.self_attn",
+      4,
+      2.0
+     ]
+    ],
+    "design": {
+     "n": 1000,
+     "fixed": 124,
+     "broken": 38,
+     "gain_points": 8.6
+    }
+   },
+   "c13": {
+    "ops": [
+     [
+      "model.decoder.layers.0.multihead_attn",
+      2,
+      0.0
+     ],
+     [
+      "model.encoder.layers.3.self_attn",
+      4,
+      2.0
+     ]
+    ],
+    "design": {
+     "n": 500,
+     "fixed": 36,
+     "broken": 23,
+     "gain_points": 2.6
+    }
+   },
+   "r1": {
+    "ops": [
+     [
+      "model.decoder.layers.0.multihead_attn",
+      0,
+      0.0
+     ],
+     [
+      "model.encoder.layers.0.self_attn",
+      6,
+      2.0
+     ],
+     [
+      "model.encoder.layers.3.self_attn",
+      3,
+      0.0
+     ]
+    ],
+    "design": {
+     "n": 1000,
+     "fixed": 146,
+     "broken": 40,
+     "gain_points": 10.6
+    }
+   }
+  },
+  "c06": {
+   "design": {
+    "n": 1000,
+    "fixed": 147,
+    "broken": 37,
+    "gain_points": 11.0
+   },
+   "search_seeds_450": {
+    "n": 450,
+    "fixed": 70,
+    "broken": 14,
+    "gain_points": 12.4
+   },
+   "validation_500": {
+    "n": 500,
+    "fixed": 64,
+    "broken": 29,
+    "gain_points": 7.0
+   },
+   "validation_500_benchmark": {
+    "n": 500,
+    "fixed": 80,
+    "broken": 48,
+    "gain_points": 6.4
+   },
+   "same_traj_hash_as_autogreedy_rows": [
+    450,
+    450
+   ]
+  },
+  "statement": "The search script awe/autogreedy_ins.py was committed before any validation rollout and run after stage3/choice.json, from the stage 2 single-head sweep. It returned 2 heads: cross.h0.x0, enc3.h3.x0. Equal, op for op, to agent arm(s) c06. Its pool contains all three heads and scales of the frozen edit r1, and the author had seen the hand-written combinations (which contain r1 and its pieces) and, when the run was started, the validation results of r1 and the other candidates. The search reads only stage 2 files and the original's rows of stage 1. So this arm is not an independent no-LLM result, and if it equals the agent's arm it is the same arm. The report must not describe it as independent."
+ }
 }

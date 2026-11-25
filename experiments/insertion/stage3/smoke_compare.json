@@ -1,0 +1,965 @@
+{
+ "seeds": [
+  20500,
+  20501,
+  20502
+ ],
+ "ens_seeds": [
+  20000,
+  20001,
+  20002
+ ],
+ "arms": {
+  "original": {
+   "role": "original",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": [
+    {
+     "file": "stage1/design_default.jsonl",
+     "arm": null,
+     "hash_match": {
+      "20500": true,
+      "20501": true,
+      "20502": true
+     }
+    }
+   ]
+  },
+  "agent_edit": {
+   "role": "agent_edit",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    true,
+    true
+   ],
+   "strict_success": [
+    false,
+    false,
+    true
+   ],
+   "references": [
+    {
+     "file": "stage3/combo_AB.jsonl",
+     "arm": "r1",
+     "hash_match": {
+      "20500": true,
+      "20501": true,
+      "20502": true
+     }
+    }
+   ]
+  },
+  "autogreedy": {
+   "role": "autogreedy",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    true,
+    true
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": [
+    {
+     "file": "stage3/autogreedy.jsonl",
+     "arm": "ag_cross.h0.x0_enc3.h3.x0",
+     "hash_match": {
+      "20500": true,
+      "20501": true,
+      "20502": true
+     }
+    },
+    {
+     "file": "stage3/combo_A.jsonl",
+     "arm": "c06",
+     "hash_match": {
+      "20500": true,
+      "20501": true,
+      "20502": true
+     }
+    }
+   ]
+  },
+  "random_00": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    true,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_01": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_02": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_03": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    true,
+    false
+   ],
+   "strict_success": [
+    false,
+    true,
+    false
+   ],
+   "references": []
+  },
+  "random_04": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_05": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    false,
+    true
+   ],
+   "strict_success": [
+    true,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_06": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    true
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_07": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    true,
+    false
+   ],
+   "strict_success": [
+    false,
+    true,
+    false
+   ],
+   "references": []
+  },
+  "random_08": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_09": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_10": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    true
+   ],
+   "strict_success": [
+    false,
+    false,
+    true
+   ],
+   "references": []
+  },
+  "random_11": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_12": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_13": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_14": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_15": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    false,
+    false
+   ],
+   "strict_success": [
+    true,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_16": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_17": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    true,
+    false
+   ],
+   "strict_success": [
+    false,
+    true,
+    false
+   ],
+   "references": []
+  },
+  "random_18": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    false,
+    false
+   ],
+   "strict_success": [
+    true,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_19": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_20": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_21": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_22": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_23": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_24": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_25": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_26": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_27": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    true
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_28": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_29": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    true,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_30": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_31": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    false,
+    true
+   ],
+   "strict_success": [
+    true,
+    false,
+    true
+   ],
+   "references": []
+  },
+  "random_32": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_33": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_34": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_35": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_36": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_37": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_38": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "random_39": {
+   "role": "random",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    true,
+    false,
+    false
+   ],
+   "strict_success": [
+    true,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "base_constant_offset": {
+   "role": "baseline",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": [
+    {
+     "file": "stage3/baselines_full.jsonl",
+     "arm": "off_j1_p0.04",
+     "hash_match": {
+      "20500": true,
+      "20501": true,
+      "20502": true
+     }
+    }
+   ]
+  },
+  "base_deviation_gain": {
+   "role": "baseline",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    true,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": [
+    {
+     "file": "stage3/baselines_full.jsonl",
+     "arm": "gain_right_nogrip_0.8",
+     "hash_match": {
+      "20500": true,
+      "20501": true,
+      "20502": true
+     }
+    }
+   ]
+  },
+  "base_shorter_chunk": {
+   "role": "baseline",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": [
+    {
+     "file": "stage1/design_chunk50.jsonl",
+     "arm": null,
+     "hash_match": {
+      "20500": true,
+      "20501": true,
+      "20502": true
+     }
+    }
+   ]
+  },
+  "base_simplest_fix": {
+   "role": "baseline",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": [
+    {
+     "file": "stage3/baselines_full.jsonl",
+     "arm": "late_j2_p0.02",
+     "hash_match": {
+      "20500": true,
+      "20501": true,
+      "20502": true
+     }
+    }
+   ]
+  },
+  "dose_k0.5": {
+   "role": "dose",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    true,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "dose_km0.5": {
+   "role": "dose",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "dose_km1": {
+   "role": "dose",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "dose_km2": {
+   "role": "dose",
+   "n_rows": 3,
+   "wanted": 3,
+   "benchmark_success": [
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false
+   ],
+   "references": []
+  },
+  "original_ens": {
+   "role": "ensembling_original",
+   "n_rows": 6,
+   "wanted": 6,
+   "benchmark_success": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "references": [
+    {
+     "file": "stage1/design_ens.jsonl",
+     "arm": null,
+     "hash_match": {
+      "20000": true,
+      "20001": true,
+      "20002": true
+     }
+    }
+   ]
+  },
+  "agent_edit_ens": {
+   "role": "ensembling_edit",
+   "n_rows": 6,
+   "wanted": 6,
+   "benchmark_success": [
+    false,
+    false,
+    true,
+    false,
+    true,
+    false
+   ],
+   "strict_success": [
+    false,
+    false,
+    true,
+    false,
+    true,
+    false
+   ],
+   "references": []
+  }
+ },
+ "references_checked": 9,
+ "problems": []
+}

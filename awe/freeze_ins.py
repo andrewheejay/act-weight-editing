@@ -226,7 +226,8 @@ def evidence(task):
                f"and {conv(e)} of {pin(e)} pin contacts became strict successes against {conv(o)} of {pin(o)} for the original. "
                "Where the files do not support it: the tracking number (the median offset of the peg tip before contact) got worse, not better "
                f"({b['original']['tip_median_cm']:.2f} cm for the original, {b['agent_edit']['tip_median_cm']:.2f} cm for the edit, over the {b['original']['n_tip']} and {b['agent_edit']['n_tip']} episodes that meet), so this "
-               "edit is not shown to fix the target failure the way diagnosis.md describes it, and the timing reading came from the design seeds that also chose the edit. "
+               "edit is not shown to fix the target failure the way diagnosis.md describes it. The timing story was first formed on the design seeds, and the validation numbers just given also took part in choosing "
+               "the edit (the choice pooled design and validation gains), so they are not an independent check of that story. "
                "The medians above are over the episodes that reach the pin, and the edit also changes which episodes do, so part of the change is composition. "
                + vs_base)
     return {
@@ -291,7 +292,7 @@ def build_edit(task):
         "edited_checkpoint": f"outputs/edit_ckpt_{task} (gitignored, rebuilt by awe.export_checkpoint)",
         "edited_checkpoint_sha256": sha, "original_checkpoint_sha256": j(exp(task) / "stage0" / "checkpoint.json")["model_sha256"],
         "limits": (f"Chosen among {len(choice['table'])} validation-checked candidates by the pooled net strict gain over 1,000 design and 500 validation seeds"
-                   + (f", ties with {tied} at {tab['pooled_net']} net broken on fewer broken seeds ({tab['pooled_broken']} against {tied_broken})" if tied else "") + ". "
+                   + (f", level with {tied} at a pooled net gain of {tab['pooled_net']} and chosen over it by the fixed tie rule (fewer broken seeds, {tab['pooled_broken']} against {tied_broken})" if tied else "") + ". "
                    f"{best_id} had the largest validation strict gain ({100 * choice['table'][best_id]['val_strict_gain']:+.1f} points against {100 * tab['val_strict_gain']:+.1f} for the edit) and the candidates are not "
                    "distinguishable from each other on the validation seeds. The design numbers are selected. The edit has no dose response of its own before the test."),
     })

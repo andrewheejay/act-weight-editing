@@ -1,0 +1,283 @@
+{
+ "task": "insertion",
+ "candidate": "r1",
+ "family": "head_scaling",
+ "ops": [
+  {
+   "op": "scale_head",
+   "block": "model.decoder.layers.0.multihead_attn",
+   "head": 0,
+   "scale": 0
+  },
+  {
+   "op": "scale_head",
+   "block": "model.encoder.layers.3.self_attn",
+   "head": 3,
+   "scale": 0
+  },
+  {
+   "op": "scale_head",
+   "block": "model.encoder.layers.0.self_attn",
+   "head": 6,
+   "scale": 2
+  }
+ ],
+ "free_numbers": 0,
+ "heads": 3,
+ "hypothesis": "r1 cross.h0 x0, enc3.h3 x0, enc0.h6 x2: c06 plus the encoder head that helped cross.h0 (+10.6, 146 fixed, 40 broken). Same hypothesis, the third head is expected to add nothing. Expected +7 to +10. [The line for c06, to which this one refers, verbatim: c06 cross.h0 x0 with enc3.h3 x0: the best design gain (+11.0, 147 fixed, 37 broken). Hypothesis: the two heads slow the approach or delay the arms when they are on, and turning both off makes the peg reach the pin earlier in the 400 steps, so more contacts last the 25 steps that strict needs. Expected validation gain +7 to +11.]",
+ "hypothesis_source": "experiments/insertion/hypotheses.md, section 'validation round, written before any validation rollout' of 2026-11-25 (session 25), copied word for word. Written after the design results (the candidate's design numbers are in it) and before any validation rollout.",
+ "evidence_on_the_hypothesis": {
+  "summary": "The edit does not pass the validation rule: on the 500 validation seeds it fixed 63 and broke 24 strict seeds (+7.8 points, exact McNemar p 3.5e-05), which is 8.6% of the original's 455 strict failures (the bar is 25%). Benchmark success changed by +11.0 points (the guard allows a drop of at most 2). Where the files agree with the written hypothesis: the median step of the first pin contact went from 340 to 325 and the share of pins that start after step 375 from 0.121 to 0.065, and 84 of 154 pin contacts became strict successes against 45 of 99 for the original. Where the files do not support it: the tracking number (the median offset of the peg tip before contact) got worse, not better (1.63 cm for the original, 1.85 cm for the edit, over the 296 and 313 episodes that meet), so this edit is not shown to fix the target failure the way diagnosis.md describes it. The timing story was first formed on the design seeds, and the validation numbers just given also took part in choosing the edit (the choice pooled design and validation gains), so they are not an independent check of that story. The medians above are over the episodes that reach the pin, and the edit also changes which episodes do, so part of the change is composition. Against the best simple baseline on these validation seeds (constant_offset, +4.8 points) the edit is +3.0 points ahead, paired: 60 seeds only the edit solves, 45 only the baseline, exact p 0.17, so on validation the edit is not distinguishable from it at 0.05. ",
+  "timing_validation": {
+   "original": {
+    "median_t_meet": 298.5,
+    "median_t_pin": 340.0,
+    "late_pin_share": 0.1212
+   },
+   "agent_edit": {
+    "median_t_meet": 288.0,
+    "median_t_pin": 325.0,
+    "late_pin_share": 0.0649
+   }
+  },
+  "pin_contacts_strict": {
+   "original": [
+    45,
+    99
+   ],
+   "agent_edit": [
+    84,
+    154
+   ]
+  },
+  "tip_offset_median_cm_validation": {
+   "original": 1.634,
+   "agent_edit": 1.846,
+   "note": "pre_tip_lat over the episodes that meet, tracking number of decisions.json. The edit also changes which episodes meet."
+  },
+  "paired_against_the_baselines_validation": {
+   "constant_offset": {
+    "edit_only": 60,
+    "baseline_only": 45,
+    "p_mcnemar": 0.17156469715424208
+   },
+   "deviation_gain": {
+    "edit_only": 67,
+    "baseline_only": 22,
+    "p_mcnemar": 1.899849174722082e-06
+   },
+   "shorter_chunk": {
+    "edit_only": 75,
+    "baseline_only": 25,
+    "p_mcnemar": 5.636282034205402e-07
+   },
+   "simplest_fix": {
+    "edit_only": 56,
+    "baseline_only": 31,
+    "p_mcnemar": 0.009673218547269866
+   }
+  },
+  "failure_parts_validation": {
+   "original": {
+    "S": 45,
+    "A": 54,
+    "M": 197,
+    "peg_not_lifted": 107,
+    "socket_not_lifted": 62,
+    "neither_lifted": 25,
+    "both_lifted": 10
+   },
+   "agent_edit": {
+    "S": 84,
+    "A": 70,
+    "M": 159,
+    "peg_not_lifted": 109,
+    "socket_not_lifted": 39,
+    "neither_lifted": 32,
+    "both_lifted": 7
+   }
+  },
+  "parts_that_grew_validation": {
+   "S": [
+    45,
+    84
+   ],
+   "A": [
+    54,
+    70
+   ],
+   "peg_not_lifted": [
+    107,
+    109
+   ],
+   "neither_lifted": [
+    25,
+    32
+   ]
+  },
+  "original_failures_fixed_by_kind": {
+   "A": {
+    "original_failures": 54,
+    "fixed": 14
+   },
+   "M": {
+    "original_failures": 197,
+    "fixed": 38
+   },
+   "peg_not_lifted": {
+    "original_failures": 107,
+    "fixed": 7
+   },
+   "socket_not_lifted": {
+    "original_failures": 62,
+    "fixed": 2
+   },
+   "neither_lifted": {
+    "original_failures": 25,
+    "fixed": 2
+   },
+   "both_lifted": {
+    "original_failures": 10,
+    "fixed": 0
+   }
+  },
+  "broken_successes_became": {
+   "M": 10,
+   "peg_not_lifted": 3,
+   "A": 8,
+   "socket_not_lifted": 3
+  },
+  "zones_validation": {
+   "peg x below 0.143 (larger tip offset), inside": {
+    "n": 216,
+    "original": 0.09259259259259259,
+    "agent_edit": 0.12962962962962962,
+    "fixed": 19,
+    "broke": 11
+   },
+   "peg x below 0.143 (larger tip offset), outside": {
+    "n": 284,
+    "original": 0.0880281690140845,
+    "agent_edit": 0.19718309859154928,
+    "fixed": 44,
+    "broke": 13
+   },
+   "peg y above 0.483 (larger tip offset), inside": {
+    "n": 306,
+    "original": 0.058823529411764705,
+    "agent_edit": 0.12091503267973856,
+    "fixed": 31,
+    "broke": 12
+   },
+   "peg y above 0.483 (larger tip offset), outside": {
+    "n": 194,
+    "original": 0.13917525773195877,
+    "agent_edit": 0.2422680412371134,
+    "fixed": 32,
+    "broke": 12
+   }
+  },
+  "dial_test_single_heads": {
+   "cross.h0": {
+    "tip_median_cm": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    },
+    "gain": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    },
+    "n_met": {
+     "x0.5_to_x4": true,
+     "x0_to_x4": true
+    }
+   },
+   "enc3.h3": {
+    "tip_median_cm": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    },
+    "gain": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    },
+    "n_met": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    }
+   },
+   "enc0.h6": {
+    "tip_median_cm": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    },
+    "gain": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    },
+    "n_met": {
+     "x0.5_to_x4": false,
+     "x0_to_x4": false
+    }
+   }
+  },
+  "dial_test_note": "design seeds 20000 to 20299, one head at a time, rule in awe/dose_ins.py. The combination itself had no dose response before the test.",
+  "atlas_of_the_edited_heads": {
+   "cross.h0": {
+    "scale_in_edit": 0,
+    "object_signal_drop_x0_peg_grid": 0.0005,
+    "object_signal_drop_x0_socket_grid": 0.0895,
+    "rank_of_48_by_mean_object_signal_drop_x0": 12,
+    "overlap_x0_step0_strict_mean": -0.0724,
+    "overlap_x0_step100_strict_mean": -0.2405,
+    "rank_of_48_by_overlap_step100_strict_ascending": 8,
+    "overlap_x0_step200_strict_mean": 0.0989
+   },
+   "enc3.h3": {
+    "scale_in_edit": 0,
+    "object_signal_drop_x0_peg_grid": 0.0254,
+    "object_signal_drop_x0_socket_grid": 0.0188,
+    "rank_of_48_by_mean_object_signal_drop_x0": 21,
+    "overlap_x0_step0_strict_mean": -0.1514,
+    "overlap_x0_step100_strict_mean": -0.2313,
+    "rank_of_48_by_overlap_step100_strict_ascending": 12,
+    "overlap_x0_step200_strict_mean": 0.0464
+   },
+   "enc0.h6": {
+    "scale_in_edit": 2,
+    "object_signal_drop_x0_peg_grid": 0.0026,
+    "object_signal_drop_x0_socket_grid": 0.0184,
+    "rank_of_48_by_mean_object_signal_drop_x0": 27,
+    "overlap_x0_step0_strict_mean": 0.1393,
+    "overlap_x0_step100_strict_mean": 0.2118,
+    "rank_of_48_by_overlap_step100_strict_ascending": 46,
+    "overlap_x0_step200_strict_mean": 0.0338
+   }
+  }
+ },
+ "chosen_by": "stage3/choice.json, the rule of awe/candidates_ins.py, fixed before any validation rollout (the rule's numbers are in choice.json, table)",
+ "stop_rule_used": true,
+ "passes_validation_rule": false,
+ "validation_strict": {
+  "n": 500,
+  "strict_gain_points": 7.8,
+  "fixed": 63,
+  "broken": 24,
+  "share_of_failures_removed": 0.0857,
+  "p": 3.4799669459257334e-05,
+  "passes": false,
+  "benchmark_gain_points": 11.0
+ },
+ "design": {
+  "fixed": 146,
+  "broken": 40,
+  "pooled_net_design_and_validation": 145,
+  "note": "1,000 design seeds, used for choosing, optimistic"
+ },
+ "stop_rule_statement": "No candidate passed the validation rule (25% of strict failures removed, p < 0.05, guard drop at most 2 points). Stop rule, SPEC.md Stage 3: the candidate with the largest pooled net gain is frozen anyway and reported as a miss. 8 of the 10 validation checks were used, 2 were not. Reason for not using them: the bar needs a net of 114 fixes of 455 strict failures, the best of the 8 reached 41 net (r2), and any further candidate would have been designed after reading these validation results.",
+ "autogreedy_arm": "see relation_to_agent_candidates in freeze/autogreedy.json. Not an independent no-LLM result.",
+ "edited_checkpoint": "outputs/edit_ckpt_insertion (gitignored, rebuilt by awe.export_checkpoint)",
+ "edited_checkpoint_sha256": "5d00999bbcd500f66484be84150afe8f61adaf4f3ac776e61fc642cb838fa2da",
+ "original_checkpoint_sha256": "7a82635a7901d57cfbcd25dcc41cc9fa5ae687bdbbcde49a24a34fa348dd92c1",
+ "limits": "Chosen among 8 validation-checked candidates by the pooled net strict gain over 1,000 design and 500 validation seeds, level with c06 at a pooled net gain of 145 and chosen over it by the fixed tie rule (fewer broken seeds, 64 against 66). r2 had the largest validation strict gain (+8.2 points against +7.8 for the edit) and the candidates are not distinguishable from each other on the validation seeds. The design numbers are selected. The edit has no dose response of its own before the test."
+}
