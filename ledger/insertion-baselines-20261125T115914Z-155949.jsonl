@@ -1,0 +1,12 @@
+{"task": "insertion", "seed": 20001, "arm": "late_j8_p0.08", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20003, "arm": "late_j8_p0.08", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20002, "arm": "late_j8_p0.08", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20000, "arm": "late_j8_p0.08", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20001, "arm": "gain_both_grip_1.2", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20000, "arm": "gain_both_grip_1.2", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20002, "arm": "gain_both_grip_1.2", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20003, "arm": "gain_both_grip_1.2", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20002, "arm": "off_j9_m0.08", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20000, "arm": "off_j9_m0.08", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20001, "arm": "off_j9_m0.08", "budget": "baselines", "purpose": "smoke"}
+{"task": "insertion", "seed": 20003, "arm": "off_j9_m0.08", "budget": "baselines", "purpose": "smoke"}

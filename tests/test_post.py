@@ -45,6 +45,12 @@ def test_approach_offset_stops_at_the_first_close():
     assert got == [0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0]
 
 
+def test_late_offset_starts_at_its_step():
+    p = P.Post({"kind": "late_offset", "joint": 9, "delta": -0.25, "t0": 200}, "insertion")
+    got = [float(p(t, np.zeros(14, dtype=np.float32))[9]) for t in (0, 199, 200, 399)]
+    assert got == [0.0, 0.0, -0.25, -0.25]
+
+
 def test_zero_offset_is_the_original_rollout_and_a_real_offset_is_not():
     env, pol = util.runner()
     orig, o = util.run(1000, make_spec("original"))

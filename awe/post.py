@@ -5,6 +5,7 @@ A recipe is one JSON object. Joints are the 14 action dimensions: 0 to 6 the lef
   {"kind": "offset", "joint": j, "delta": d}            constant shift of one target for the whole episode
   {"kind": "gain", "g": g, "joints": [...]}             a' = m_t + g (a - m_t), m_t = freeze/mean_action.json at step t
   {"kind": "approach_offset", "joint": j, "delta": d}   the same shift, only until the right gripper first starts to close
+  {"kind": "late_offset", "joint": j, "delta": d, "t0": t0}   the same shift, only from step t0 on (insertion's simplest fix)
 The close rule is the one in awe/measure.py (first command below CLOSE after one above OPEN), read on the policy's own command.
 """
 import json
@@ -15,7 +16,7 @@ from .measure import CLOSE, OPEN
 from .paths import exp
 
 N_JOINTS, STEPS, RIGHT_GRIPPER = 14, 400, 13
-KINDS = ("offset", "gain", "approach_offset")
+KINDS = ("offset", "gain", "approach_offset", "late_offset")
 
 
 def mean_path(task):
@@ -41,6 +42,7 @@ class Post:
         else:
             self.joint, self.delta = int(recipe["joint"]), float(recipe["delta"])
             assert 0 <= self.joint < N_JOINTS
+            self.t0 = int(recipe.get("t0", 0))
         self.opened = self.closed = False
 
     def __call__(self, t: int, a) -> np.ndarray:
@@ -52,6 +54,9 @@ class Post:
             a[j] = self.mean[t, j] + self.g * (a[j] - self.mean[t, j])
         elif self.kind == "offset":
             a[self.joint] += self.delta
+        elif self.kind == "late_offset":
+            if t >= self.t0:
+                a[self.joint] += self.delta
         else:
             raw = a[RIGHT_GRIPPER]
             if raw > OPEN:
