@@ -1,0 +1,16 @@
+{"task": "insertion", "seed": 20022, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20075, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20261, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20657, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20862, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20589, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20310, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20909, "arm": "original", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20022, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20075, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20261, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20310, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20589, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20657, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20862, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}
+{"task": "insertion", "seed": 20909, "arm": "agent_edit", "budget": "agent", "purpose": "report videos"}

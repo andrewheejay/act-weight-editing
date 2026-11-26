@@ -1,0 +1,92 @@
+{
+ "rule": "rng 0, see videos.py",
+ "pool_sizes": {
+  "fixed_class3_failure": 88,
+  "fixed_other_failure": 58,
+  "broken_by_edit": 40,
+  "both_succeed": 34,
+  "both_fail": 780
+ },
+ "videos": [
+  {
+   "seed": 20022,
+   "kind": "broken_by_edit",
+   "file": "broken_by_edit_20022.mp4",
+   "original_class": "4b",
+   "edit_class": "3",
+   "original_strict": true,
+   "edit_strict": false,
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20075,
+   "kind": "broken_by_edit",
+   "file": "broken_by_edit_20075.mp4",
+   "original_class": "4b",
+   "edit_class": "4a",
+   "original_strict": true,
+   "edit_strict": false,
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20261,
+   "kind": "fixed_other_failure",
+   "file": "fixed_other_failure_20261.mp4",
+   "original_class": "4a",
+   "edit_class": "4b",
+   "original_strict": false,
+   "edit_strict": true,
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20310,
+   "kind": "fixed_other_failure",
+   "file": "fixed_other_failure_20310.mp4",
+   "original_class": "4a",
+   "edit_class": "4b",
+   "original_strict": false,
+   "edit_strict": true,
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20589,
+   "kind": "fixed_class3_failure",
+   "file": "fixed_class3_failure_20589.mp4",
+   "original_class": "3",
+   "edit_class": "4b",
+   "original_strict": false,
+   "edit_strict": true,
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20657,
+   "kind": "both_fail",
+   "file": "both_fail_20657.mp4",
+   "original_class": "1",
+   "edit_class": "1",
+   "original_strict": false,
+   "edit_strict": false,
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20862,
+   "kind": "fixed_class3_failure",
+   "file": "fixed_class3_failure_20862.mp4",
+   "original_class": "3",
+   "edit_class": "4b",
+   "original_strict": false,
+   "edit_strict": true,
+   "hash_matches_earlier": true
+  },
+  {
+   "seed": 20909,
+   "kind": "both_succeed",
+   "file": "both_succeed_20909.mp4",
+   "original_class": "4b",
+   "edit_class": "4b",
+   "original_strict": true,
+   "edit_strict": true,
+   "hash_matches_earlier": true
+  }
+ ]
+}
