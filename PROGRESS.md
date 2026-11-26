@@ -754,3 +754,20 @@ Also: "Harness at the same settings 82.8%" above is loose. That harness run was 
 **Ruled out / decided.** Nothing in the freeze or the verdict was changed. The report states that the auto-greedy arm cannot be separated from the edit and is not independent, and that the mechanism is not confirmed by the tracking number.
 
 **Next step (session 29).** Stage 7: `publish/post.md` (>= 400 words, built around the referee headline tables of both tasks: transfer_cube strong_win, insertion modest_win, the maps, the limits from SPEC.md; copy both verdict blocks unchanged), `publish/atlas/index.html` (one self-contained page from stage2/atlas of both tasks), `publish/CHECKLIST.md`. Read referee/CONTRACT.md for the exact contents first. `awe/post.py` exists from earlier work (check what it does before using it). The transfer-cube report already summarises its own result, and the insertion report has an H4 paragraph that the post can reuse.
+
+## 2026-11-26, session 29 (Stage 7 publish package written; status DONE)
+
+**Done.** The three Stage 7 files, all built from committed files with no rollouts. `python -m referee.status` now says STATE DONE ("the protocol is finished. See publish/CHECKLIST.md").
+- `publish/post.md` (2,664 words), built by `publish/write_post.py` from `publish/post_body.md`. The script copies both referee verdict blocks byte for byte (it asserts this). Contents: limits up front (SPEC.md list, adapted to two tasks), a two-task headline table from verdict.json, the protocol in five steps, both maps, what it does not show (mechanism, H2 margin, auto-greedy not independent, stress band, baselines), benchmark against strict, the atlas, and where to check.
+- `publish/atlas/index.html` (2.10 MB, one self-contained file), built by `publish/build_atlas.py` from stage2/atlas/heads.json, sweep_summary.json, split_half.json and freeze/edit.json of both tasks. Sortable and filterable table of 48 heads per task (open-loop effect at step 0, signal lost, failure-map overlap, closed-loop gain/fixed/broken/p for x0 and x2, split-half result, top joints), with the edit's heads highlighted and 5 atlas figures per task embedded as downscaled JPEG.
+- `publish/CHECKLIST.md`: verify_draw on both test folders, ledger recompute, releases, checkpoint export and hub upload with the SHA-256 values, model card (Apache-2.0 credit, simulation-only warning), the gitignored logs/agent transcripts (23 MB) and the need to redact them before publishing, the post's relative image links, atlas hosting, and the optional extra runs that only a person can start.
+
+**Numbers checked this session.** `outputs/edit_ckpt_*/model.safetensors` SHA-256 equals edit.json and ACCEPTED.json for both tasks (29e37492... transfer cube, 5d00999b... insertion). Gate 0 via `referee.recompute rates`: harness_repro 81.8% benchmark and 79.0% strict (transfer cube), 18.2% and 7.6% (insertion). `referee.recompute ledger`: 313,151 rollouts in all, illegal [], test_range_rollouts 0, bad_lines 0. Transfer cube agent 95,073, baselines 46,800, autogreedy 8,550, setup 6,030, stress 5,000. Insertion agent 93,400, baselines 46,812, autogreedy 8,550, setup 2,936.
+
+**Caught and fixed before commit.** The first draft of the post said that cross-attention heads have the largest effects in both checkpoints. The atlas says otherwise: the largest open-loop step-0 effects are enc0.h0 (transfer cube) and enc0.h4 (insertion), so the sentence was replaced with what the table shows. The atlas intro first said the hypothesis head carries little position signal "on both tasks". That holds only for transfer cube (enc3.h4 x0 signal -0.001). The insertion hypothesis was about timing, so the sentence now names transfer cube only.
+
+**Not done, by rule.** No push, upload, tag or `gh`. verify_draw was not run by me; the checklist leaves it to Andrew. Nothing in the freeze, verdicts or reports was changed.
+
+**Wall time and rollouts.** About 30 minutes, 0 rollouts.
+
+**Next step.** None for the agent. The protocol is finished. Everything left is in publish/CHECKLIST.md for Andrew.
